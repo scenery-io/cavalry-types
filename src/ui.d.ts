@@ -39,9 +39,11 @@
 declare namespace ui {
 	/**
 	 * Add a widget to the default layout
+	 * @param widget
 	 */
 	// TODO: Define allowed objects
-	function add(widget: object)
+	// TODO: Verify return type
+	function add(widget: object): void
 
 	/**
 	 * Show the script window.
@@ -50,6 +52,7 @@ declare namespace ui {
 
 	/**
 	 * Set the script window title
+	 * @param title
 	 */
 	function setTitle(title: string): void
 
@@ -60,16 +63,22 @@ declare namespace ui {
 
 	/**
 	 * Add some fixed spacing to the default layout.
+	 * @param spacing
 	 */
 	function addSpacing(spacing: integer): void
 
 	/**
 	 * Set the amount of spacing automatically added between each item added to the default layout. The default is 3 pixels.
+	 * @param spacing
 	 */
 	function setSpaceBetween(spacing: integer): void
 
 	/**
 	 * Set the margins of the default layout (how far from the edges the widgets can be). The default value is 3 pixels on all sides.
+	 * @param left
+	 * @param top
+	 * @param right
+	 * @param bottom
 	 */
 	function setMargins(
 		left: integer,
@@ -81,16 +90,20 @@ declare namespace ui {
 	/**
 	 * The path to the folder which contains this script. This is blank for UIs created from the JavaScript Editor.
 	 */
+	// TODO: Report error `ui is undefined`
 	const scriptLocation: string
 	// const button = new ui.ImageButton(ui.scriptLocation+"/myScript_assets/icon.png")
 
 	/**
 	 * Resize the script window.
+	 * @param width
+	 * @param height
 	 */
 	function resize(width: integer, height: integer): void
 
 	/**
 	 * Register a callback object with the script. See the details below in the Callbacks section.
+	 * @param callback
 	 */
 	// TODO: Define allowed objects
 	function addCallbackObject(callback: object): void
@@ -140,6 +153,7 @@ declare namespace ui {
 	class Button {
 		/**
 		 * Button requires a default label
+		 * @param label
 		 */
 		constructor(label: string)
 
@@ -152,7 +166,8 @@ declare namespace ui {
 
 		/**
 		 * Set the size.
-		 * @param buttonText
+		 * @param width
+		 * @param height
 		 */
 		setSize(width: integer, height: integer): void
 
@@ -171,37 +186,36 @@ declare namespace ui {
 		/**
 		 * TODO: Add link to `ui.scriptLocation`
 		 * Path to an image (relative paths can be built using the `ui.scriptLocation` property)
-		 * @param buttonText
+		 * @param path
 		 */
 		setImage(path: string): void
 
 		/**
+		 * TODO: Requires clarification for stroke affordance
 		 * By default buttons have a stroke affordance, you can remove this by calling this method with `false`
-		 * @param buttonText
+		 * @param removeAffordance
 		 */
-		setDrawStroke(bool): void
+		setDrawStroke(removeAffordance: bool): void
 
 		/**
 		 * A callback function that will be called when the button is clicked.
-		 * @param buttonText
 		 */
 		onClick(): void
 
 		/**
 		 * Disable or enable a widget by using this function
-		 * @param buttonText
+		 * @param enabled
 		 */
 		setEnabled(enabled: boolean): void
 
 		/**
 		 * Returns `true` if the widget is enabled
-		 * @param buttonText
 		 */
 		isEnabled(): boolean
 
 		/**
 		 * Set the background color using a hex value
-		 * @param buttonText
+		 * @param color
 		 */
 		setBackgroundColor(color: string): void
 
@@ -228,7 +242,7 @@ declare namespace ui {
 		// TODO: Descriptions
 		constructor(value: boolean)
 		getValue(): boolean
-		setValue(bool): void
+		setValue(value: bool): void
 
 		/**
 		 * A callback function that will be called when the checkbox is toggled.
@@ -243,25 +257,25 @@ declare namespace ui {
 
 		/**
 		 * Returns `true` if the widget is enabled
-		 * @param enabled
 		 */
 		isEnabled(): boolean
 
 		/**
 		 * Set the size.
-		 * @param enabled
+		 * @param width
+		 * @param height
 		 */
 		setSize(width: integer, height: integer): void
 
 		/**
 		 * Set the height.
-		 * @param enabled
+		 * @param height
 		 */
 		setFixedHeight(height: integer): void
 
 		/**
 		 * Set the width.
-		 * @param enabled
+		 * @param width
 		 */
 		setFixedWidth(width: integer): void
 
@@ -269,7 +283,7 @@ declare namespace ui {
 		 * Sets a tooltip for this widget
 		 * @param enabled
 		 */
-		setToolTip(string): void
+		setToolTip(enabled: string): void
 
 		// // create a Checkbox
 		// var cb = new ui.Checkbox(false);
@@ -292,9 +306,11 @@ declare namespace ui {
 	 * A color picker widget. You can use this to set colours using the Color Editor. The callback which loads the Color Editor on double clicking is hooked up for you — the colours returned and set are all hex values. The utilities in the Cavalry Module can be used to help with conversions.
 	 */
 	class ColorChip {
-		getColor(): string // TODO
-		getColorWithAlpha(): string // TODO
-		setColor(color: string) // TODO
+		// TODO: Definitions
+		getColor(): string
+		getColorWithAlpha(): string
+		// TODO: Verify return type
+		setColor(color: string): void
 
 		/**
 		 * A callback function that will be called when the color changes.
@@ -306,7 +322,8 @@ declare namespace ui {
 		 *
 		 * @param enabled
 		 */
-		setEnabled(enabled: boolean)
+		// TODO: Verify return type
+		setEnabled(enabled: boolean): void
 
 		/**
 		 * Returns `true` if the widget is enabled
@@ -319,28 +336,32 @@ declare namespace ui {
 		 * @param width
 		 * @param height
 		 */
-		setSize(width: integer, height: integer)
+		// TODO: Verify return type
+		setSize(width: integer, height: integer): void
 
 		/**
 		 * Set the height.
 		 *
 		 * @param height
 		 */
-		setFixedHeight(height: integer)
+		// TODO: Verify return type
+		setFixedHeight(height: integer): void
 
 		/**
 		 * Set the width.
 		 *
 		 * @param width
 		 */
-		setFixedWidth(width: integer)
+		// TODO: Verify return type
+		setFixedWidth(width: integer): void
 
 		/**
 		 * Sets a tooltip for this widget
 		 *
 		 * @param tooltip
 		 */
-		setToolTip(tooltip: string)
+		// TODO: Verify return type
+		setToolTip(tooltip: string): void
 	}
 
 	/**
@@ -354,14 +375,16 @@ declare namespace ui {
 		 *
 		 * @param colors
 		 */
-		setColors(colors: string[])
+		// TODO: Verify return type
+		setColors(colors: string[]): void
 
 		/**
 		 * You can disable/enable a widget by using this function
 		 *
 		 * @param enabled
 		 */
-		setEnabled(enabled: boolean)
+		// TODO: Verify return type
+		setEnabled(enabled: boolean): void
 
 		/**
 		 * Returns true if the widget is enabled
@@ -374,28 +397,32 @@ declare namespace ui {
 		 * @param width
 		 * @param height
 		 */
-		setSize(width: integer, height: integer)
+		// TODO: Verify return type
+		setSize(width: integer, height: integer): void
 
 		/**
 		 * Set the height.
 		 *
 		 * @param height
 		 */
-		setFixedHeight(height: integer)
+		// TODO: Verify return type
+		setFixedHeight(height: integer): void
 
 		/**
 		 * Set the width.
 		 *
 		 * @param width
 		 */
-		setFixedWidth(width: integer)
+		// TODO: Verify return type
+		setFixedWidth(width: integer): void
 
 		/**
 		 * Sets a tooltip for this widget
 		 *
 		 * @param tooltip
 		 */
-		setToolTip(tooltip: string)
+		// TODO: Verify return type
+		setToolTip(tooltip: string): void
 
 		// This example demos a simple Color Palette generator script.
 
@@ -496,12 +523,15 @@ declare namespace ui {
 		/**
 		 * Set a hex string to be the current color
 		 */
-		setColor()
+		// TODO: Verify return type
+		// TODO: report missing parameter type
+		setColor(color: string): void
 
 		/**
 		 * A callback function that will be called whenever the ColorWheel value changes.
 		 */
-		onColorChanged()
+		// TODO: Verify return type
+		onColorChanged(): void
 
 		// var colorWheel = new ui.ColorWheel();
 		// colorWheel.onColorChanged = function() {
@@ -531,42 +561,49 @@ declare namespace ui {
 		 *
 		 * @param label
 		 */
-		addEntry(label: string)
+		// TODO: Verify return type
+		addEntry(label: string): void
 
 		/**
 		 * Set the entry index of the DropDown
 		 * @param index
 		 */
-		setValue(index: integer)
+		// TODO: Verify return type
+		setValue(index: integer): void
 
 		/**
 		 * Find the DropDown entry with the matching text and set the index to it
 		 * @param label
 		 */
-		setText(label: string)
+		// TODO: Verify return type
+		setText(label: string): void
 
 		/**
 		 * A callback function that will be called whenever the dropdown value changes.
 		 */
-		onValueChanged()
+		// TODO: Verify return type
+		onValueChanged(): void
 
 		/**
 		 * Fill the Dropdown with available font family names.
 		 */
-		populateFontFamilies()
+		// TODO: Verify return type
+		populateFontFamilies(): void
 
 		/**
 		 * Populate the Dropdown with the styles of a given font family name.
 		 *
 		 * @param familyName
 		 */
-		populateStylesForFamily(familyName: string)
+		// TODO: Verify return type
+		populateStylesForFamily(familyName: string): void
 
 		/**
 		 * You can disable/enable a widget by using this function.
 		 * @param enabled
 		 */
-		setEnabled(enabled: boolean)
+		// TODO: Verify return type
+		setEnabled(enabled: boolean): void
 
 		/**
 		 * Returns true if the widget is enabled.
@@ -579,27 +616,31 @@ declare namespace ui {
 		 * @param width
 		 * @param height
 		 */
-		setSize(width: integer, height: integer)
+		// TODO: Verify return type
+		setSize(width: integer, height: integer): void
 
 		/**
 		 * Set the height.
 		 *
 		 * @param height
 		 */
-		setFixedHeight(height: integer)
+		// TODO: Verify return type
+		setFixedHeight(height: integer): void
 
 		/**
 		 * Set the width.
 		 *
 		 * @param width
 		 */
-		setFixedWidth(width: integer) //
+		// TODO: Verify return type
+		setFixedWidth(width: integer): void
 
 		/**
 		 * Sets a tooltip for this widget
 		 * @param tooltip
 		 */
-		setToolTip(tooltip: string) //
+		// TODO: Verify return type
+		setToolTip(tooltip: string): void
 
 		// // Create two dropdowns
 		// var familyDropDown = new ui.DropDown();
@@ -641,15 +682,19 @@ declare namespace ui {
 	class FilePath {
 		// TODO: Descriptions
 		getFilePath(): string
-		setFilePath(path: string)
-		setMode(mode: string)
-		setFilter(filter: string)
+		// TODO: Verify return type
+		setFilePath(path: string): void
+		// TODO: Verify return type
+		setMode(mode: string): void
+		// TODO: Verify return type
+		setFilter(filter: string): void
 
 		/**
 		 * You can disable/enable a widget by using this function
 		 * @param enabled
 		 */
-		setEnabled(enabled: boolean)
+		// TODO: Verify return type
+		setEnabled(enabled: boolean): void
 
 		/**
 		 * Returns true if the widget is enabled
@@ -661,7 +706,8 @@ declare namespace ui {
 		 *
 		 * @param tooltip
 		 */
-		setToolTip(tooltip: string)
+		// TODO: Verify return type
+		setToolTip(tooltip: string): void
 
 		// // Get a file path to an exact document
 		// var openFileFP = new ui.FilePath();
@@ -687,15 +733,20 @@ declare namespace ui {
 	 */
 	class HLayout {
 		// TODO: Descriptions
-		add(object)
-		addStretch()
-		addSpacing(pixels: integer)
+		// TODO: Report missing parameter type
+		// TODO: Verify return type
+		add(widget: object): void
+		// TODO: Verify return type
+		addStretch(): void
+		// TODO: Verify return type
+		addSpacing(pixels: integer): void
 
 		/**
 		 * Set the padding space between widgets in the layout. The default value is 3 pixels.
 		 * @param pixels
 		 */
-		setSpaceBetween(pixels: integer)
+		// TODO: Verify return type
+		setSpaceBetween(pixels: integer): void
 
 		/**
 		 * Set the margins of the layout (how far from the edges the widgets can be). The default value is 3 pixels on all sides.
@@ -705,7 +756,13 @@ declare namespace ui {
 		 * @param right
 		 * @param bottom
 		 */
-		setMargins(left: integer, top: integer, right: integer, bottom: integer)
+		// TODO: Verify return type
+		setMargins(
+			left: integer,
+			top: integer,
+			right: integer,
+			bottom: integer
+		): void
 
 		// // Create the ui elements
 		// var button1 = new ui.Button("Button");
@@ -734,31 +791,36 @@ declare namespace ui {
 		 * @param width
 		 * @param height
 		 */
-		setSize(width: integer, height: integer)
+		// TODO: Verify return type
+		setSize(width: integer, height: integer): void
 
 		/**
 		 * Set the height.
 		 * @param height
 		 */
-		setFixedHeight(height: integer)
+		// TODO: Verify return type
+		setFixedHeight(height: integer): void
 
 		/**
 		 * Set the width.
 		 * @param width
 		 */
-		setFixedWidth(width: integer)
+		// TODO: Verify return type
+		setFixedWidth(width: integer): void
 
 		/**
 		 * Path to an image (relative paths can be built using the `ui.scriptLocation` property)
 		 * @param path
 		 */
-		setImage(path: string)
+		// TODO: Verify return type
+		setImage(path: string): void
 
 		/**
 		 * Sets a tooltip for this widget
 		 * @param tooltip
 		 */
-		setToolTip(tooltip: string)
+		// TODO: Verify return type
+		setToolTip(tooltip: string): void
 
 		// ui.setTitle("Test Image Script");
 		// var image = new ui.Image(ui.scriptLocation+"/MyScript_assets/aPicture.png");
@@ -781,43 +843,50 @@ declare namespace ui {
 		 * @param width
 		 * @param height
 		 */
-		setSize(width: integer, height: integer)
+		// TODO: Verify return type
+		setSize(width: integer, height: integer): void
 
 		/**
 		 * Set the height.
 		 * @param height
 		 */
-		setFixedHeight(height: integer)
+		// TODO: Verify return type
+		setFixedHeight(height: integer): void
 
 		/**
 		 * Set the width.
 		 * @param width
 		 */
-		setFixedWidth(width: integer)
+		// TODO: Verify return type
+		setFixedWidth(width: integer): void
 
 		/**
 		 * Path to an image (relative paths can be built using the ui.scriptLocation property)
 		 * @param path
 		 */
-		setImage(path: string)
+		// TODO: Verify return type
+		setImage(path: string): void
 
 		/**
 		 * By default buttons have a stroke affordance, you can remove this by calling this method with false.
 		 * @param draw
 		 */
-		setDrawStroke(draw: boolean)
+		// TODO: Verify return type
+		setDrawStroke(draw: boolean): void
 
 		/**
 		 * Setting to true will convert the button to a state button (on/off) and clicking the button will toggle its state between `true` and `false`. When `true`, the button will colourise light parts of the image with green.
 		 * @param state
 		 */
-		setStateButton(state: boolean)
+		// TODO: Verify return type
+		setStateButton(state: boolean): void
 
 		/**
 		 * Sets the button's state.
 		 * @param state
 		 */
-		setState(state: boolean)
+		// TODO: Verify return type
+		setState(state: boolean): void
 
 		/**
 		 * Returns the current button state.
@@ -827,13 +896,15 @@ declare namespace ui {
 		/**
 		 * A callback function that will be called when the button is clicked.
 		 */
-		onClick()
+		// TODO: Verify return type
+		onClick(): void
 
 		/**
 		 * Disable/enable a widget by using this function
 		 * @param enabled
 		 */
-		setEnabled(enabled: boolean)
+		// TODO: Verify return type
+		setEnabled(enabled: boolean): void
 
 		/**
 		 * Returns `true` if the widget is enabled
@@ -844,7 +915,8 @@ declare namespace ui {
 		 * Sets a tooltip for this widget
 		 * @param tooltip
 		 */
-		setToolTip(tooltip: string)
+		// TODO: Verify return type
+		setToolTip(tooltip: string): void
 
 		// ui.setTitle("Test Image Button Script");
 		// // Real image path required ;)
@@ -869,25 +941,29 @@ declare namespace ui {
 		 * TODO: Description
 		 * @param text
 		 */
-		setText(text: string)
+		// TODO: Verify return type
+		setText(text: string): void
 
 		/**
 		 * Set the text colour with a hex value.
 		 * @param color
 		 */
-		setTextColor(color: string)
+		// TODO: Verify return type
+		setTextColor(color: string): void
 
 		/**
 		 * TODO: Description + allowed values 0: left, 1: centre, 2: right
 		 * @param align
 		 */
-		setAlignment(align: 0 | 1 | 2)
+		// TODO: Verify return type
+		setAlignment(align: 0 | 1 | 2): void
 
 		/**
 		 * You can disable/enable a widget by using this function.
 		 * @param enabled
 		 */
-		setEnabled(enabled: boolean)
+		// TODO: Verify return type
+		setEnabled(enabled: boolean): void
 
 		/**
 		 * Returns true if the widget is enabled.
@@ -899,37 +975,43 @@ declare namespace ui {
 		 * @param width
 		 * @param height
 		 */
-		setSize(width: integer, height: integer)
+		// TODO: Verify return type
+		setSize(width: integer, height: integer): void
 
 		/**
 		 * Set the height.
 		 * @param height
 		 */
-		setFixedHeight(height: integer)
+		// TODO: Verify return type
+		setFixedHeight(height: integer): void
 
 		/**
 		 * Set the width.
 		 * @param width
 		 */
-		setFixedWidth(width: integer)
+		// TODO: Verify return type
+		setFixedWidth(width: integer): void
 
 		/**
 		 * Sets a tooltip for this widget
 		 * @param tooltip
 		 */
-		setToolTip(tooltip: string)
+		// TODO: Verify return type
+		setToolTip(tooltip: string): void
 
 		/**
 		 * Set the background color using a hex (`#FF00FF`) value
 		 * @param color
 		 */
-		setBackgroundColor(color: string)
+		// TODO: Verify return type
+		setBackgroundColor(color: string): void
 
 		/**
 		 * Set the font size in pixels
 		 * @param pixelSize
 		 */
-		setFontSize(size: integer)
+		// TODO: Verify return type
+		setFontSize(size: integer): void
 
 		// var label = new ui.Label("Super Amazing Label");
 		// ui.add(label);
@@ -940,20 +1022,24 @@ declare namespace ui {
 	 * This widget can be used for a single line of text entry. Use `MultiLineEdit` when more than one line is required.
 	 */
 	class LineEdit {
-		getText(): string // TODO
-		setPlaceholder(text: string) // TODO
+		// TODO: Description
+		getText(): string
+		// TODO: Verify return type
+		setPlaceholder(text: string): void
 
 		/**
 		 * Sets the LineEdit's editable state.
 		 * @param readonly
 		 */
-		setReadOnly(readonly: boolean)
+		// TODO: Verify return type
+		setReadOnly(readonly: boolean): void
 
 		/**
 		 * You can disable/enable a widget by using this function
 		 * @param enabled
 		 */
-		setEnabled(enabled: boolean)
+		// TODO: Verify return type
+		setEnabled(enabled: boolean): void
 
 		/**
 		 * Returns true if the widget is enabled
@@ -965,25 +1051,29 @@ declare namespace ui {
 		 * @param width
 		 * @param height
 		 */
-		setSize(width: integer, height: integer)
+		// TODO: Verify return type
+		setSize(width: integer, height: integer): void
 
 		/**
 		 * set the height.
 		 * @param height
 		 */
-		setFixedHeight(height: integer)
+		// TODO: Verify return type
+		setFixedHeight(height: integer): void
 
 		/**
 		 * Set the width.
 		 * @param width
 		 */
-		setFixedWidth(width: integer)
+		// TODO: Verify return type
+		setFixedWidth(width: integer): void
 
 		/**
 		 * Sets a tooltip for this widget
 		 * @param tooltip
 		 */
-		setToolTip(tooltip: string)
+		// TODO: Verify return type
+		setToolTip(tooltip: string): void
 	}
 
 	/**
@@ -991,26 +1081,31 @@ declare namespace ui {
 	 */
 	class MultiLineEdit {
 		// TODO: Descriptions
-		getText()
-		setPlaceholder(text: string)
+		// TODO: Verify return type
+		getText(): string
+		// TODO: Verify return type
+		setPlaceholder(text: string): void
 
 		/**
 		 * Set a hex color for the MultiLineEdit's background.
 		 * @param color
 		 */
-		setBackgroundColor(color: string)
+		// TODO: Verify return type
+		setBackgroundColor(color: string): void
 
 		/**
 		 * Set the MultiLineEdit's editable state.
 		 * @param set
 		 */
-		setReadOnly(set: boolean)
+		// TODO: Verify return type
+		setReadOnly(set: boolean): void
 
 		/**
 		 * You can disable/enable a widget by using this function.
 		 * @param enabled
 		 */
-		setEnabled(enabled: boolean)
+		// TODO: Verify return type
+		setEnabled(enabled: boolean): void
 
 		/**
 		 * Returns true if the widget is enabled.
@@ -1022,25 +1117,29 @@ declare namespace ui {
 		 * @param width
 		 * @param height
 		 */
-		setSize(width: integer, height: integer)
+		// TODO: Verify return type
+		setSize(width: integer, height: integer): void
 
 		/**
 		 * Set the height.
 		 * @param height
 		 */
-		setFixedHeight(height: integer)
+		// TODO: Verify return type
+		setFixedHeight(height: integer): void
 
 		/**
 		 * Set the width.
 		 * @param width
 		 */
-		setFixedWidth(width: integer)
+		// TODO: Verify return type
+		setFixedWidth(width: integer): void
 
 		/**
 		 * Set a tooltip for this widget.
 		 * @param tooltip
 		 */
-		setToolTip(tooltip: string)
+		// TODO: Verify return type
+		setToolTip(tooltip: string): void
 
 		// var lineEdit = ui.MultiLineEdit();
 		// lineEdit.setPlaceholder("Hello, World.");
@@ -1060,17 +1159,22 @@ declare namespace ui {
 		constructor(value: float)
 		// TODO: Descriptions
 		getValue(): float
-		setValue(value: number)
-		setMin(min: number)
-		setMax(max: number)
+		// TODO: Verify return type
+		setValue(value: number): void
+		// TODO: Verify return type
+		setMin(min: number): void
+		// TODO: Verify return type
+		setMax(max: number): void
 		// TODO: 0 for integers, 1 for doubles. Should have an enum.
-		setType(type: integer)
+		// TODO: Verify return type
+		setType(type: integer): void
 
 		/**
 		 * You can disable/enable a widget by using this function
 		 * @param enabled
 		 */
-		setEnabled(enabled: boolean)
+		// TODO: Verify return type
+		setEnabled(enabled: boolean): void
 
 		/**
 		 * Returns true if the widget is enabled
@@ -1082,17 +1186,20 @@ declare namespace ui {
 		 * @param width
 		 * @param height
 		 */
-		setSize(width: integer, height: integer)
+		// TODO: Verify return type
+		setSize(width: integer, height: integer): void
 
 		/**
 		 * Sets a tooltip for this widget
 		 * @param tooltip
 		 */
-		setToolTip(tooltip: string)
+		// TODO: Verify return type
+		setToolTip(tooltip: string): void
 
 		/**
 		 * Implement this callback function to do something when the field's value changes.
 		 */
+		// TODO: Verify return type
 		onValueChanged(): void
 
 		// var num = new ui.NumericField(50);
@@ -1123,13 +1230,15 @@ declare namespace ui {
 		 * add a layout, this is the content of the page
 		 * @param layout add a layout, this is the content of the page
 		 */
-		add(layout: VLayout | HLayout)
+		// TODO: Verify return type
+		add(layout: VLayout | HLayout): void
 
 		/**
 		 * Set the current page index
 		 * @param index
 		 */
-		setPage(index: integer)
+		// TODO: Verify return type
+		setPage(index: integer): void
 
 		/**
 		 * Get the current page index
@@ -1191,14 +1300,17 @@ declare namespace ui {
 		/**
 		 * Set the current value
 		 */
-		setValue(value: number)
+		// TODO: Verify return type
+		setValue(value: number): void
 
 		/**
 		 * Set the range of the slider
 		 */
-		setRange(min: number, max: number)
+		// TODO: Verify return type
+		setRange(min: number, max: number): void
 
 		// TODO: Description
+		// TODO: Verify return type
 		onValueChanged(): void
 		// var slider = new ui.Slider();
 		// slider.setRange(0,100);
@@ -1224,13 +1336,15 @@ declare namespace ui {
 		/**
 		 * Set the current value
 		 */
-		setValue(value: number)
+		// TODO: Verify return type
+		setValue(value: number): void
 
 		/**
 		 * Set the maximum value, the bar will show a percentage result of the value when compared to the maximum.
 		 * @param value
 		 */
-		setMaximum(value: integer)
+		// TODO: Verify return type
+		setMaximum(value: integer): void
 
 		// let progress = new ui.ProgressBar();
 		// progress.setMaximum(66);
@@ -1248,13 +1362,15 @@ declare namespace ui {
 		 * @param label
 		 * @param layout
 		 */
-		add(label: string, layout: VLayout | HLayout)
+		// TODO: Verify return type
+		add(label: string, layout: VLayout | HLayout): void
 
 		/**
 		 * Set the current tab index
 		 * @param index
 		 */
-		setTab(index: integer)
+		// TODO: Verify return type
+		setTab(index: integer): void
 
 		/**
 		 * Get the current tab index
@@ -1270,7 +1386,8 @@ declare namespace ui {
 		 * Implement this callback function to do something when the slider's value changes.
 		 */
 		// TODO: This is not a function, but it can be assigned one
-		onValueChanged()
+		// TODO: Verify return type
+		onValueChanged(): void
 
 		// var lab1 = new ui.Label("## Page 1");
 		// lab1.setAlignment(1);
@@ -1301,15 +1418,19 @@ declare namespace ui {
 	class VLayout {
 		// TODO: Descriptions
 		// TODO: Define allowed values
-		add(widget: object)
-		addStretch()
-		addSpacing(pixels: integer)
+		// TODO: Verify return type
+		add(widget: object): void
+		// TODO: Verify return type
+		addStretch(): void
+		// TODO: Verify return type
+		addSpacing(pixels: integer): void
 
 		/**
 		 * Set the padding space between widgets in the layout. The default value is 3 pixels.
 		 * @param space
 		 */
-		setSpaceBetween(space: integer)
+		// TODO: Verify return type
+		setSpaceBetween(space: integer): void
 
 		/**
 		 * Set the margins of the layout (how far from the edges the widgets can be). The default value is 3 pixels on all sides.
@@ -1318,13 +1439,21 @@ declare namespace ui {
 		 * @param right
 		 * @param bottom
 		 */
-		setMargins(left: integer, top: integer, right: integer, bottom: integer)
+		// TODO: Define default values
+		// TODO: Verify return type
+		setMargins(
+			left: integer,
+			top: integer,
+			right: integer,
+			bottom: integer
+		): void
 
 		/**
 		 * Add a horizontal line with a title.
 		 * @param label
 		 */
-		addSeparator(label: string)
+		// TODO: Verify return type
+		addSeparator(label: string): void
 
 		// // Create the ui elements
 		// var button1 = new ui.Button("Button");
@@ -1397,16 +1526,19 @@ declare namespace ui {
 	 * Timers can be used in UI scripts and can be useful for polling Web APIs. When the Timer is triggered it will call an `onTimeout()` function on the Timer object. Implement this function to have the Timer execute logic for you when this happens.
 	 * Caution: Timers should not be used to detect changes to the scene, please use callbacks for this purpose.
 	 */
+	// TODO: Report this as missing
 	class Timer {
 		/**
 		 * Start the timer.
 		 */
-		start()
+		// TODO: Verify return type
+		start(): void
 
 		/**
 		 * Stop the timer.
 		 */
-		stop()
+		// TODO: Verify return type
+		stop(): void
 
 		/**
 		 * Returns if the timer is currently running.
@@ -1417,18 +1549,21 @@ declare namespace ui {
 		 * Set how long the timer is (in milliseconds).
 		 * @param interval
 		 */
-		setInterval(interval: integer)
+		// TODO: Verify return type
+		setInterval(interval: integer): void
 
 		/**
 		 * Set if the timer is repeating (`true` by default).
 		 * @param repeat
 		 */
-		setRepeating(repeat: boolean)
+		// TODO: Verify return type
+		setRepeating(repeat: boolean): void
 
 		/**
 		 * Implement this callback function on a timer object and it will be called when the timer runs out.
 		 */
-		onTimeout()
+		// TODO: Verify return type
+		onTimeout(): void
 
 		// // Define a callback class to be used by the timer
 		// function Callbacks() {

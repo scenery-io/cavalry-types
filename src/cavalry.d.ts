@@ -103,11 +103,13 @@ declare namespace cavalry {
 		/**
 		 * Returns a boolean signifying if the path is closed.
 		 */
+		// TODO: Should be a property
 		isClosed(): boolean
 
 		/**
 		 * Returns the length of the path
 		 */
+		// TODO: Should be a property
 		length(): float
 
 		/**
@@ -260,7 +262,8 @@ declare namespace cavalry {
 	 * @param seed
 	 * @param frequency
 	 */
-	function noise1d(x: float, seed: integer, frequency: float)
+	// TODO: Report missing return value
+	function noise1d(x: float, seed: integer, frequency: float): float
 	// for (var i = 1; i < 10; i += 1){
 	//     console.log(cavalry.noise1d(i, 0, 1));
 	// }
@@ -273,7 +276,8 @@ declare namespace cavalry {
 	 * @param seed
 	 * @param frequency
 	 */
-	function noise2d(x: float, y: float, seed: integer, frequency: float)
+	// TODO: Report missing return value
+	function noise2d(x: float, y: float, seed: integer, frequency: float): float
 	// for (var i = 1; i < 10; i +=1){
 	//     console.log(cavalry.noise2d(i, api.getFrame(), 0, 1));
 	// }
@@ -287,13 +291,14 @@ declare namespace cavalry {
 	 * @param seed
 	 * @param frequency
 	 */
+	// TODO: Report missing return value
 	function noise3d(
 		x: float,
 		y: float,
 		z: float,
 		seed: integer,
 		frequency: float
-	)
+	): float
 	// for (var i = 1; i < 10; i +=1){
 	//     console.log(cavalry.noise3d(i, i+100, api.getFrame(), 0, 0.1));
 	// }
@@ -306,7 +311,8 @@ declare namespace cavalry {
 	 * @param x2
 	 * @param y2
 	 */
-	function dist(x1: float, y1: float, x2: float, y2: float)
+	// TODO: Report missing return value
+	function dist(x1: float, y1: float, x2: float, y2: float): float
 	// var d = cavalry.dist(0,0,100,100)
 	// console.log(d);
 
@@ -319,13 +325,14 @@ declare namespace cavalry {
 	 * @param outMin
 	 * @param outMax
 	 */
+	// TODO: Report missing return value
 	function map(
 		value: float,
 		inMin: float,
 		inMax: float,
 		outMin: float,
 		outMax: float
-	)
+	): float
 	// remap 30 from the range 0..60 to the range 100..300. Prints 200.
 	// console.log(cavalry.map(30,0,60,100,300));
 
@@ -336,7 +343,8 @@ declare namespace cavalry {
 	 * @param min
 	 * @param max
 	 */
-	function norm(value: float, min: float, max: float)
+	// TODO: Report missing return value
+	function norm(value: float, min: float, max: float): float
 	// Prints 0.55;
 	// console.log(cavalry.norm(55,0,100));
 
@@ -347,7 +355,8 @@ declare namespace cavalry {
 	 * @param min
 	 * @param max
 	 */
-	function clamp(value: float, min: float, max: float)
+	// TODO: Report missing return value
+	function clamp(value: float, min: float, max: float): float
 	// Prints 100;
 	// console.log(cavalry.clamp(150,0,100));
 
@@ -358,14 +367,15 @@ declare namespace cavalry {
 	 * @param max
 	 * @param t
 	 */
-	function lerp(min: float, max: float, t: float)
+	// TODO: Report missing return value
+	function lerp(min: float, max: float, t: float): float
 
 	/**
 	 * Convert an angle (radians) into a vector (x, y) with values between 0..1
 	 *
 	 * @param angle
 	 */
-	// TODO: Doesn't exist?
+	// TODO: Report doesn't exist
 	function angleToVector(angle: float): object
 	// var ang = cavalry.angleFromVector(1,0);
 	// console.log(ang);
@@ -378,6 +388,7 @@ declare namespace cavalry {
 	 * @param x
 	 * @param y
 	 */
+	// TODO: Report doesn't exist
 	function vectorToAngle(x: float, y: float): float
 	// var ang = cavalry.angleFromVector(1,0);
 	// console.log(ang);
@@ -392,6 +403,7 @@ declare namespace cavalry {
 	 * @param s
 	 * @param v
 	 */
+	// TODO: Create interface for return object
 	function rgbToHsv(h: float, s: float, v: float): object
 	// var result = cavalry.rgbToHsv(0.5,1,0.5);
 	// console.log(JSON.stringify(result));
@@ -414,7 +426,12 @@ declare namespace cavalry {
 	 * @param s
 	 * @param v
 	 */
-	function hsvToRgb(h: float, s: float, v: float): object
+	// TODO: Create interface for return object
+	function hsvToRgb(
+		h: float,
+		s: float,
+		v: float
+	): { h: number; s: number; v: number }
 	// var result = cavalry.hsvToRgb(180,1,0.5);
 	// console.log(JSON.stringify(result));
 
@@ -425,7 +442,7 @@ declare namespace cavalry {
 	 * @param s
 	 * @param v
 	 */
-	function hsvToHex(h: float, s: float, v: float): object
+	function hsvToHex(h: float, s: float, v: float): string
 	// var result = cavalry.rgbToHsv(0.5,1,0.5);
 	// console.log(result);
 
@@ -434,6 +451,7 @@ declare namespace cavalry {
 	 *
 	 * @param hexValue
 	 */
+	// TODO: Create interface for return object
 	function hexToRgb(hexValue: string): object
 	// var result = cavalry.hexToRgb("#fc5900");
 	// console.log(JSON.stringify(result));
@@ -443,6 +461,7 @@ declare namespace cavalry {
 	 *
 	 * @param hexValue
 	 */
+	// TODO: Create interface for return object
 	function hexToHsv(hexValue: string): object
 	// var result = cavalry.hexToHsv("#ff9801");
 	// console.log(JSON.stringify(result));

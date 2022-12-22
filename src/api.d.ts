@@ -15,20 +15,22 @@ type float = number
 //     Choose Copy Scripting Path from the contextual menu.
 //     Select and click an option from the list.
 // This will copy the attribute's Id to the clipboard.
-// These Ids can then be used within a script. In the example below, basicShape#1 is the layerId and position.x is the attrId.
+// These IDs can then be used within a script. In the example below, basicShape#1 is the `layerId` and position.x is the `attrId`.
 // api.get("basicShape#1", "position.x");
 
-// Working with the Composition
-
+// # Working with the Composition
+// TODO: Report, suggest to separate `api` by context ie. `composition.setFrame`
 declare namespace api {
 	/**
 	 * TODO: Description
+	 *
 	 * @param frame
+	 *
+	 * @example
+	 * api.setFrame(100);
+	 * console.log(api.getFrame());
 	 */
-	function setFrame(frame: integer)
-
-	// api.setFrame(100);
-	// console.log(api.getFrame());
+	function setFrame(frame: integer): void
 
 	/**
 	 * TODO: Description
@@ -41,7 +43,7 @@ declare namespace api {
 	/**
 	 * Start playback.
 	 */
-	function play()
+	function play(): void
 
 	/**
 	 * TODO: Description
@@ -66,6 +68,7 @@ declare namespace api {
 	 * @param topLevel
 	 * @param type
 	 */
+	// TODO: Define allowed value for `type`
 	function getCompLayersOfType(topLevel: boolean, type: string): string[]
 
 	// api.create("null", "My Null");
@@ -79,9 +82,12 @@ declare namespace api {
 
 	/**
 	 * Adds a new Time Marker. The second example sets up a Time Marker as a controller for a Scheduling Group.
-	 * @param time
+	 *
+	 * @param {integer} time
+	 * @returns {string} The marker ID
 	 */
-	function createTimeMarker(time: integer)
+	// TODO: Report return type is string
+	function createTimeMarker(time: integer): string
 
 	// let markerId = api.createTimeMarker(10);
 	// api.set(markerId, {"label": "Hello, World", "drawColor": "Pink", "useRelPlacement": true});
@@ -115,10 +121,9 @@ declare namespace api {
 	 * A convenience function for removing Time Markers. This forwards to `api.delete(layerId)`.
 	 * @param markerId
 	 */
-	function removeTimeMarker(markerId: string)
+	function removeTimeMarker(markerId: string): void
 
-	// Working with Layers
-
+	// # Working with Layers
 	/**
 	 * Creates a Primitive Shape
 	 * @param type
@@ -149,6 +154,7 @@ declare namespace api {
 	 * @param layerType
 	 * @param name
 	 */
+	// TODO: Define allowed values for `layerType`
 	function create(layerType: string, name: string): string
 
 	// api.create("null", "My Null");
@@ -188,7 +194,7 @@ declare namespace api {
 	 * Reset all Attributes on a layer back to the default state.
 	 * @param layerId
 	 */
-	function resetLayerAttributes(layerId: string)
+	function resetLayerAttributes(layerId: string): void
 
 	/**
 	 * Gets the currently selected Layers.
@@ -205,7 +211,7 @@ declare namespace api {
 	 * Sets the selected layers.
 	 * @param selection
 	 */
-	function select(selection: string[])
+	function select(selection: string[]): void
 
 	// var primId = api.primitive("rectangle", "My Rectangle");
 	// api.select([primId]);
@@ -227,7 +233,7 @@ declare namespace api {
 	 * @param layerId
 	 * @param newParentId
 	 */
-	function parent(layerId: string, newParentId: string)
+	function parent(layerId: string, newParentId: string): void
 
 	// var primId = api.primitive("polygon", "My Polygon");
 	// var nullId = api.create("null", "My Null");
@@ -255,7 +261,7 @@ declare namespace api {
 	 * @param layerId
 	 * @param name
 	 */
-	function rename(layerId: string, name: string)
+	function rename(layerId: string, name: string): void
 
 	// /// rename all selected items
 	// var sel = api.getSelection();
@@ -263,7 +269,12 @@ declare namespace api {
 	//   api.rename(item, "My Name "+index);
 	// });
 
-	function offsetLayerTime(layerId: string, delta: integer)
+	/**
+	 * TODO: Description
+	 * @param layerId
+	 * @param delta
+	 */
+	function offsetLayerTime(layerId: string, delta: integer): void
 
 	/**
 	 * TODO: Description
@@ -271,7 +282,7 @@ declare namespace api {
 	 * @param isOn
 	 */
 	// TODO: Rename `isOn` to `enabled`?
-	function setStroke(layerId: string, isOn: boolean)
+	function setStroke(layerId: string, isOn: boolean): void
 
 	// var primId = api.primitive("rectangle", "Rectangle");
 	// api.setFill(primId, false);
@@ -293,7 +304,8 @@ declare namespace api {
 	 * @param layerId
 	 * @param isOn
 	 */
-	function setFill(layerId, isOn)
+	// TODO: Report missing parameter types
+	function setFill(layerId: string, isOn: boolean): void
 
 	// var primId = api.primitive("rectangle", "Rectangle");
 	// api.setFill(primId, false);
@@ -323,8 +335,7 @@ declare namespace api {
 	// var bbox = api.getBoundingBox(primId, true);
 	// console.log(JSON.stringify(bbox));
 
-	// Working with Attributes
-
+	// # Working with Attributes
 	/**
 	 * This will return an array containing the paths of the selected attributes.
 	 */
@@ -340,7 +351,7 @@ declare namespace api {
 	 * @param layerId
 	 * @param arguments
 	 */
-	function set(layerId: string, arguments: object)
+	function set(layerId: string, arguments: object): void
 
 	// // Create a Rectangle and set its Size, Position, Rotation and Fill Color
 	// var primId = api.primitive("rectangle", "My Rectangle");
@@ -367,12 +378,14 @@ declare namespace api {
 	// console.log(JSON.stringify(obj))
 
 	/**
+	 * TODO: Require more info and examples on generators
 	 * Some layers in Cavalry contain Generators, these are discrete feature blocks that are used to extend the functionality of layers. For example the Basic Shape layer has a Generator to determine the shape it creates (e.g Ellipse, Rectangle...). You can set Generators with this function.
 	 * @param layerId
 	 * @param attrId
 	 * @param type
 	 */
-	function setGenerator(layerId: string, attrId: string, type: string)
+	// TODO: Define valid values for `type`
+	function setGenerator(layerId: string, attrId: string, type: string): void
 
 	// // Create an Ellipse and set it up
 	// var ellipseId = api.primitive("ellipse", "Ellipse");
@@ -390,7 +403,8 @@ declare namespace api {
 	 * Some layers in Cavalry contain Generators, these are discrete feature blocks that are used to extend the functionality of layers. For example the Basic Shape layer has a Generator to determine the shape it creates (e.g Ellipse, Rectangle). You can list the Generators on a layer with this command.
 	 * @param layerId
 	 */
-	function getGenerators(layerId: string)
+	// TODO: Report return type is `string[]`
+	function getGenerators(layerId: string): string[]
 
 	// var layerId = api.create("connectShape", "Connect Shape");
 	// var generatorId = api.getGenerators(layerId);
@@ -402,7 +416,8 @@ declare namespace api {
 	 * Returns the current Generator type (that can be used with setGenerator).
 	 * @param layerId
 	 */
-	function getCurrentGeneratorType(layerId: string)
+	// TODO: Figure out return type
+	function getCurrentGeneratorType(layerId: string): any
 
 	// var ellipseId = api.primitive("ellipse", "My Ellipse")
 	// console.log(api.getCurrentGeneratorType(ellipseId, "generator"))
@@ -417,7 +432,7 @@ declare namespace api {
 		layerId: string,
 		attrId: string,
 		expression: string
-	)
+	): void
 
 	// var rectId = api.primitive("rectangle", "My Rectangle");
 	// api.set(rectId, {"position.x": 300});
@@ -448,12 +463,13 @@ declare namespace api {
 	 * @param toLayerId
 	 * @param toAttrId
 	 */
+	// TODO: Does this error if the connection cannot be made?
 	function connect(
 		fromLayerId: string,
 		fromAttrId: string,
 		toLayerId: string,
 		toAttrId: string
-	)
+	): void
 
 	// var textId = api.create("textShape", "Text");
 	// var pathfinderId = api.create("pathfinder", "Pathfinder");
@@ -471,12 +487,13 @@ declare namespace api {
 	 * @param toLayerId
 	 * @param toAttrId
 	 */
+	// TODO: Does this error if it cannot disconnect?
 	function disconnect(
 		fromLayerId: string,
 		fromAttrId: string,
 		toLayerId: string,
 		toAttrId: string
-	)
+	): void
 
 	// var primId = api.primitive("rectangle", "Rectangle");
 	// var oscillatorId = api.create("oscillator", "Oscillator");
@@ -507,8 +524,8 @@ declare namespace api {
 	/**
 	 * This returns the selected keyframes as an enumerable string-keyed object. Each string is an attribute path, and each key is an array of frame numbers on which a keyframe resides.
 	 */
-	function getSelectedKeyframes(): object
 	// TODO: Create interface
+	function getSelectedKeyframes(): object
 	// {
 	// 	"basicShape#3.pivot.x": [33,1],
 	// 	"basicShape#6.pivot.y": [1],
@@ -529,8 +546,8 @@ declare namespace api {
 	function keyframe(
 		layerId: string,
 		frame: integer,
-		value: { [key: string]: number }
-	)
+		value: { [attrPath: string]: number }
+	): void
 
 	// var primId = api.primitive("rectangle", "My Rectangle");
 	// api.keyframe(primId, 0, {"scale.x": 5.});
@@ -542,7 +559,12 @@ declare namespace api {
 	 * @param attrId
 	 * @param keyframe
 	 */
-	function deleteKeyframe(layerId: string, attrId: string, keyframe: integer)
+	// TODO: Find out return type
+	function deleteKeyframe(
+		layerId: string,
+		attrId: string,
+		keyframe: integer
+	): any
 
 	// var primId = api.primitive("rectangle", "My Rectangle");
 	// api.keyframe(primId, 0, {"scale.x": 5.});
@@ -555,7 +577,7 @@ declare namespace api {
 	 * @param layerId
 	 * @param data
 	 */
-	function modifyKeyframe(layerId: string, data: object)
+	function modifyKeyframe(layerId: string, data: object): void
 	// TODO: Add as part of above object interface
 	// frame integer
 	// newFrame integer? // Specify a new frame for the keyframe (optional).
@@ -594,8 +616,8 @@ declare namespace api {
 	 * @param layerId
 	 * @param data
 	 */
-	function modifyKeyframeTangent(layerId: string, data: object)
 	// TODO: Create interface for object
+	function modifyKeyframeTangent(layerId: string, data: object): void
 	// frame: integer?
 	// inHandle: boolean // An optional boolean value stating if you want the inHandle to be affected.
 	// outHandle: boolean // An optional boolean value stating if you want the outHandle to be affected.
@@ -658,7 +680,7 @@ declare namespace api {
 		attrId: string,
 		frame: integer,
 		easingName: string
-	)
+	): void
 
 	// api.magicEasing("basicShape#1", "position.x", 25, "SlowIn");
 
@@ -687,20 +709,21 @@ declare namespace api {
 	 * @param layerId
 	 * @param attrId
 	 */
-	function getKeyframeTimes(layerId: string, attrId: string)
+	function getKeyframeTimes(layerId: string, attrId: string): number[]
 
 	/**
 	 * TODO: Description
 	 * @param layerId
 	 * @param attrId
 	 */
-	function deleteAnimation(layerId: string, attrId: string)
+	function deleteAnimation(layerId: string, attrId: string): void
 
 	/**
 	 * TODO: Description
 	 * @param layerId
 	 * @param attrId
 	 */
+	// TODO: Define possible return values
 	function getAttrType(layerId: string, attrId: string): string
 
 	// Get the data type of the Attribute
@@ -713,7 +736,7 @@ declare namespace api {
 	 * @param layerId
 	 * @param attrId
 	 */
-	function resetAttribute(layerId: string, attrId: string)
+	function resetAttribute(layerId: string, attrId: string): void
 
 	/**
 	 * TODO: Description
@@ -733,7 +756,7 @@ declare namespace api {
 	 * @param layerId
 	 * @param attrId
 	 */
-	function removeArrayIndex(layerId: string, attrId: string)
+	function removeArrayIndex(layerId: string, attrId: string): void
 
 	/**
 	 * Return the number of Attributes in the array
@@ -752,8 +775,10 @@ declare namespace api {
 	 * @param layerId
 	 * @param attrId
 	 * @param type
+	 * @returns The ID of the dynamic attribute
 	 */
-	function addDynamic(layerId: string, attrId: string, type: string)
+	// TODO: Is the return type mentioned in the docs?
+	function addDynamic(layerId: string, attrId: string, type: string): string
 
 	// var layerId = api.create("javaScript", "JS Layer");
 	// api.addDynamic(layerId, "array", "double");
@@ -776,19 +801,25 @@ declare namespace api {
 	 * @param attrId
 	 * @param newName
 	 */
-	function renameAttribute(layerId: string, attrId: string, newName: string)
+	function renameAttribute(
+		layerId: string,
+		attrId: string,
+		newName: string
+	): void
 
 	/**
 	 * TODO: Description
 	 * @param layerId
 	 */
-	function getOutConnectedAttributes(layerId: string)
+	// TODO: Report missing return type in docs
+	function getOutConnectedAttributes(layerId: string): string[]
 
 	/**
 	 * TODO: Description
 	 * @param layerId
 	 */
-	function getInConnectedAttributes(layerId: string)
+	// TODO: Report missing return type in docs
+	function getInConnectedAttributes(layerId: string): array
 
 	/**
 	 * TODO: Description
@@ -844,7 +875,7 @@ declare namespace api {
 	 * @param layerId
 	 * @param frame
 	 */
-	function setInFrame(layerId: string, frame: integer)
+	function setInFrame(layerId: string, frame: integer): void
 
 	/**
 	 * TODO: Description
@@ -862,7 +893,7 @@ declare namespace api {
 	 * @param layerId
 	 * @param frame
 	 */
-	function setOutFrame(layerId: string, frame: integer)
+	function setOutFrame(layerId: string, frame: integer): void
 
 	/**
 	 * Sets a preset for a Graph Attribute. The `presetIndex` can be 0: s-curve, 1: ramp, 2: linear, 3: flat
@@ -870,11 +901,12 @@ declare namespace api {
 	 * @param attrId
 	 * @param presetIndex
 	 */
+	// TODO: Figure out return type
 	function graphPreset(
 		layerId: string,
 		attrId: string,
 		presetIndex: 0 | 1 | 2 | 3
-	)
+	): any
 
 	/**
 	 * Flips the points on a Graph Attribute - valid `direction` arguments are "horizontal" and "vertical".
@@ -886,36 +918,37 @@ declare namespace api {
 		layerId: string,
 		attrId: string,
 		direction: 'horizontal' | 'vertical'
-	)
+	): void
 
 	// let staggerId = api.create("stagger", prefix+"Stagger");
 	// api.flipGraph(staggerId, "graph", "vertical");
 
-	// Shapes
+	// # Shapes
 
 	/**
 	 * Centre the Pivot of the specified layer. If `centroid` is `true` the Pivot will be moved to the centre of mass.
 	 * @param layerId
 	 * @param centroid
 	 */
-	function centrePivot(layerId: string, centroid: boolean)
+	function centrePivot(layerId: string, centroid: boolean): void
 
 	/**
 	 * Freeze the transform (position, rotation, scale, pivot, skew) of the specified layer. For example you can use this if you want to make a Shape's current position its zero position.
 	 * @param layerId
 	 */
-	function freezeTransform(layerId: string)
+	function freezeTransform(layerId: string): void
 
 	/**
 	 * Reset a Shape's transform back to the default state (this will also clear any frozen transformations).
 	 * @param layerId
 	 */
-	function resetTransform(layerId: string)
+	function resetTransform(layerId: string): void
 
 	/**
 	 * Copy the selected Shape(s) as code. The resulting code can be pasted into a new tab and run to create a new Editable Shape based on those copied.
 	 */
-	function getDrawInstructionsForSelection()
+	// TODO: Report missing return type
+	function getDrawInstructionsForSelection(): string
 
 	// var path = api.getDrawInstructionsForSelection();
 	// console.log(path);
@@ -936,9 +969,10 @@ declare namespace api {
 	 * @param layerId
 	 * @param worldSpace
 	 */
-	function getEditablePath(layerId: string, worldSpace: boolean): object
-
 	// TODO: Create interface
+	// TODO: Report return type is an object array
+	function getEditablePath(layerId: string, worldSpace: boolean): object[]
+
 	// Editable Paths and ordinary Paths (like the one in the Cavalry Module) are distinct. The worldSpace argument will determine if path point coordinates are returned in local (unaware of the Editable Shape's position, rotation and scale) or world space where those transformations are applied. An Editable Path's points have in handles and out handles just like the points you edit in the viewport. They also have weight and angle locking settings. Ordinary Paths construct paths using moveTo, lineTo and cubicTo for example. In an Editable Path, you just add an extra point to the Contour's points array. The schema is as follows:
 	// [
 	//   {
@@ -994,7 +1028,7 @@ declare namespace api {
 		layerId: string,
 		worldSpace: boolean,
 		pathObject: object
-	)
+	): void
 
 	// This example will flatten the selected bezier points to 0 on the Y axis.
 
@@ -1022,7 +1056,7 @@ declare namespace api {
 	 * This will make the selected point the first point in an Editable Path. This is like running the command in the Shape menu.
 	 * @param layerId
 	 */
-	function makeFirstPoint(layerId: string)
+	function makeFirstPoint(layerId: string): void
 
 	/**
 	 * Move selected points by given X and Y values.
@@ -1030,7 +1064,7 @@ declare namespace api {
 	 * @param y
 	 * @param localSpace
 	 */
-	function movePoint(x: float, y: float, localSpace: boolean)
+	function movePoint(x: float, y: float, localSpace: boolean): void
 
 	// //select some editable points
 	// api.movePoint(0,50, true);
@@ -1045,19 +1079,18 @@ declare namespace api {
 		positionObject: object,
 		localSpace: boolean,
 		handles: boolean
-	)
+	): void
 
 	// //select some editable points
 	// api.setPointPosition({"y":-50}, false, false)
 	// api.setPointPosition({"y":-50}, false, true)
 
-	// Rendering
-
+	// # Rendering
 	/**
 	 * TODO: Description
 	 * @param renderQueueItemId
 	 */
-	function render(renderQueueItemId: string)
+	function render(renderQueueItemId: string): void
 
 	// auto itemId = api.addRenderQueueItem(api.getActiveComp());
 	// api.render(itemId);
@@ -1065,7 +1098,7 @@ declare namespace api {
 	/**
 	 * TODO: Description
 	 */
-	function renderAll()
+	function renderAll(): void
 
 	// api.addRenderQueueItem(api.getActiveComp());
 	// api.renderAll();
@@ -1075,7 +1108,7 @@ declare namespace api {
 	 * @param filePath
 	 * @param scalePercent
 	 */
-	function renderPNGFrame(filePath: string, scalePercent: float)
+	function renderPNGFrame(filePath: string, scalePercent: float): void
 
 	// // This example will export each selected layer individually as a PNG at 100% and 200% scale.
 	// // Get the selection
@@ -1107,7 +1140,7 @@ declare namespace api {
 		filePath: string,
 		scalePercent: float,
 		skipComps: boolean
-	)
+	): void
 
 	/**
 	 * TODO: Description
@@ -1124,8 +1157,8 @@ declare namespace api {
 	/**
 	 * TODO: Description
 	 */
-	// TODO: Define allowed objects
-	function addRenderQueueItem(comp: object): string
+	// TODO: Report `comp` is `compId: string`
+	function addRenderQueueItem(compId: string): string
 
 	// var itemId = api.addRenderQueueItem(api.getActiveComp());
 	// console.log(itemId);
@@ -1135,7 +1168,7 @@ declare namespace api {
 	 * @param layerId
 	 * @param attrId
 	 */
-	function connectDynamicIndex(layerId: string, attrId: string)
+	function connectDynamicIndex(layerId: string, attrId: string): void
 
 	// var spreadsheetId = api.create("spreadsheet", "My Spreadsheet");
 	// api.connectDynamicIndex(spreadsheetId, "rowIndex");
@@ -1148,32 +1181,35 @@ declare namespace api {
 
 	// console.log(api.getDynamicIndex());
 
-	// Working with the Scene
-
+	// # Working with the Scene
 	/**
 	 * Open a Scene at the given location, this may present a Save Changes dialog unless force is set to `true`.
 	 * @param filePath
 	 * @param force
 	 */
-	function openScene(filePath: string, force: boolean)
+	// TODO: Report crash
+	// TODO: Figure out return type
+	function openScene(filePath: string, force: boolean): any
 
 	/**
 	 * Save the current Scene to a new location.
 	 * @param filePath
 	 */
-	function saveSceneAs(filePath: string)
+	function saveSceneAs(filePath: string): void
 
 	/**
 	 * Save the current Scene file. If the current Scene has not yet been saved, a dialog will be presented asking where to save the scene.
 	 */
-	function saveScene()
+	function saveScene(): void
 
 	/**
 	 * Load an asset with the given path. Set `isSequence` to `true` if you want Cavalry to attempt to load an image sequence from the file path.
 	 * @param path
 	 * @param isSequence
 	 */
-	function loadAsset(path: string, isSequence: boolean)
+	// TODO: REport missing return type
+	// TODO: return is `assetId`
+	function loadAsset(path: string, isSequence: boolean): string
 
 	// // Load an image
 	// api.loadAsset("/Path/To/image.png", false);
@@ -1185,7 +1221,7 @@ declare namespace api {
 	 * Reloads an Asset with the given `assetId`
 	 * @param assetId
 	 */
-	function reloadAsset(assetId: string)
+	function reloadAsset(assetId: string): void
 
 	// // First load an Asset, then run:
 	// api.reloadAsset("asset#2");
@@ -1195,7 +1231,7 @@ declare namespace api {
 	 * @param assetId
 	 * @param newPath
 	 */
-	function replaceAsset(assetId: string, newPath: string)
+	function replaceAsset(assetId: string, newPath: string): void
 
 	/**
 	 * Given a Text Asset (which is a `.json` file) or a Spreadsheet Asset, get the JSON object that Asset represents.
@@ -1231,7 +1267,8 @@ declare namespace api {
 	 * @param spreadsheetId
 	 * @param sheetId
 	 */
-	function loadGoogleSheet(spreadsheetId: string, sheetId: string)
+	// TODO: Report missing return type `assetId: string`
+	function loadGoogleSheet(spreadsheetId: string, sheetId: string): string
 
 	// The spreadsheetId and sheetId can be extracted from a Google Sheet's URL:
 	// https://docs.google.com/spreadsheets/d/[spreadsheetId]/edit#gid=[sheetId]
@@ -1240,12 +1277,12 @@ declare namespace api {
 	 * TODO: Description
 	 * @param path
 	 */
-	function setProject(path: string)
+	function setProject(path: string): void
 
 	/**
 	 * TODO: Description
 	 */
-	function clearProject()
+	function clearProject(): void
 
 	/**
 	 * Returns the currently active (open) Composition's id. You can then use this to set Composition settings such as resolution and frame range.
@@ -1277,7 +1314,7 @@ declare namespace api {
 	 * Set the currently active composition.
 	 * @param compId
 	 */
-	function setActiveComp(compId: string)
+	function setActiveComp(compId: string): void
 
 	// let newCompId = api.createComp("Shiny New Comp");
 	// api.setActiveComp(newCompId);
@@ -1324,7 +1361,8 @@ declare namespace api {
 	 * Set the currently active composition.
 	 * @param compId
 	 */
-	function setActiveComp(compId: string)
+	// TODO: Report mentioned twice and remove
+	function setActiveComp(compId: string): void
 
 	// let newCompId = api.createComp("Shiny New Comp");
 	// api.setActiveComp(newCompId);
@@ -1353,6 +1391,7 @@ declare namespace api {
 	 * Get the file path of a file asset such as a spreadsheet, image, or font.
 	 * @param assetId
 	 */
+	/// TODO: Returns the asset absolute fs path
 	function getAssetFilePath(assetId: string): string
 
 	// var assets = api.getAssetWindowLayers(false);
@@ -1376,7 +1415,7 @@ declare namespace api {
 	 * This will solo the `layerIds` supplied in the array argument.
 	 * @param layerIds
 	 */
-	function soloLayers(layerIds: string[])
+	function soloLayers(layerIds: string[]): void
 
 	// // This example will export each selected layer individually as a PNG at 100% and 200% scale.
 	// // Get the selection
@@ -1398,8 +1437,7 @@ declare namespace api {
 	// // Clear soloing
 	// api.soloLayers([]);
 
-	// Files and Paths
-
+	// # Files and Paths
 	// Files and paths are absolute, use the methods in this section as the base path if you want to build paths relative to your project. If you're building a UI script you will have access to the `ui.scriptLocation` variable, which will allow you to build paths relative to your script.
 
 	/**
@@ -1575,13 +1613,12 @@ declare namespace api {
 	// var encoded = api.encodeBinary("/some/folder/test.png");
 	// api.writeToFile("/some/folder/encoderDump.txt", encoded);
 
-	// Utilities
-
+	// # Utilities
 	/**
 	 * TODO: Description
 	 * @param text
 	 */
-	function setClipboardText(text: string)
+	function setClipboardText(text: string): void
 
 	// setClipboardText("Copy test from Cavalry");
 
@@ -1614,7 +1651,7 @@ declare namespace api {
 	 * @param command
 	 * @param arguments
 	 */
-	function runDetachedProcess(command: string, arguments: string[])
+	function runDetachedProcess(command: string, arguments: string[]): void
 
 	// // macOS example
 	// var res = api.runProcess("sh", ["-c", "python3 --version"]);
@@ -1642,7 +1679,7 @@ declare namespace api {
 	/**
 	 * Get the current hardware platform. This will return either `macOS` or `Windows`
 	 */
-	function getPlatform(): string
+	function getPlatform(): 'macOS' | 'Windows'
 
 	// console.log(api.getPlatform());
 	// Simple get request.
@@ -1679,33 +1716,36 @@ declare namespace api {
 	 * `/post` the WebServer can poll for new data and will fire a callback
 	 * function when a data drop has been detected.
 	 */
+	// TODO: Report as missing from editor suggestions
 	class WebClient {
+		// TODO: Define object interface
+		constructor(url: string): object
 		/**
 		 * Sets basic authentication for any subsequent requests.
 		 * @param username
 		 * @param password
 		 */
-		setBasicAuthentication(username: string, password: string)
+		setBasicAuthentication(username: string, password: string): void
 
 		/**
 		 * Sets digest authentication for any subsequent requests.
 		 * @param username
 		 * @param password
 		 */
-		setDigestAuthentication(username: string, password: string)
+		setDigestAuthentication(username: string, password: string): void
 
 		/**
 		 * Sets token based authentication for any subsequent requests.
 		 * @param token
 		 */
-		setTokenAuthentication(token: string)
+		setTokenAuthentication(token: string): void
 
 		/**
 		 * Adds a header for any following requests. API keys, app keys, content types and so forth can be added in this way.
 		 * @param key
 		 * @param value
 		 */
-		addHeader(key: string, value: string)
+		addHeader(key: string, value: string): void
 
 		/**
 		 * TODO: Description
@@ -1727,44 +1767,45 @@ declare namespace api {
 		status(): integer
 
 		/**
-		 * The returned body. This is often in the form of JSON but you can check the Content-Type header with getHeaders() if you're unsure.
+		 * The returned body. This is often in the form of JSON but you can check the Content-Type header with `getHeaders()` if you're unsure.
 		 */
 		body(): string
 
 		/**
-		 * Peforms a get request. Once done, status() and if successful, body() should be available.
+		 * Peforms a get request. Once done, `status()` and if successful, `body()` should be available.
 		 */
-		get(path: string)
+		get(path: string): void
 
 		/**
-		 * Peforms a post request. Once done, status() and if successful, body() should be available.
+		 * Peforms a post request. Once done, `status()` and if successful, `body()` should be available.
 		 */
-		post(path: string, content: string, contentType: string)
+		post(path: string, content: string, contentType: string): void
 
 		/**
-		 * Peforms a put request. Once done, status() and if successful, body() should be available.
+		 * Peforms a put request. Once done, `status()` and if successful, `body()` should be available.
 		 */
-		put(path: string, content: string, contentType: string)
+		put(path: string, content: string, contentType: string): void
 
 		/**
 		 * A helper method for posting a file directly. This method is needed especially when uploading binary files (like images or movies). Peforms a post request. Once done, status() and if successful, body() should be available.
 		 */
-		postFromFile(path: string, filePath: string, contentType: string)
+		postFromFile(path: string, filePath: string, contentType: string): void
 
 		/**
 		 * A helper method for posting a file directly. This method is needed especially when uploading binary files (like images or movies). Peforms a put request. Once done, status() and if successful, body() should be available.
 		 */
-		putFromFile(path: string, filePath: string, contentType: string)
+		putFromFile(path: string, filePath: string, contentType: string): void
 
 		/**
-		 * If get has been used to retrieve binary data (i.e an image or a movie), this cannot be passed to the usual api.writeToFile() call. You must instead use this function to write the body data to file (which you can then pull into Cavalry as an Asset for example).
+		 * If `get` has been used to retrieve binary data (i.e an image or a movie), this cannot be passed to the usual `api.writeToFile()` call. You must instead use this function to write the body data to file (which you can then pull into Cavalry as an Asset for example).
 		 */
-		writeBodyToBinaryFile(path: string)
+		writeBodyToBinaryFile(path: string): boolean
 	}
 
 	/**
-	 * A complete example of a UI script which implements a Cavalry Server. Please save this into the Cavalry Scripts folder Help > Scripts and then load it via the Window > Scripts menu.
+	 * A complete example of a UI script which implements a Cavalry Server. Please save this into the Cavalry Scripts folder `Help > Scripts` and then load it via the `Window > Scripts` menu.
 	 */
+	// TODO: Report as missing from editor suggestions
 	class WebServer {
 		// var server = new api.WebServer();
 		// var button = new ui.Button("Start Server");
@@ -1816,19 +1857,19 @@ declare namespace api {
 		 * @param host
 		 * @param port
 		 */
-		listen(host: string, port: integer)
+		listen(host: string, port: integer): void
 
 		/**
 		 * Stop the server, any polling will also stop.
 		 */
-		stop()
+		stop(): void
 
 		/**
 		 * Set the result for `/get` requests, only `text/plain` is currently supported.
 		 *
 		 * @param resultText
 		 */
-		setResultForGet(resultText: string)
+		setResultForGet(resultText: string): void
 
 		/**
 		 * As many `/post` events may happen before you have a chance to react,
@@ -1843,14 +1884,14 @@ declare namespace api {
 		getNextPost(): object
 
 		/**
-		 * This is just like the above method, only instead of getting the oldest
-		 * unprocessed /post, it will skip to the newest and pop that from the queue.
+		 * This is just like `getNextPost`, only instead of getting the oldest
+		 * unprocessed `/post`, it will skip to the newest and pop that from the queue.
 		 */
 		// TODO: Create interface
 		getNewestPost(): object
 
 		/**
-		 * Returns the number of unprocessed /post events. Process posts using the
+		 * Returns the number of unprocessed `/post` events. Process posts using the
 		 * `getNextPost()` or `getNewestPost()` functions.
 		 */
 		postCount(): integer
@@ -1859,17 +1900,17 @@ declare namespace api {
 		 * Clear all unprocessed `/post` events. Process posts using the
 		 * `getNextPost()` or `getNewestPost()` functions.
 		 */
-		clearPosts()
+		clearPosts(): void
 
 		/**
 		 * Set a Callback object (much like the UI callback object). This is a
-		 * JavaScript object with an onPost function implemented. Setting a
+		 * JavaScript object with an `onPost` function implemented. Setting a
 		 * Callback object will start the server polling for new information, by
 		 * default we poll the server once every 3 seconds.
 		 * @param callback
 		 */
 		// TODO: Create interface
-		addCallbackObject(callback: object)
+		addCallbackObject(callback: object): void
 		// var server = new api.WebServer();
 		// function Callbacks() {
 		//     this.onPost = function () {
@@ -1883,13 +1924,13 @@ declare namespace api {
 		 * Calling this after setting a Callback object will change the polling
 		 * frequency to once per second.
 		 */
-		setHighFrequency()
+		setHighFrequency(): void
 
 		/**
 		 * Calling this after setting a Callback object will change the polling
 		 * frequency to 60 times a second. This is useful for realtime
 		 * communication with things like midi-controllers.
 		 */
-		setRealtime()
+		setRealtime(): void
 	}
 }
