@@ -13,6 +13,21 @@ declare namespace cavalry {
 	 * can then be drawn on screen. Path itself contains several methods.
 	 */
 	class Path {
+		// TODO: Report undocumented `back` and `arcTo`
+		/**
+		 * Returns a boolean signifying if the path is closed.
+		 */
+		// TODO: Should be a property
+		// isClosed(): boolean
+		readonly isClosed: boolean
+
+		/**
+		 * Returns the length of the path
+		 */
+		// TODO: Should be a property
+		// length(): float
+		readonly length: boolean
+
 		/**
 		 * Start a new contour
 		 *
@@ -99,18 +114,6 @@ declare namespace cavalry {
 		 * Empty the path
 		 */
 		clear(): void
-
-		/**
-		 * Returns a boolean signifying if the path is closed.
-		 */
-		// TODO: Should be a property
-		isClosed(): boolean
-
-		/**
-		 * Returns the length of the path
-		 */
-		// TODO: Should be a property
-		length(): float
 
 		/**
 		 * Move the path by x and y.

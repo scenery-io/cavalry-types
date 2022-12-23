@@ -2,7 +2,7 @@
   "name": "cavalry-types",
   "version": "0.0.1",
   "description": "Typescript definitions for Cavalry",
-  "main": "index.js",
+  "main": "index.d.ts",
   "scripts": {
     "release": "npx np",
     "bundle": "npx tsc src/index.ts --declaration --emitDeclarationOnly --outDir .",

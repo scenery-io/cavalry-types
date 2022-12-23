@@ -1,4 +1,4 @@
-/// <reference path="../src/index.d.ts" />
+/// <reference path="../index.d.ts" />
 // @ts-check
 
 var write = 'utility\n'

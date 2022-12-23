@@ -68,7 +68,7 @@ declare namespace api {
 	 * @param topLevel
 	 * @param type
 	 */
-	// TODO: Define allowed value for `type`
+	// TODO: Define allowed values for `type`
 	function getCompLayersOfType(topLevel: boolean, type: string): string[]
 
 	// api.create("null", "My Null");
@@ -83,8 +83,8 @@ declare namespace api {
 	/**
 	 * Adds a new Time Marker. The second example sets up a Time Marker as a controller for a Scheduling Group.
 	 *
-	 * @param {integer} time
-	 * @returns {string} The marker ID
+	 * @param time
+	 * @returns The marker ID
 	 */
 	// TODO: Report return type is string
 	function createTimeMarker(time: integer): string
@@ -305,6 +305,7 @@ declare namespace api {
 	 * @param isOn
 	 */
 	// TODO: Report missing parameter types
+	// TODO: Rename `isOn` to `enabled`?
 	function setFill(layerId: string, isOn: boolean): void
 
 	// var primId = api.primitive("rectangle", "Rectangle");
@@ -370,6 +371,7 @@ declare namespace api {
 	 * @param attrId
 	 */
 	// TODO: Return type depends on `attrId`
+	// TODO: Confirm the return type is `string | object`?
 	function get(layerId: string, attrId: string): any
 
 	// var primId = api.primitive("rectangle", "My Rectangle");
@@ -416,8 +418,8 @@ declare namespace api {
 	 * Returns the current Generator type (that can be used with setGenerator).
 	 * @param layerId
 	 */
-	// TODO: Figure out return type
-	function getCurrentGeneratorType(layerId: string): any
+	// TODO: Report missing return type
+	function getCurrentGeneratorType(layerId: string): string
 
 	// var ellipseId = api.primitive("ellipse", "My Ellipse")
 	// console.log(api.getCurrentGeneratorType(ellipseId, "generator"))
@@ -559,12 +561,12 @@ declare namespace api {
 	 * @param attrId
 	 * @param keyframe
 	 */
-	// TODO: Find out return type
+	// TODO: Confirm return type is correct
 	function deleteKeyframe(
 		layerId: string,
 		attrId: string,
 		keyframe: integer
-	): any
+	): void
 
 	// var primId = api.primitive("rectangle", "My Rectangle");
 	// api.keyframe(primId, 0, {"scale.x": 5.});
@@ -901,12 +903,12 @@ declare namespace api {
 	 * @param attrId
 	 * @param presetIndex
 	 */
-	// TODO: Figure out return type
+	// TODO: Confirm return type is correct
 	function graphPreset(
 		layerId: string,
 		attrId: string,
 		presetIndex: 0 | 1 | 2 | 3
-	): any
+	): void
 
 	/**
 	 * Flips the points on a Graph Attribute - valid `direction` arguments are "horizontal" and "vertical".
@@ -1188,8 +1190,8 @@ declare namespace api {
 	 * @param force
 	 */
 	// TODO: Report crash
-	// TODO: Figure out return type
-	function openScene(filePath: string, force: boolean): any
+	// TODO: Confirm return type is correct
+	function openScene(filePath: string, force: boolean): void
 
 	/**
 	 * Save the current Scene to a new location.
