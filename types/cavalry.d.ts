@@ -7,7 +7,6 @@
  * so methods need prefixing with `cavalry.` e.g `var distance = cavalry.dist(0,0,100,200);`
  */
 declare namespace cavalry {
-	// TODO: Improve description
 	/**
 	 * The Cavalry module contains a Path class which can be used to construct paths which
 	 * can then be drawn on screen. Path itself contains several methods.
@@ -17,14 +16,12 @@ declare namespace cavalry {
 		/**
 		 * Returns a boolean signifying if the path is closed.
 		 */
-		// TODO: Should be a property
 		// isClosed(): boolean
 		readonly isClosed: boolean
 
 		/**
 		 * Returns the length of the path
 		 */
-		// TODO: Should be a property
 		// length(): float
 		readonly length: boolean
 
@@ -166,7 +163,6 @@ declare namespace cavalry {
 		 */
 		difference(differencePath: Path): void
 
-		// TODO: Improve example to get a result
 		// The below example can be set on the JavaScript Shape.
 		// ```js
 		// function boolTest() {
@@ -378,7 +374,7 @@ declare namespace cavalry {
 	 *
 	 * @param angle
 	 */
-	// TODO: Report doesn't exist
+	// TODO: Report doesn't exist `angleFromVector`
 	function angleToVector(angle: float): object
 	// var ang = cavalry.angleFromVector(1,0);
 	// console.log(ang);
@@ -391,7 +387,7 @@ declare namespace cavalry {
 	 * @param x
 	 * @param y
 	 */
-	// TODO: Report doesn't exist
+	// TODO: Report doesn't exist instead `vectorFromAngle`
 	function vectorToAngle(x: float, y: float): float
 	// var ang = cavalry.angleFromVector(1,0);
 	// console.log(ang);

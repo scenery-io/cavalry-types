@@ -2,7 +2,8 @@
 // https://github.com/microsoft/TypeScript/tree/main/lib
 /// <reference no-default-lib="true" />
 /// <reference lib="es2021" />
-/// <reference path="./interfaces/api.d.ts" />
-/// <reference path="./interfaces/cavalry.d.ts" />
-/// <reference path="./interfaces/ctx.d.ts" />
-/// <reference path="./interfaces/ui.d.ts" />
+/// <reference path="./types/api.d.ts" />
+/// <reference path="./types/cavalry.d.ts" />
+/// <reference path="./types/ctx.d.ts" />
+/// <reference path="./types/ui.d.ts" />
+/// <reference path="./types/browser.d.ts" />

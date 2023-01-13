@@ -19,7 +19,6 @@ type float = number
 // api.get("basicShape#1", "position.x");
 
 // # Working with the Composition
-// TODO: Report, suggest to separate `api` by context ie. `composition.setFrame`
 declare namespace api {
 	/**
 	 * TODO: Description
@@ -424,6 +423,7 @@ declare namespace api {
 	// var ellipseId = api.primitive("ellipse", "My Ellipse")
 	// console.log(api.getCurrentGeneratorType(ellipseId, "generator"))
 
+	// TODO: Mention that attribute needs "in connection" for the expression to have an effect
 	/**
 	 * Set an attribute expression, this will take whatever the input value is in the expression, and manipulate it in some way (multiply, add to it etc.).
 	 * @param layerId
@@ -465,7 +465,6 @@ declare namespace api {
 	 * @param toLayerId
 	 * @param toAttrId
 	 */
-	// TODO: Does this error if the connection cannot be made?
 	function connect(
 		fromLayerId: string,
 		fromAttrId: string,
@@ -489,7 +488,6 @@ declare namespace api {
 	 * @param toLayerId
 	 * @param toAttrId
 	 */
-	// TODO: Does this error if it cannot disconnect?
 	function disconnect(
 		fromLayerId: string,
 		fromAttrId: string,
@@ -620,6 +618,7 @@ declare namespace api {
 	 */
 	// TODO: Create interface for object
 	function modifyKeyframeTangent(layerId: string, data: object): void
+	// TODO: Report API docs incorrect object is `attrId: object`
 	// frame: integer?
 	// inHandle: boolean // An optional boolean value stating if you want the inHandle to be affected.
 	// outHandle: boolean // An optional boolean value stating if you want the outHandle to be affected.
@@ -821,7 +820,8 @@ declare namespace api {
 	 * @param layerId
 	 */
 	// TODO: Report missing return type in docs
-	function getInConnectedAttributes(layerId: string): array
+	// TODO: Verify return type is correct
+	function getInConnectedAttributes(layerId: string): []
 
 	/**
 	 * TODO: Description
@@ -904,6 +904,7 @@ declare namespace api {
 	 * @param presetIndex
 	 */
 	// TODO: Confirm return type is correct
+	// TODO: Report use enum
 	function graphPreset(
 		layerId: string,
 		attrId: string,
@@ -1189,7 +1190,6 @@ declare namespace api {
 	 * @param filePath
 	 * @param force
 	 */
-	// TODO: Report crash
 	// TODO: Confirm return type is correct
 	function openScene(filePath: string, force: boolean): void
 
@@ -1517,6 +1517,7 @@ declare namespace api {
 	// console.log(api.getFileNameFromPath("some/thing/here.png"));
 
 	/**
+	 * TODO: Returned extension includes `.` ie. `.jpg`
 	 * This will return the extension of a file.
 	 * @param path
 	 */
@@ -1535,12 +1536,15 @@ declare namespace api {
 	// console.log(api.getFileNameFromPath("some/thing/here.png"));
 
 	/**
+	 * TODO: Paths have to be absolute and parent folders need to exist, they are not created
+	 * TODO: Existing paths will not be overwritten
 	 * This will create a folder at the location given in path and return if the operation was a success.
 	 * @param path
 	 */
 	function makeFolder(path: string): boolean
 
 	/**
+	 * TODO: Give example of using app icons in scripts
 	 * Get the location of the App Assets (this is useful for accessing app icons for your scripts).
 	 */
 	function getAppAssetsPath(): string
@@ -1638,6 +1642,7 @@ declare namespace api {
 	 * @param command
 	 * @param arguments
 	 */
+	// TODO: Report doesn't return anything on macOS
 	function runProcess(command: string, arguments: string[]): string
 
 	// // macOS example
@@ -1718,10 +1723,8 @@ declare namespace api {
 	 * `/post` the WebServer can poll for new data and will fire a callback
 	 * function when a data drop has been detected.
 	 */
-	// TODO: Report as missing from editor suggestions
 	class WebClient {
-		// TODO: Define object interface
-		constructor(url: string): object
+		constructor(url: string)
 		/**
 		 * Sets basic authentication for any subsequent requests.
 		 * @param username
@@ -1807,7 +1810,6 @@ declare namespace api {
 	/**
 	 * A complete example of a UI script which implements a Cavalry Server. Please save this into the Cavalry Scripts folder `Help > Scripts` and then load it via the `Window > Scripts` menu.
 	 */
-	// TODO: Report as missing from editor suggestions
 	class WebServer {
 		// var server = new api.WebServer();
 		// var button = new ui.Button("Start Server");

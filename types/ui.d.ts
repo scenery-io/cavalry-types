@@ -90,7 +90,6 @@ declare namespace ui {
 	/**
 	 * The path to the folder which contains this script. This is blank for UIs created from the JavaScript Editor.
 	 */
-	// TODO: Report error `ui is undefined`
 	const scriptLocation: string
 	// const button = new ui.ImageButton(ui.scriptLocation+"/myScript_assets/icon.png")
 
@@ -172,6 +171,7 @@ declare namespace ui {
 		setSize(width: integer, height: integer): void
 
 		/**
+		 * TODO: What's the difference with `setSize`?
 		 * Set the height.
 		 * @param buttonText
 		 */
@@ -191,11 +191,11 @@ declare namespace ui {
 		setImage(path: string): void
 
 		/**
-		 * TODO: Requires clarification for stroke affordance
+		 * TODO: Requires clarification of stroke affordance meaning
 		 * By default buttons have a stroke affordance, you can remove this by calling this method with `false`
 		 * @param removeAffordance
 		 */
-		setDrawStroke(removeAffordance: bool): void
+		setDrawStroke(removeAffordance: boolean): void
 
 		/**
 		 * A callback function that will be called when the button is clicked.
@@ -242,7 +242,7 @@ declare namespace ui {
 		// TODO: Descriptions
 		constructor(value: boolean)
 		getValue(): boolean
-		setValue(value: bool): void
+		setValue(value: boolean): void
 
 		/**
 		 * A callback function that will be called when the checkbox is toggled.
@@ -1234,6 +1234,7 @@ declare namespace ui {
 		add(layout: VLayout | HLayout): void
 
 		/**
+		 * TODO: Mention `index` starts at 0
 		 * Set the current page index
 		 * @param index
 		 */
@@ -1385,7 +1386,6 @@ declare namespace ui {
 		/**
 		 * Implement this callback function to do something when the slider's value changes.
 		 */
-		// TODO: This is not a function, but it can be assigned one
 		// TODO: Verify return type
 		onValueChanged(): void
 
@@ -1526,8 +1526,11 @@ declare namespace ui {
 	 * Timers can be used in UI scripts and can be useful for polling Web APIs. When the Timer is triggered it will call an `onTimeout()` function on the Timer object. Implement this function to have the Timer execute logic for you when this happens.
 	 * Caution: Timers should not be used to detect changes to the scene, please use callbacks for this purpose.
 	 */
-	// TODO: Report this as missing
+	// TODO: Report this as missing (is actually in `api` namespace)
 	class Timer {
+		// TODO: Report missing constructor
+		// TODO: `object` should be `function` or `class`
+		constructor(callback: object)
 		/**
 		 * Start the timer.
 		 */

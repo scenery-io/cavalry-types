@@ -3,7 +3,6 @@
  * Everything in this module is in the `ctx` namespace and so methods need
  * prefixing with `ctx.` e.g `var index = ctx.index;`
  */
-// TODO: Report these as missing
 declare namespace ctx {
 	// TODO: All of these are readonly?
 	/**
