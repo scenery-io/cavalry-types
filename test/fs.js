@@ -21,7 +21,9 @@ var filePathExists = api.filePathExists('/Users/Remco/Desktop/hey.js')
 log('filePathExists', filePathExists)
 var getFileNameFromPath = api.getFileNameFromPath('/Users/Remco/Desktop/hey.js')
 log('getFileNameFromPath', getFileNameFromPath)
-var getExtensionFromPath = api.getExtensionFromPath('/Users/Remco/Desktop/hey.js')
+var getExtensionFromPath = api.getExtensionFromPath(
+	'/Users/Remco/Desktop/hey.js'
+)
 log('getExtensionFromPath', getExtensionFromPath)
 var getFolderFromPath = api.getFolderFromPath('/Users/Remco/Desktop/hey.js')
 log('getFolderFromPath', getFolderFromPath)
@@ -29,9 +31,15 @@ var makeFolder = api.makeFolder('/Users/Remco/Desktop/Cavalry')
 log('makeFolder', makeFolder)
 var getAppAssetsPath = api.getAppAssetsPath()
 log('getAppAssetsPath', getAppAssetsPath)
-var writeToFile = api.writeToFile('/Users/Remco/Desktop/hey.js', 'console.log("hey")')
+var writeToFile = api.writeToFile(
+	'/Users/Remco/Desktop/hey.js',
+	'console.log("hey")'
+)
 log('writeToFile', writeToFile)
-var writeEncodedToBinaryFile = api.writeEncodedToBinaryFile('/Users/Remco/Desktop/binary.png', 'png')
+var writeEncodedToBinaryFile = api.writeEncodedToBinaryFile(
+	'/Users/Remco/Desktop/binary.png',
+	'png'
+)
 log('writeEncodedToBinaryFile', writeEncodedToBinaryFile)
 var readFromFile = api.readFromFile('/Users/Remco/Desktop/hey.js')
 log('readFromFile', readFromFile)
@@ -42,14 +50,14 @@ log('encodeBinary', encodeBinary)
  * @param {any} item
  */
 function getTypeof(item) {
-    return Array.isArray(item) ? 'array' : typeof item
+	return Array.isArray(item) ? 'array' : typeof item
 }
 
 /**
  * @param {any} item
  */
 function getValue(item) {
-    return getTypeof(item) === 'object' ? JSON.stringify(item) : item
+	return getTypeof(item) === 'object' ? JSON.stringify(item) : item
 }
 
 /**
@@ -57,8 +65,8 @@ function getValue(item) {
  * @param {any} item
  */
 function log(itemName, item) {
-    var value = `${itemName}, ${getTypeof(item)}, ${getValue(item)}`
-    console.log(value)
-    write += `${value}\n`
+	var value = `${itemName}, ${getTypeof(item)}, ${getValue(item)}`
+	console.log(value)
+	write += `${value}\n`
 }
 api.writeToFile('/Users/Remco/Desktop/test.csv', write)

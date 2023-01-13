@@ -47,14 +47,14 @@ log('getBoundingBox', getBoundingBox)
  * @param {any} item
  */
 function getTypeof(item) {
-    return Array.isArray(item) ? 'array' : typeof item
+	return Array.isArray(item) ? 'array' : typeof item
 }
 
 /**
  * @param {any} item
  */
 function getValue(item) {
-    return getTypeof(item) === 'object' ? JSON.stringify(item) : item
+	return getTypeof(item) === 'object' ? JSON.stringify(item) : item
 }
 
 /**
@@ -62,8 +62,8 @@ function getValue(item) {
  * @param {any} item
  */
 function log(itemName, item) {
-    var value = `${itemName}, ${getTypeof(item)}, ${getValue(item)}`
-    console.log(value)
-    write += `${value}\n`
+	var value = `${itemName}, ${getTypeof(item)}, ${getValue(item)}`
+	console.log(value)
+	write += `${value}\n`
 }
 api.writeToFile('/Users/Remco/Desktop/test.csv', write)

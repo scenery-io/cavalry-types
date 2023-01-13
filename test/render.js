@@ -15,7 +15,11 @@ var renderAll = api.renderAll()
 log('renderAll', renderAll)
 var renderPNGFrame = api.renderPNGFrame('/Users/Remco/Desktop/render.png', 100)
 log('renderPNGFrame', renderPNGFrame)
-var renderSVGFrame = api.renderSVGFrame('/Users/Remco/Desktop/render.svg', 100, false)
+var renderSVGFrame = api.renderSVGFrame(
+	'/Users/Remco/Desktop/render.svg',
+	100,
+	false
+)
 log('renderSVGFrame', renderSVGFrame)
 var getRenderQueueItems = api.getRenderQueueItems()
 log('getRenderQueueItems', getRenderQueueItems)
@@ -28,14 +32,14 @@ log('getDynamicIndex', getDynamicIndex)
  * @param {any} item
  */
 function getTypeof(item) {
-    return Array.isArray(item) ? 'array' : typeof item
+	return Array.isArray(item) ? 'array' : typeof item
 }
 
 /**
  * @param {any} item
  */
 function getValue(item) {
-    return getTypeof(item) === 'object' ? JSON.stringify(item) : item
+	return getTypeof(item) === 'object' ? JSON.stringify(item) : item
 }
 
 /**
@@ -43,8 +47,8 @@ function getValue(item) {
  * @param {any} item
  */
 function log(itemName, item) {
-    var value = `${itemName}, ${getTypeof(item)}, ${getValue(item)}`
-    console.log(value)
-    write += `${value}\n`
+	var value = `${itemName}, ${getTypeof(item)}, ${getValue(item)}`
+	console.log(value)
+	write += `${value}\n`
 }
 api.writeToFile('/Users/Remco/Desktop/test.csv', write)

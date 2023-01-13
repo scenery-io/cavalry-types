@@ -13,13 +13,21 @@ log('set', set)
 var get = api.get(layer, 'position.x')
 log('get', get)
 
-api.set(layer, {"generator.radius.x": 10, "generator.radius.y": 10, "hidden": true})
+api.set(layer, {
+	'generator.radius.x': 10,
+	'generator.radius.y': 10,
+	hidden: true,
+})
 // Create a Duplicator
-var duplicator = api.create("duplicator", "Duplicator")
+var duplicator = api.create('duplicator', 'Duplicator')
 // Connect the Ellipse to the Duplicator
-api.connect(layer, "id", duplicator, "shapes")
+api.connect(layer, 'id', duplicator, 'shapes')
 // Change the Distribution on the Duplicator to a Custom Distribution
-var setGenerator = api.setGenerator(duplicator, "generator", "circleDistribution")
+var setGenerator = api.setGenerator(
+	duplicator,
+	'generator',
+	'circleDistribution'
+)
 log('setGenerator', setGenerator)
 
 var getGenerators = api.getGenerators(layer)
@@ -27,7 +35,11 @@ log('getGenerators', getGenerators)
 // TODO: Report error
 // var getCurrentGeneratorType = api.getCurrentGeneratorType(layer)
 // log('getCurrentGeneratorType', getCurrentGeneratorType)
-var setAttributeExpression = api.setAttributeExpression(layer, 'position.x', '0')
+var setAttributeExpression = api.setAttributeExpression(
+	layer,
+	'position.x',
+	'0'
+)
 log('setAttributeExpression', setAttributeExpression)
 var connect = api.connect(layer, 'position.x', layer2, 'position.x')
 log('connect', connect)
@@ -41,9 +53,12 @@ var keyframe = api.keyframe(layer, 10, { 'position.x': 300 })
 log('keyframe', keyframe)
 var getSelectedKeyframes = api.getSelectedKeyframes()
 log('getSelectedKeyframes', getSelectedKeyframes)
-var modifyKeyframe = api.modifyKeyframe(layer, { frame: 10, newValue: 100})
+var modifyKeyframe = api.modifyKeyframe(layer, { frame: 10, newValue: 100 })
 log('modifyKeyframe', modifyKeyframe)
-var modifyKeyframeTangent = api.modifyKeyframeTangent(layer, {frame: 10, angle: 5})
+var modifyKeyframeTangent = api.modifyKeyframeTangent(layer, {
+	frame: 10,
+	angle: 5,
+})
 log('modifyKeyframeTangent', modifyKeyframeTangent)
 var magicEasing = api.magicEasing(layer, 'position.x', 10, 'SlowInSlowOut')
 log('magicEasing', magicEasing)
@@ -64,7 +79,7 @@ var removeArrayIndex = api.removeArrayIndex(layer, 'position.x')
 log('removeArrayIndex', removeArrayIndex)
 var getArrayCount = api.getArrayCount(layer, 'position.x')
 log('getArrayCount', getArrayCount)
-var addDynamic = api.addDynamic(layer, 'position.x', "string")
+var addDynamic = api.addDynamic(layer, 'position.x', 'string')
 log('addDynamic', addDynamic)
 var renameAttribute = api.renameAttribute(layer, 'position.x', 'hello')
 log('renameAttribute', renameAttribute)
@@ -96,14 +111,14 @@ log('flipGraph', flipGraph)
  * @param {any} item
  */
 function getTypeof(item) {
-    return Array.isArray(item) ? 'array' : typeof item
+	return Array.isArray(item) ? 'array' : typeof item
 }
 
 /**
  * @param {any} item
  */
 function getValue(item) {
-    return getTypeof(item) === 'object' ? JSON.stringify(item) : item
+	return getTypeof(item) === 'object' ? JSON.stringify(item) : item
 }
 
 /**
@@ -111,8 +126,8 @@ function getValue(item) {
  * @param {any} item
  */
 function log(itemName, item) {
-    var value = `${itemName}, ${getTypeof(item)}, ${getValue(item)}`
-    console.log(value)
-    write += `${value}\n`
+	var value = `${itemName}, ${getTypeof(item)}, ${getValue(item)}`
+	console.log(value)
+	write += `${value}\n`
 }
 api.writeToFile('/Users/Remco/Desktop/test.csv', write)
