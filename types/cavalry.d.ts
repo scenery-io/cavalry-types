@@ -12,7 +12,6 @@ declare namespace cavalry {
 	 * can then be drawn on screen. Path itself contains several methods.
 	 */
 	class Path {
-		// TODO: Report undocumented `back` and `arcTo`
 		/**
 		 * Returns a boolean signifying if the path is closed.
 		 */
@@ -261,7 +260,6 @@ declare namespace cavalry {
 	 * @param seed
 	 * @param frequency
 	 */
-	// TODO: Report missing return value
 	function noise1d(x: float, seed: integer, frequency: float): float
 	// for (var i = 1; i < 10; i += 1){
 	//     console.log(cavalry.noise1d(i, 0, 1));
@@ -275,7 +273,6 @@ declare namespace cavalry {
 	 * @param seed
 	 * @param frequency
 	 */
-	// TODO: Report missing return value
 	function noise2d(x: float, y: float, seed: integer, frequency: float): float
 	// for (var i = 1; i < 10; i +=1){
 	//     console.log(cavalry.noise2d(i, api.getFrame(), 0, 1));
@@ -290,7 +287,6 @@ declare namespace cavalry {
 	 * @param seed
 	 * @param frequency
 	 */
-	// TODO: Report missing return value
 	function noise3d(
 		x: float,
 		y: float,
@@ -310,7 +306,6 @@ declare namespace cavalry {
 	 * @param x2
 	 * @param y2
 	 */
-	// TODO: Report missing return value
 	function dist(x1: float, y1: float, x2: float, y2: float): float
 	// var d = cavalry.dist(0,0,100,100)
 	// console.log(d);
@@ -324,7 +319,6 @@ declare namespace cavalry {
 	 * @param outMin
 	 * @param outMax
 	 */
-	// TODO: Report missing return value
 	function map(
 		value: float,
 		inMin: float,
@@ -342,7 +336,6 @@ declare namespace cavalry {
 	 * @param min
 	 * @param max
 	 */
-	// TODO: Report missing return value
 	function norm(value: float, min: float, max: float): float
 	// Prints 0.55;
 	// console.log(cavalry.norm(55,0,100));
@@ -354,7 +347,6 @@ declare namespace cavalry {
 	 * @param min
 	 * @param max
 	 */
-	// TODO: Report missing return value
 	function clamp(value: float, min: float, max: float): float
 	// Prints 100;
 	// console.log(cavalry.clamp(150,0,100));
@@ -366,7 +358,6 @@ declare namespace cavalry {
 	 * @param max
 	 * @param t
 	 */
-	// TODO: Report missing return value
 	function lerp(min: float, max: float, t: float): float
 
 	/**
@@ -374,8 +365,7 @@ declare namespace cavalry {
 	 *
 	 * @param angle
 	 */
-	// TODO: Report doesn't exist `angleFromVector`
-	function angleToVector(angle: float): object
+	function angleFromVector(angle: float): object
 	// var ang = cavalry.angleFromVector(1,0);
 	// console.log(ang);
 	// var vec = cavalry.vectorFromAngle(ang);
@@ -387,8 +377,7 @@ declare namespace cavalry {
 	 * @param x
 	 * @param y
 	 */
-	// TODO: Report doesn't exist instead `vectorFromAngle`
-	function vectorToAngle(x: float, y: float): float
+	function vectorFromAngle(x: float, y: float): float
 	// var ang = cavalry.angleFromVector(1,0);
 	// console.log(ang);
 	// var vec = cavalry.vectorFromAngle(ang);

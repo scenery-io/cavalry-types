@@ -44,7 +44,6 @@ declare namespace ctx {
 	 * @param objectLiteralToSave
 	 */
 	// TODO: Create interface
-	// TODO: Report missing api
 	function saveObject(name: string, objectLiteralToSave: object): any
 	// ```js
 	// // Simple example

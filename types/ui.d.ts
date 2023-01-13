@@ -524,7 +524,6 @@ declare namespace ui {
 		 * Set a hex string to be the current color
 		 */
 		// TODO: Verify return type
-		// TODO: report missing parameter type
 		setColor(color: string): void
 
 		/**
@@ -733,7 +732,6 @@ declare namespace ui {
 	 */
 	class HLayout {
 		// TODO: Descriptions
-		// TODO: Report missing parameter type
 		// TODO: Verify return type
 		add(widget: object): void
 		// TODO: Verify return type
@@ -1165,7 +1163,8 @@ declare namespace ui {
 		setMin(min: number): void
 		// TODO: Verify return type
 		setMax(max: number): void
-		// TODO: 0 for integers, 1 for doubles. Should have an enum.
+		// TODO: 0 for integers, 1 for doubles.
+		// TODO: Replace with enum once implemented
 		// TODO: Verify return type
 		setType(type: integer): void
 
@@ -1528,8 +1527,7 @@ declare namespace ui {
 	 */
 	// TODO: Report this as missing (is actually in `api` namespace)
 	class Timer {
-		// TODO: Report missing constructor
-		// TODO: `object` should be `function` or `class`
+		// TODO: `object` should be callback `function` or `class`
 		constructor(callback: object)
 		/**
 		 * Start the timer.

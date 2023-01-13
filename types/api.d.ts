@@ -85,7 +85,6 @@ declare namespace api {
 	 * @param time
 	 * @returns The marker ID
 	 */
-	// TODO: Report return type is string
 	function createTimeMarker(time: integer): string
 
 	// let markerId = api.createTimeMarker(10);
@@ -303,8 +302,6 @@ declare namespace api {
 	 * @param layerId
 	 * @param isOn
 	 */
-	// TODO: Report missing parameter types
-	// TODO: Rename `isOn` to `enabled`?
 	function setFill(layerId: string, isOn: boolean): void
 
 	// var primId = api.primitive("rectangle", "Rectangle");
@@ -404,7 +401,6 @@ declare namespace api {
 	 * Some layers in Cavalry contain Generators, these are discrete feature blocks that are used to extend the functionality of layers. For example the Basic Shape layer has a Generator to determine the shape it creates (e.g Ellipse, Rectangle). You can list the Generators on a layer with this command.
 	 * @param layerId
 	 */
-	// TODO: Report return type is `string[]`
 	function getGenerators(layerId: string): string[]
 
 	// var layerId = api.create("connectShape", "Connect Shape");
@@ -417,7 +413,6 @@ declare namespace api {
 	 * Returns the current Generator type (that can be used with setGenerator).
 	 * @param layerId
 	 */
-	// TODO: Report missing return type
 	function getCurrentGeneratorType(layerId: string): string
 
 	// var ellipseId = api.primitive("ellipse", "My Ellipse")
@@ -465,6 +460,7 @@ declare namespace api {
 	 * @param toLayerId
 	 * @param toAttrId
 	 */
+	// TODO: Does this error if the connection cannot be made?
 	function connect(
 		fromLayerId: string,
 		fromAttrId: string,
@@ -488,6 +484,7 @@ declare namespace api {
 	 * @param toLayerId
 	 * @param toAttrId
 	 */
+	// TODO: Does this error if it cannot disconnect?
 	function disconnect(
 		fromLayerId: string,
 		fromAttrId: string,
@@ -582,7 +579,7 @@ declare namespace api {
 	// frame integer
 	// newFrame integer? // Specify a new frame for the keyframe (optional).
 	// newValue float? // Specify a new value for the keyframe (optional).
-	// TODO: Should provide an enum
+	// TODO: Replace with enum once implemented
 	// type // The keyframe type as an integer 0 Bezier, 1 Linear, 2 Step (optional).
 
 	// Example of modifying keyframe values and frames:
@@ -618,7 +615,6 @@ declare namespace api {
 	 */
 	// TODO: Create interface for object
 	function modifyKeyframeTangent(layerId: string, data: object): void
-	// TODO: Report API docs incorrect object is `attrId: object`
 	// frame: integer?
 	// inHandle: boolean // An optional boolean value stating if you want the inHandle to be affected.
 	// outHandle: boolean // An optional boolean value stating if you want the outHandle to be affected.
@@ -812,16 +808,13 @@ declare namespace api {
 	 * TODO: Description
 	 * @param layerId
 	 */
-	// TODO: Report missing return type in docs
 	function getOutConnectedAttributes(layerId: string): string[]
 
 	/**
 	 * TODO: Description
 	 * @param layerId
 	 */
-	// TODO: Report missing return type in docs
-	// TODO: Verify return type is correct
-	function getInConnectedAttributes(layerId: string): []
+	function getInConnectedAttributes(layerId: string): string[]
 
 	/**
 	 * TODO: Description
@@ -904,7 +897,7 @@ declare namespace api {
 	 * @param presetIndex
 	 */
 	// TODO: Confirm return type is correct
-	// TODO: Report use enum
+	// TODO: Replace with enum once implemented
 	function graphPreset(
 		layerId: string,
 		attrId: string,
@@ -950,7 +943,6 @@ declare namespace api {
 	/**
 	 * Copy the selected Shape(s) as code. The resulting code can be pasted into a new tab and run to create a new Editable Shape based on those copied.
 	 */
-	// TODO: Report missing return type
 	function getDrawInstructionsForSelection(): string
 
 	// var path = api.getDrawInstructionsForSelection();
@@ -973,7 +965,6 @@ declare namespace api {
 	 * @param worldSpace
 	 */
 	// TODO: Create interface
-	// TODO: Report return type is an object array
 	function getEditablePath(layerId: string, worldSpace: boolean): object[]
 
 	// Editable Paths and ordinary Paths (like the one in the Cavalry Module) are distinct. The worldSpace argument will determine if path point coordinates are returned in local (unaware of the Editable Shape's position, rotation and scale) or world space where those transformations are applied. An Editable Path's points have in handles and out handles just like the points you edit in the viewport. They also have weight and angle locking settings. Ordinary Paths construct paths using moveTo, lineTo and cubicTo for example. In an Editable Path, you just add an extra point to the Contour's points array. The schema is as follows:
@@ -1160,7 +1151,6 @@ declare namespace api {
 	/**
 	 * TODO: Description
 	 */
-	// TODO: Report `comp` is `compId: string`
 	function addRenderQueueItem(compId: string): string
 
 	// var itemId = api.addRenderQueueItem(api.getActiveComp());
@@ -1209,7 +1199,6 @@ declare namespace api {
 	 * @param path
 	 * @param isSequence
 	 */
-	// TODO: REport missing return type
 	// TODO: return is `assetId`
 	function loadAsset(path: string, isSequence: boolean): string
 
@@ -1269,7 +1258,6 @@ declare namespace api {
 	 * @param spreadsheetId
 	 * @param sheetId
 	 */
-	// TODO: Report missing return type `assetId: string`
 	function loadGoogleSheet(spreadsheetId: string, sheetId: string): string
 
 	// The spreadsheetId and sheetId can be extracted from a Google Sheet's URL:
