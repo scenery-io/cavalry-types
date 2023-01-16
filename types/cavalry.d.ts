@@ -65,7 +65,7 @@ declare namespace cavalry {
 		close(): void
 
 		/**
-		 * Add text to the path and position it. You could add the text to a
+		 * Add text to the path and position it. The text could be added to a
 		 * separate path and then `.append()` it into this one if needed. The
 		 * position arguments may be removed as a result of this.
 		 *
@@ -226,6 +226,17 @@ declare namespace cavalry {
 		// path.fromObject(js);
 		// console.log(path.length);
 		// ```
+
+		/**
+		 * TODO: Description
+		 *
+		 * @param x1 X-axis of the arc's start point
+		 * @param y1 Y-axis of the arc's start point
+		 * @param x2 X-axis of the arc's end point
+		 * @param y2 Y-axis of the arc's end point
+		 * @param radius Distance from arc to circle center
+		 */
+		arcTo(x1: float, y1: float, x2: float, y2: float, radius: float): void
 	}
 
 	// Math Helper Functions
@@ -456,9 +467,11 @@ declare namespace cavalry {
 
 	// Utilities
 	/**
-	 * This will return if the specified version is less than the currently open app version. This is useful to add support for features in scripts depending on the version of Cavalry currently running.
+	 * This will return `true` if the version of Cavalry in use is less
+	 * than the specified version. This is useful to add support for
+	 * features in scripts that depend on the version of Cavalry.
 	 *
-	 * @param version
+	 * @param version Formatted as `'1.5.0'` (`MAJOR.MINOR.PATCH`) or `1.6.0-beta.1` (`MAJOR.MINOR.PATCH.PRE-RELEASE-TYPE.NUMBER`) for preleases.
 	 */
 	function versionLessThan(version: string): boolean
 	/// this will return true in Cavalry 1.3, and false in Cavalry 2.0

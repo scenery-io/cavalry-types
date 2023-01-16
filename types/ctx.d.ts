@@ -34,10 +34,11 @@ declare namespace ctx {
 	let positionY: float
 
 	/**
-	 * Saved an object for use later. The normal use case for this feature
-	 * is when creating solvers, i.e a script that needs to know a previous
-	 * value. The value to be saved needs to be an object. If writing a
-	 * Path for use later, please use the `path.toObject()` or
+	 * Save an object for use later. The normal use case for this feature is
+	 * when creating solvers – for example, a script that needs to know a
+	 * previous value.
+	 *
+	 * If writing a Path for use later, please use the `path.toObject()` and
 	 * `path.fromObject(obj)` methods when saving/loading them.
 	 *
 	 * @param name
@@ -73,7 +74,7 @@ declare namespace ctx {
 	// ```
 
 	/**
-	 * Returns `true` is an object of name has been saved and can be loaded.
+	 * Returns `true` if an object of `name` has been saved and can be loaded.
 	 *
 	 * @param name
 	 */

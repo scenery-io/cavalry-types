@@ -30,11 +30,17 @@
 // ui.show()
 
 /**
- * You can build scripts with user interfaces(UIs) to make them easier to use or share with other people. Scripts with UIs can be tested from the JavaScript Editor and then saved to the file system meaning they can be opened as a Window and so docked and saved as part of a Workspace.
- * If your script has assets (for example images), you should place these inside a folder and give the folder the suffix _assets. Any directory ending with _assets will be hidden when navigating the Scripts menu.
+ * Scripts with user interfaces (UIs) can be built to make them easier to use
+ * or share with other people. They can be tested from the JavaScript Editor
+ * and then saved to the file system meaning they can be opened as a Window
+ * and so docked and saved as part of a workspace.
  *
- * Each script has its own JavaScript sandbox so pollution of the global namespace is not possible.
- * When testing UI Scripts in the JavaScript Editor you can only have one such test UI Script window loaded at a time.
+ * If a script has assets (for example images), these should be placed inside
+ * a folder with the suffix `_assets`. Any directory ending with `_assets` will
+ * be hidden when navigating the `Scripts` menu.
+ *
+ * Each script has its own JavaScript sandbox so pollution of the global
+ * namespace is not possible.
  */
 declare namespace ui {
 	/**
@@ -165,6 +171,7 @@ declare namespace ui {
 
 		/**
 		 * Set the size.
+		 *
 		 * @param width
 		 * @param height
 		 */
@@ -173,12 +180,14 @@ declare namespace ui {
 		/**
 		 * TODO: What's the difference with `setSize`?
 		 * Set the height.
+		 *
 		 * @param buttonText
 		 */
 		setFixedHeight(height: integer): void
 
 		/**
 		 * Set the width.
+		 *
 		 * @param buttonText
 		 */
 		setFixedWidth(width: integer): void
@@ -186,6 +195,7 @@ declare namespace ui {
 		/**
 		 * TODO: Add link to `ui.scriptLocation`
 		 * Path to an image (relative paths can be built using the `ui.scriptLocation` property)
+		 *
 		 * @param path
 		 */
 		setImage(path: string): void
@@ -193,6 +203,7 @@ declare namespace ui {
 		/**
 		 * TODO: Requires clarification of stroke affordance meaning
 		 * By default buttons have a stroke affordance, you can remove this by calling this method with `false`
+		 *
 		 * @param removeAffordance
 		 */
 		setDrawStroke(removeAffordance: boolean): void
@@ -204,6 +215,7 @@ declare namespace ui {
 
 		/**
 		 * Disable or enable a widget by using this function
+		 *
 		 * @param enabled
 		 */
 		setEnabled(enabled: boolean): void
@@ -215,6 +227,7 @@ declare namespace ui {
 
 		/**
 		 * Set the background color using a hex value
+		 *
 		 * @param color
 		 */
 		setBackgroundColor(color: string): void
@@ -232,16 +245,29 @@ declare namespace ui {
 	}
 
 	/**
-	 * A standard checkbox widget. This doesn't contain a label so combining it with a Label is highly recommended. You set the default value when you create the class.
+	 * A standard checkbox widget. This doesn't contain a label so combining
+	 * it with a `ui.Label is highly recommended. You set the default value
+	 * when you create the class.
 	 */
 	class Checkbox {
+		// TODO: Descriptions
 		/**
 		 * Checkbox requires a default value
+		 *
 		 * @param value
 		 */
-		// TODO: Descriptions
 		constructor(value: boolean)
+
+		/**
+		 * TODO: Description
+		 */
 		getValue(): boolean
+
+		/**
+		 * TODO: Description
+		 *
+		 * @param value
+		 */
 		setValue(value: boolean): void
 
 		/**
@@ -250,7 +276,8 @@ declare namespace ui {
 		onValueChanged(): void
 
 		/**
-		 * You can disable/enable a widget by using this function
+		 * Disable/enable a widget by using this function
+		 *
 		 * @param enabled
 		 */
 		setEnabled(enabled: boolean): void
@@ -368,6 +395,7 @@ declare namespace ui {
 	 * A widget that can be used to display multiple colours at once, it's useful for creating scripts that deal with color workflows. This is a feedback widget in that users cannot directly interact with it. The setColors function is not fussy about the # prefix on the hex color strings (if the hash is missing it will be added automatically).
 	 */
 	class ColorPalette {
+		// TODO: Report and change return to `string[]`
 		getColors(): string
 
 		/**
@@ -679,17 +707,51 @@ declare namespace ui {
 	 * A file path widget that can be used to read folders and files or to create a new file path.
 	 */
 	class FilePath {
-		// TODO: Descriptions
+		/**
+		 * TODO: Description
+		 */
 		getFilePath(): string
+
+		/**
+		 * Add placeholder text
+		 *
+		 * @param placeholder
+		 */
+		setPlaceholder(placeholder: string): void
+
+		/**
+		 * Set the `path` which opens when clicking the folder icon
+		 *
+		 * @param path
+		 */
+		setOpenLocation(path: string): void
+
+		/**
+		 * TODO: Description
+		 *
+		 * @param path
+		 */
 		// TODO: Verify return type
 		setFilePath(path: string): void
+
+		/**
+		 * TODO: Description
+		 *
+		 * @param mode Valid arguments are 'OpenFile', 'OpenDirectory' and 'SaveFile'
+		 */
 		// TODO: Verify return type
-		setMode(mode: string): void
+		setMode(mode: 'OpenFile' | 'OpenDirectory' | 'SaveFile'): void
+
+		/**
+		 * TODO: Description
+		 *
+		 * @param filter
+		 */
 		// TODO: Verify return type
 		setFilter(filter: string): void
 
 		/**
-		 * You can disable/enable a widget by using this function
+		 * Disable/enable a widget by using this function.
 		 * @param enabled
 		 */
 		// TODO: Verify return type
@@ -728,7 +790,7 @@ declare namespace ui {
 	}
 
 	/**
-	 * A horizontal layout that you can use to create more complex UIs.
+	 * A horizontal layout that can be used to create more complex UIs.
 	 */
 	class HLayout {
 		// TODO: Descriptions
@@ -780,12 +842,14 @@ declare namespace ui {
 	class Image {
 		/**
 		 * Requires the path to an image be provided
+		 *
 		 * @param imagePath
 		 */
 		constructor(imagePath: string)
 
 		/**
 		 * Set the size.
+		 *
 		 * @param width
 		 * @param height
 		 */
@@ -794,6 +858,7 @@ declare namespace ui {
 
 		/**
 		 * Set the height.
+		 *
 		 * @param height
 		 */
 		// TODO: Verify return type
@@ -801,6 +866,7 @@ declare namespace ui {
 
 		/**
 		 * Set the width.
+		 *
 		 * @param width
 		 */
 		// TODO: Verify return type
@@ -808,6 +874,7 @@ declare namespace ui {
 
 		/**
 		 * Path to an image (relative paths can be built using the `ui.scriptLocation` property)
+		 *
 		 * @param path
 		 */
 		// TODO: Verify return type
@@ -815,6 +882,7 @@ declare namespace ui {
 
 		/**
 		 * Sets a tooltip for this widget
+		 *
 		 * @param tooltip
 		 */
 		// TODO: Verify return type
@@ -1020,6 +1088,7 @@ declare namespace ui {
 	 * This widget can be used for a single line of text entry. Use `MultiLineEdit` when more than one line is required.
 	 */
 	class LineEdit {
+		// TODO: Report missing methods `isHIdden` `setHidden` etc
 		// TODO: Description
 		getText(): string
 		// TODO: Verify return type
@@ -1155,14 +1224,41 @@ declare namespace ui {
 		 * @param value
 		 */
 		constructor(value: float)
-		// TODO: Descriptions
+
+		/**
+		 * TODO: Description
+		 */
 		getValue(): float
+
+		/**
+		 * TODO: Description
+		 *
+		 * @param value
+		 */
 		// TODO: Verify return type
 		setValue(value: number): void
+
+		/**
+		 * TODO: Description
+		 *
+		 * @param min
+		 */
 		// TODO: Verify return type
 		setMin(min: number): void
+
+		/**
+		 * TODO: Description
+		 *
+		 * @param max
+		 */
 		// TODO: Verify return type
 		setMax(max: number): void
+
+		/**
+		 * TODO: Description
+		 *
+		 * @param type
+		 */
 		// TODO: 0 for integers, 1 for doubles.
 		// TODO: Replace with enum once implemented
 		// TODO: Verify return type
@@ -1182,6 +1278,7 @@ declare namespace ui {
 
 		/**
 		 * Override the default size of this widget
+		 *
 		 * @param width
 		 * @param height
 		 */
@@ -1190,6 +1287,7 @@ declare namespace ui {
 
 		/**
 		 * Sets a tooltip for this widget
+		 *
 		 * @param tooltip
 		 */
 		// TODO: Verify return type
@@ -1222,11 +1320,15 @@ declare namespace ui {
 	}
 
 	/**
-	 * Similar to a TabView, a PageView allows you to have many 'pages' of layouts but only show one at a time. They are useful for linear journeys though pages of content - such as wizards and guides. You can then use forward and back buttons to enable paging through such a view.
+	 * Similar to a TabView, a PageView allows a UI to have many 'pages' of
+	 * layouts but only show one at a time. They are useful for linear journeys
+	 * though pages of content - such as wizards and guides. Use forward and
+	 * back buttons to enable paging through such a view.
 	 */
 	class PageView {
 		/**
-		 * add a layout, this is the content of the page
+		 * Add a layout, this is the content of the page
+		 *
 		 * @param layout add a layout, this is the content of the page
 		 */
 		// TODO: Verify return type
@@ -1235,6 +1337,7 @@ declare namespace ui {
 		/**
 		 * TODO: Mention `index` starts at 0
 		 * Set the current page index
+		 *
 		 * @param index
 		 */
 		// TODO: Verify return type
@@ -1309,7 +1412,9 @@ declare namespace ui {
 		// TODO: Verify return type
 		setRange(min: number, max: number): void
 
-		// TODO: Description
+		/**
+		 * Implement this callback function to do something when the slider's value changes.
+		 */
 		// TODO: Verify return type
 		onValueChanged(): void
 		// var slider = new ui.Slider();
@@ -1324,7 +1429,7 @@ declare namespace ui {
 	}
 
 	/**
-	 * A progress bar so you can update your users on long processes.
+	 * A progress bar that can be used to update users on long processes.
 	 */
 	class ProgressBar {
 		/**
@@ -1354,11 +1459,14 @@ declare namespace ui {
 	}
 
 	/**
-	 * Similar to the PageView, the Tab view is perfect for progressively disclosing controls.
+	 * Similar to the PageView, the Tab view is perfect for progressively
+	 * disclosing controls.
 	 */
 	class TabView {
 		/**
-		 * Name the tab, and set the contents of the tab - which should be a layout
+		 * Name the tab, and set the contents of the tab - which should be a
+		 * layout
+		 *
 		 * @param label
 		 * @param layout
 		 */
@@ -1367,6 +1475,7 @@ declare namespace ui {
 
 		/**
 		 * Set the current tab index
+		 *
 		 * @param index
 		 */
 		// TODO: Verify return type
@@ -1412,7 +1521,7 @@ declare namespace ui {
 	}
 
 	/**
-	 * A vertical layout that you can use to create more complex UIs.
+	 * A vertical layout that can be used to create more complex UIs.
 	 */
 	class VLayout {
 		// TODO: Descriptions
@@ -1467,12 +1576,20 @@ declare namespace ui {
 	}
 
 	// TODO: Callbacks
-	// You can register callbacks to learn about various changes in the app.
-	// Supported callbacks
-	//     Composition Changed
-	//     Scene Changed
-	//     Selection Changed
-	//     Attribute Changed
+	// Callbacks can be registered to learn about various changes in the app.
+
+	// onCompChanged
+	// onSceneChanged
+	// onSelectionChanged
+	// onAttrChanged
+	// onAssetAdded
+	// onAssetRemoved
+	// onLayerAdded
+	// onLayerRemoved
+	// onJSError
+	// onAttributeSelectionChanged
+	// onPointSelectionChanged
+	// onKeySelectionChanged
 
 	// If you'd like to see any additional callbacks, please get in touch.
 
@@ -1482,6 +1599,7 @@ declare namespace ui {
 	// selLabel = new ui.Label("Waiting for selection message");
 	// compLabel = new ui.Label("Waiting for Composition message");
 	// sceneLabel = new ui.Label("Waiting for Scene message");
+	// layerLabel = new ui.Label('Waiting for Layer message')
 
 	// // The important thing about this object is the function names within it.
 	// // As long as one of the callback functions is present the `addCallbackObject` function will take the object.
@@ -1490,7 +1608,24 @@ declare namespace ui {
 	//     this.onSelectionChanged = function () {
 	//         selLabel.setText("Selection size: "+api.getSelection().length);
 	//     }
-	//     // This callback will be called whenever the composition changes
+	// This callback will be called whenever the attribute selection changes
+	// this.onAttributeSelectionChanged = function () {
+	// 	selLabel.setText(
+	// 		'Attribute Selection Changed: ' + api.getSelectedAttributes().length
+	// 	)
+	// }
+	// // This callback will be called whenever the keyframe selection changes
+	// this.onKeySelectionChanged = function () {
+	// 	// Please note api.getSelectedKeyframes() is also available.
+	// 	selLabel.setText(
+	// 		'Keyframe Selection Changed: ' + api.getSelectedKeyframeIds().length
+	// 	)
+	// }
+	// // This callback will be called whenever the editable point selection changes
+	// this.onPointSelectionChanged = function () {
+	// 	selLabel.setText('Editable Point Selection Changed')
+	// }
+	// This callback will be called whenever a new composition is loaded
 	//     this.onCompChanged = function () {
 	//         compLabel.setText("Composition Changed: "+api.getNiceName(api.getActiveComp()));
 	//     }
@@ -1505,79 +1640,37 @@ declare namespace ui {
 	//     this.onAttrChanged = function (layerId, attrId) {
 	//         console.log("attr changed: "+ layerId + " attr: " + attrId);
 	//     }
+	// This callback will be called whenever an asset is added
+	// this.onAssetAdded = function (layerId) {
+	// 	layerLabel.setText('Asset added with id: ' + layerId)
 	// }
-
+	// // This callback will be called whenever an asset is removed
+	// this.onAssetRemoved = function (layerId) {
+	// 	layerLabel.setText('Asset removed with id: ' + layerId)
+	// }
+	// // This callback will be called whenever a layer is added
+	// this.onLayerAdded = function (layerId) {
+	// 	layerLabel.setText('Layer added with id: ' + layerId)
+	// }
+	// // This callback will be called whenever a layer is removed
+	// this.onLayerRemoved = function (layerId) {
+	// 	layerLabel.setText('Layer removed with id: ' + layerId)
+	// }
+	// // This callback will be called whenever JavaScript errors from an `exec` or `load` call
+	// this.onJSError = function (error) {
+	// 	console.log('Message from onJSError Callback: ' + error)
+	// }
+	// }
 	// // Create the callback object
 	// var callbackObj = new Callbacks();
-
 	// // build the UI
 	// ui.add(selLabel);
 	// ui.add(compLabel);
 	// ui.add(sceneLabel);
+	// ui.add(layerLabel)
 	// ui.addStretch();
-
 	// // Add a callback object (you can have several if you're that way inclined)
 	// ui.addCallbackObject(callbackObj);
 	// // Show the window
 	// ui.show();
-
-	/**
-	 * Timers can be used in UI scripts and can be useful for polling Web APIs. When the Timer is triggered it will call an `onTimeout()` function on the Timer object. Implement this function to have the Timer execute logic for you when this happens.
-	 * Caution: Timers should not be used to detect changes to the scene, please use callbacks for this purpose.
-	 */
-	// TODO: Report this as missing (is actually in `api` namespace)
-	class Timer {
-		// TODO: `object` should be callback `function` or `class`
-		constructor(callback: object)
-		/**
-		 * Start the timer.
-		 */
-		// TODO: Verify return type
-		start(): void
-
-		/**
-		 * Stop the timer.
-		 */
-		// TODO: Verify return type
-		stop(): void
-
-		/**
-		 * Returns if the timer is currently running.
-		 */
-		isActive(): boolean
-
-		/**
-		 * Set how long the timer is (in milliseconds).
-		 * @param interval
-		 */
-		// TODO: Verify return type
-		setInterval(interval: integer): void
-
-		/**
-		 * Set if the timer is repeating (`true` by default).
-		 * @param repeat
-		 */
-		// TODO: Verify return type
-		setRepeating(repeat: boolean): void
-
-		/**
-		 * Implement this callback function on a timer object and it will be called when the timer runs out.
-		 */
-		// TODO: Verify return type
-		onTimeout(): void
-
-		// // Define a callback class to be used by the timer
-		// function Callbacks() {
-		//     // This callback will be called whenever the timer times out
-		//     this.onTimeout = function () {
-		//         console.log("Timer Expired");
-		//     }
-		// }
-
-		// // Create the callback class
-		// var callbackObj = new Callbacks();
-
-		// // Make the timer and feed it the callback object
-		// var timer = new api.Timer(callbackObj);
-	}
 }

@@ -454,7 +454,9 @@ declare namespace api {
 	// api.play();
 
 	/**
-	 * Connect one layer to another. When you want to connect the result of a Layer (the output), you connect the id connection.
+	 * Connect one layer to another. The result or output of a Layer is
+	 * referred to as the `id` connection.
+	 *
 	 * @param fromLayerId
 	 * @param fromAttrId
 	 * @param toLayerId
@@ -500,7 +502,9 @@ declare namespace api {
 	// console.log(api.getInConnection(primId, "rotation"));
 
 	/**
-	 * Returns an empty string if there's no input on the Attribute in question.
+	 * Returns the input connection to an Attribute. An empty string is
+	 * returned if there's no input on the Attribute in question.
+	 *
 	 * @param layerId
 	 * @param attrId
 	 */
@@ -512,7 +516,8 @@ declare namespace api {
 	// console.log(api.getInConnection(primId, "rotation"));
 
 	/**
-	 * TODO: Description
+	 * Returns all the output connections from an Attribute.
+	 *
 	 * @param layerId
 	 * @param attrId
 	 */
@@ -615,13 +620,13 @@ declare namespace api {
 	 */
 	// TODO: Create interface for object
 	function modifyKeyframeTangent(layerId: string, data: object): void
-	// frame: integer?
+	// frame: integer
 	// inHandle: boolean // An optional boolean value stating if you want the inHandle to be affected.
 	// outHandle: boolean // An optional boolean value stating if you want the outHandle to be affected.
 	// angleLocked: boolean // Boolean stating if the key tangents are angle locked or not (optional)..
 	// weightLocked: boolean // Boolean stating if the key tangents are weight locked or not (optional)..
 	// angle: integer // Set a new angle for the keyframe tangent, 0 is flat (optional).
-	// weight: ? // Set a new weight for the keyframe tangent (optional).
+	// weight: // Set a new weight for the keyframe tangent (optional).
 
 	// Example setting flat keyframes:
 
@@ -664,6 +669,35 @@ declare namespace api {
 	//     // Now weight just the out handles
 	//     api.modifyKeyframeTangent(ellipseId, {"position.x":{"frame": frame, "weight":20, "outHandle": true, "inHandle": false}});
 	// }
+
+	/**
+	 * Get all keyframeIds for a particular layerId's attribute. This can be
+	 * used in combination with `setUserData`.
+	 *
+	 * @param layerId
+	 * @param attrId
+	 */
+	function getKeyframeIdsForAttribute(
+		layerId: string,
+		attrId: string
+	): string[]
+
+	// ```js
+	// var primId = api.primitive("rectangle", "My Rectangle");
+	// api.keyframe(primId, 0, {"position.x": 10});
+	// console.log(api.getKeyframeIdsForAttribute(primId, "position.x"));
+	// ```
+
+	/**
+	 * Get the ids for selected keyframes. This can be used in combination
+	 * with `setUserData`.
+	 */
+	function getSelectedKeyframeIds(): string[]
+
+	// ```js
+	// // Create a Shape, add some keyframes and then select them before running:
+	// console.log(api.getSelectedKeyframeIds());
+	// ```
 
 	/**
 	 * Apply Magic Easing to a new or existing keyframe.
@@ -768,7 +802,16 @@ declare namespace api {
 	// console.log(api.getArrayCount(arrayId, "array"));
 
 	/**
-	 * Add a Dynamic attribute to a layer. Dynamic attributes are a special kind of Array Attribute in that they can be of different types. Only certain special layers can have dynamic attributes added to them, for example the JavaScript layer. Once added you can rename these attributes by using the `api.renameAttribute()` command. The name of the attribute is used in the JavaScript execution, and in the UI, but getting and Setting these attributes is done by index - not the Attribute name.
+	 * Add a Dynamic attribute to a layer. Dynamic attributes are a special
+	 * kind of Array Attribute in that they can be of different types. Only
+	 * certain special layers can have dynamic attributes added to them, for
+	 * example the JavaScript layer.
+	 *
+	 * Once added these attributes can be renamed by using
+	 * `api.renameAttribute()` command. The name of the attribute is used in
+	 * the JavaScript execution, and in the UI, but getting and Setting these
+	 * attributes is done by index - not the Attribute name.
+	 *
 	 * @param layerId
 	 * @param attrId
 	 * @param type
@@ -793,7 +836,11 @@ declare namespace api {
 	// console.log(value);
 
 	/**
-	 * Rename dynamic or array Attributes. Array Attributes can be found on the Array Utilities such as 'Color Array'. Dynamic Attributes can be found for example on the JavaScript layer. Dynamic Attributes are the Attributes that you need to choose a type for when adding them.
+	 * Rename dynamic or array Attributes. Array Attributes can be found on the
+	 * Array Utilities such as the Color Array. Dynamic Attributes can be found
+	 * on Layers like the JavaScript Utility. A type must be chosen for Dynamic
+	 * Attributes when adding them.
+	 *
 	 * @param layerId
 	 * @param attrId
 	 * @param newName
@@ -804,20 +851,41 @@ declare namespace api {
 		newName: string
 	): void
 
+	// const layer = api.primitive('ellipse', 'Ellipse')
+	// api.connect(layer, 'scale.x', layer, 'scale.y')
+	// api.connect(layer, 'position.x', layer, 'position.y')
+	// const outConn = api.getOutConnectedAttributes(layer)
+	// console.log(outConn)
+
 	/**
-	 * TODO: Description
+	 * List the output connections from a Layer.
+	 *
 	 * @param layerId
 	 */
 	function getOutConnectedAttributes(layerId: string): string[]
 
+	// const layer = api.primitive('ellipse', 'Ellipse')
+	// api.connect(layer, 'scale.x', layer, 'scale.y')
+	// api.connect(layer, 'position.x', layer, 'position.y')
+	// const outConn = api.getOutConnectedAttributes(layer)
+	// console.log(outConn)
+
 	/**
-	 * TODO: Description
+	 * List the input connections to a Layer.
+	 *
 	 * @param layerId
 	 */
 	function getInConnectedAttributes(layerId: string): string[]
 
+	// const layer = api.primitive('ellipse', 'Ellipse')
+	// api.connect(layer, 'scale.x', layer, 'scale.y')
+	// api.connect(layer, 'position.x', layer, 'position.y')
+	// const inConn = api.getInConnectedAttributes(layer)
+	// console.log(inConn)
+
 	/**
 	 * TODO: Description
+	 *
 	 * @param layerId
 	 */
 	function getAttributes(layerId: string): string[]
@@ -827,6 +895,20 @@ declare namespace api {
 	// for (aId of attrIds) {
 	//     console.log(aId);
 	// }
+
+	/**
+	 * Check to find out if a particular attribute exists on a Layer.
+	 *
+	 * @param layerId
+	 * @param attrId
+	 */
+	function hasAttribute(layerId: string, attrId: string): boolean
+
+	// ```js
+	// const layer = api.primitive("ellipse", "Ellipse")
+	// const attr = api.hasAttribute(layer, "position.x");
+	// console.log(attr);
+	// ```
 
 	/**
 	 * TODO: Description
@@ -906,6 +988,7 @@ declare namespace api {
 
 	/**
 	 * Flips the points on a Graph Attribute - valid `direction` arguments are "horizontal" and "vertical".
+	 *
 	 * @param layerId
 	 * @param attrId
 	 * @param direction
@@ -919,6 +1002,35 @@ declare namespace api {
 	// let staggerId = api.create("stagger", prefix+"Stagger");
 	// api.flipGraph(staggerId, "graph", "vertical");
 
+	/**
+	 * Add an attribute to the Control Centre.
+	 *
+	 * @param layerId
+	 * @param attrId
+	 */
+	function addToControlCentre(layerId: string, attrId: string): void
+
+	// ```js
+	// var shapeId = api.create("null", "My Null");
+	// api.addToControlCentre(shapeId, "position.x");
+	// ```
+
+	/**
+	 * Remove an attribute from the [Control Centre](../../user-interface/menus/window-menu/control-centre.mdx).\
+	 *
+	 * @param layerId
+	 * @param attrId
+	 */
+	function removeFromControlCentre(layerId: string, attrId: string): void
+
+	// ```js
+	// //Create a Null and add position.x to Control Centre
+	// var shapeId = api.create("null", "My Null");
+	// api.addToControlCentre(shapeId, "position.x");
+	// //Then, assuming the null's LayerId is null#1, remove position.x from the Control Centre
+	// api.removeFromControlCentre("null#1", "position.x");
+	// ```
+
 	// # Shapes
 
 	/**
@@ -929,7 +1041,10 @@ declare namespace api {
 	function centrePivot(layerId: string, centroid: boolean): void
 
 	/**
-	 * Freeze the transform (position, rotation, scale, pivot, skew) of the specified layer. For example you can use this if you want to make a Shape's current position its zero position.
+	 * Freeze the transform (position, rotation, scale, pivot, skew) of the
+	 * specified layer. This can be used to make a Shape's current position
+	 * its zero position.
+	 *
 	 * @param layerId
 	 */
 	function freezeTransform(layerId: string): void
@@ -950,7 +1065,10 @@ declare namespace api {
 
 	// Editable Shapes
 	/**
-	 * This will convert the selected Shape into an Editable Shape, which you can then edit with the getEditablePath and setEditablePath functions. If makeACopy is set to false the original layer will be deleted.
+	 * This will convert the selected Shape into an Editable Shape, which can
+	 * then be edited with the `getEditablePath` and `setEditablePath`
+	 * functions.
+	 *
 	 * @param layerId
 	 * @param makeACopy
 	 */
@@ -960,7 +1078,24 @@ declare namespace api {
 	// var editableId = api.makeEditable(primId, false);
 
 	/**
-	 * This function returns an Editable Path object which you can edit and then set back to any Editable Shape layer.
+	 * This function returns an `Editable Path` object which can be edited and
+	 * then set back to any `Editable Shape` layer.
+	 *
+	 * `Editable Paths` and ordinary Paths (like the one in the Cavalry Module
+	 * are distinct. The `worldSpace` argument can be used to determine if path
+	 * point coordinates are returned in **local** – unaware of the Editable
+	 * Shape's position, rotation and scale – or **world** space where those
+	 * transformations are applied.
+	 *
+	 * An `Editable Path`'s points have **in handles** and **out handles** just
+	 * like the points that are edited in the Viewport. They also have weight
+	 * and angle locking settings.
+	 *
+	 * Ordinary Paths are constructed using `moveTo`, `lineTo` and `cubicTo`.
+	 *
+	 * In an `Editable Path`, an extra point can be added to the Contour's
+	 * `points` array.
+	 *
 	 * @param layerId
 	 * @param worldSpace
 	 */
@@ -1013,7 +1148,15 @@ declare namespace api {
 	// api.setEditablePath(editableId, path);
 
 	/**
-	 * This will set the Editable Path on an Editable Shape. See getEditablePath for details on the Editable Path schema. The worldSpace argument will determine if you set path point coordinates in local (unaware of the Editable Shape's position, rotation and scale) or world space where those transformations are applied. If you get the Editable Path in world space, you should also set it in world space.
+	 * This will set the Editable Path on an Editable Shape. See
+	 * `getEditablePath` for details on the Editable Path schema. The
+	 * `worldSpace` argument will determine if path point coordinates are set
+	 * in **local** space – unaware of the Editable Shape's position, rotation
+	 * and scale – or **world** space where those transformations are applied.
+	 *
+	 * If the Editable Path is accessed in world space, it should also be set
+	 * in world space.
+	 *
 	 * @param layerId
 	 * @param worldSpace
 	 * @param pathObject
@@ -1125,7 +1268,13 @@ declare namespace api {
 	// api.soloLayers([]);
 
 	/**
-	 * Render the current frame out as an SVG with a given scale set by scalePercent. Setting skipComps to true will mean that Composition backgrounds do not get exported. Rendering in this way will only render the visible layers (i.e any soloed layers). The render extension (.svg) will be added to the filename for you.
+	 * Render the current frame out as an SVG with a given scale set by
+	 * scalePercent. Setting `skipComps` to true will mean that Composition
+	 * backgrounds do not get exported. Rendering in this way will only render
+	 * the visible layers (i.e any soloed layers).
+	 *
+	 * The render extension (.svg) will be added to the filename.
+	 *
 	 * @param filePath
 	 * @param scalePercent
 	 * @param skipComps
@@ -1195,6 +1344,14 @@ declare namespace api {
 	function saveScene(): void
 
 	/**
+	 * Import a Cavalry Scene (.cv) or Component (.cvc) into the currently open Composition.
+	 *
+	 * @param path
+	 */
+	// TODO: Confirm return type
+	function importScene(path: string): void
+
+	/**
 	 * Load an asset with the given path. Set `isSequence` to `true` if you want Cavalry to attempt to load an image sequence from the file path.
 	 * @param path
 	 * @param isSequence
@@ -1225,7 +1382,9 @@ declare namespace api {
 	function replaceAsset(assetId: string, newPath: string): void
 
 	/**
-	 * Given a Text Asset (which is a `.json` file) or a Spreadsheet Asset, get the JSON object that Asset represents.
+	 * Given a Text Asset (which is a `.json` file) or a Spreadsheet Asset, get
+	 * the JSON object that Asset represents.
+	 *
 	 * @param assetId
 	 */
 	function jsonFromAsset(assetId: string): object
@@ -1240,7 +1399,7 @@ declare namespace api {
 	//     }
 	// }
 
-	// It's also possible to use jsonFromAsset to query a .csv asset. CSV Assets will contain three members. rows will give you access to the row data. min will give you access to the minimum value of the column (if there is one), and max will give the maximum value.
+	// It's also possible to use `jsonFromAsset` to query a .csv asset. CSV Assets will contain three members. `rows` will provide access to the row data. `min` will provide access to the minimum value of the column (if there is one), and `max` will give the maximum value.
 
 	// // Return the first entry in the 'Text' column of a .csv asset (asset#2)
 	// const csv = api.jsonFromAsset("asset#2");
@@ -1275,7 +1434,8 @@ declare namespace api {
 	function clearProject(): void
 
 	/**
-	 * Returns the currently active (open) Composition's id. You can then use this to set Composition settings such as resolution and frame range.
+	 * Returns the currently active (open) Composition's id. This can be used to
+	 * set Composition settings such as Resolution and Frame Range.
 	 */
 	function getActiveComp(): string
 
@@ -1431,7 +1591,11 @@ declare namespace api {
 	// Files and paths are absolute, use the methods in this section as the base path if you want to build paths relative to your project. If you're building a UI script you will have access to the `ui.scriptLocation` variable, which will allow you to build paths relative to your script.
 
 	/**
-	 * This will load and run a JavaScript file, thus making the functions contained within it available for you to use in your current script. This is not a module loader. Scripts loaded in this way are not placed into a namespace/module and are free functions/objects.
+	 * This will load and run a JavaScript file making the functions contained
+	 * within it available to use in the current script. This is not a module
+	 * loader. Scripts loaded in this way are not placed into a
+	 * namespace/module and are free functions/objects.
+	 *
 	 * @param filePath
 	 */
 	function load(filePath: string): boolean
@@ -1444,6 +1608,30 @@ declare namespace api {
 	// // Then in Cavalry
 	// api.load("path/to/script.js");
 	// helloWorld();
+
+	/**
+	 * Like `load`, `exec` will load and run JavaScript but it does not require
+	 * a saved file.
+	 *
+	 * The first argument is a `scriptId`. The `scriptId` exists because Cavalry
+	 * asks for permission to perform certain tasks (like using the WebAPIs or
+	 * writing to the hard drive) on a per-script basis. This information is
+	 * stored using the `scriptId` so that permission will only be requested
+	 * once per Id.
+	 *
+	 * We recommend using reverse domain notation `com.<yourCompany>.<yourScript>`
+	 * as a basis for `scriptId`s.
+	 *
+	 * @param scriptId
+	 * @param scriptSource
+	 * @returns
+	 */
+	function exec(scriptId: string, scriptSource: string): boolean
+
+	// ```js
+	// let myScript = "console.log('Hello World!')"
+	// api.exec("com.scenegroup.scriptName", myScript)
+	// ```
 
 	/**
 	 * Gets the Project path (if a Project is set). This path does not include a trailing `/`
@@ -1540,7 +1728,14 @@ declare namespace api {
 	// console.log(api.getAppAssetsPath());
 
 	/**
-	 * Write a string to a file. Returns if the write was successful. You cannot write binary data from this API, for that, please use `writeEncodedToBinaryFile`.
+	 * Write a string to a file. Returns if the write was successful. You cannot
+	 * write binary data from this API, for that, please use
+	 * `writeEncodedToBinaryFile`.
+	 *
+	 * JavaScript does not support single backslashes (`\`) in file paths (it is
+	 * an escape character) but slashes (`/`) are valid on Windows. Alternatively,
+	 * replace single backslashes with double backslashes (`\\`).
+	 *
 	 * @param filePath
 	 * @param content
 	 */
@@ -1598,7 +1793,10 @@ declare namespace api {
 	// console.log(text);
 
 	/**
-	 * Read a binary file (like an image), and encode it into base64, this will allow you to store it as a variable in JavaScript for use later (i.e with `writeEncodedToBinaryFile`).
+	 * Read a binary file (like an image), and encode it into base64. This can
+	 * then be stored as a variable in JavaScript for use later (i.e with
+	 * `writeEncodedToBinaryFile`).
+	 *
 	 * @param filePath
 	 */
 	function encodeBinary(filePath: string): string
@@ -1700,6 +1898,146 @@ declare namespace api {
 	// }
 
 	/**
+	 * Convert a list of Layers into their 'save file' representation.
+	 *
+	 * The first argument is an array of strings `[string]` containing the
+	 * layers to be serialised. The second argument is `withConnections` - if
+	 * this is `true`, any input connections will also be serialised. For
+	 * example, if a **Shape** in the array is connected to a **Color Array**,
+	 * setting `withConnections` to `true` will also serialise the
+	 * **Color Array**.
+	 *
+	 * By saving serialised files with a `.cvc` extension, they can then be
+	 * imported back into a Scene via the **File > Import Scene...** menu. Files
+	 * saved with any other extension can be imported using the deserialised
+	 * function.
+	 *
+	 * @param layerIds
+	 * @param withConnections
+	 */
+	function serialise(layerIds: string[], withConnections: boolean): string
+
+	// ```js
+	// var primId = api.primitive("polygon", "My Polygon");
+	// api.set(primId, {"material.materialColor": "#8dc429"})
+	// api.writeToFile("/Users/username/Desktop/textExport.txt", api.serialise([primId], false));
+	// ```
+
+	/**
+	 * TODO: Description
+	 *
+	 * @param filePath
+	 */
+	// TODO: Verify return type
+	function deserialise(filePath: string): void
+
+	// ```js
+	// api.deserialise("/Users/username/Desktop/textExport.txt")
+	// ```
+
+	/**
+	 * Save a preference
+	 * TODO: Add info regarding the prefs file
+	 * @param key
+	 * @param preferences
+	 */
+	// TODO: Verify return type
+	function setPreferenceObject(key: string, preferences: object): void
+
+	// ```js
+	// const hello = {first:"Hello, ", second:"World", third:"!"};
+	// api.setPreferenceObject("testKey", hello);
+	// ```
+
+	/**
+	 * Query to see if preference exists.
+	 * TODO: Add info regarding the prefs file
+	 *
+	 * @param key
+	 */
+	function hasPreferenceObject(key: string): boolean
+
+	// ```js
+	// const hello = {first:"Hello, ", second:"World", third:"!"};
+	// api.setPreferenceObject("testKey", hello);
+	// console.log( api.hasPreferenceObject("testKey") );
+	// ```
+
+	/**
+	 * Return any existing preferences.
+	 * TODO: Add info regarding the prefs file
+	 *
+	 * @param key
+	 */
+	function getPreferenceObject(key: string): object
+
+	// ```js
+	// const hello = {first:"Hello, ", second:"World", third:"!"};
+	// api.setPreferenceObject("testKey", hello);
+	// const myPrefs = api.getPreferenceObject("testKey");
+	// console.log(myPrefs.first+myPrefs.second+myPrefs.third);
+	// ```
+
+	/**
+	 * Save arbitrary data to a layer. This could be a string, or an object.
+	 *
+	 * @param layerId
+	 * @param key
+	 * @param value
+	 */
+	// TODO: Verify a return type
+	function setUserData(layerId: string, key: string, value: object): void
+
+	// ```js
+	// var primId = api.primitive("star", "Star");
+	// api.setUserData(primId, "test", "Hello, World!");
+	// ```
+
+	/**
+	 * Query to see if user data with a given `key` exists.
+	 * TODO: Link to `setUserData`
+	 * @param key
+	 */
+	function hasUserDataKey(key: string): boolean
+
+	// ```js
+	// var primId = api.primitive("star", "Star");
+	// api.setUserData(primId, "test", "Hello, World!");
+	// console.log(api.hasUserDataKey(primId, "test"));
+	// ```
+
+	/**
+	 * Return any existing user data for the given `key`.
+	 *
+	 * @param layerId
+	 * @param key
+	 */
+	function getUserDataKey(layerId: string, key: string): object
+
+	// ```js
+	// var primId = api.primitive("star", "Star");
+	// api.setUserData(primId, "test", "Hello, World!");
+	// console.log(api.getUserDataKey(primId, "test"));
+	// ```
+
+	/**
+	 * Each layer in Cavalry has a unique identifier (a UUID). Layers based on
+	 * the UUID can be identified with this API.
+	 *
+	 * See the example for how to get a UUID from a layer.
+	 *
+	 * @param uuid
+	 */
+	function getLayerFromUUID(uuid: string): string
+
+	// ```js
+	// var primId = api.primitive("star", "Star")
+	// let uuid = api.get(primId, "uuid")
+	// let idCheck = api.getLayerFromUUID(uuid);
+	// console.log(primId+" === "+idCheck);
+	// ```
+
+	/**
 	 * Cavalry provides a way to interact with API endpoints on the web by creating
 	 * a WebClient object and interacting with its methods to `get`, `post` or `put`.
 	 * These API calls are blocking meaning they must successfully complete before
@@ -1715,6 +2053,7 @@ declare namespace api {
 		constructor(url: string)
 		/**
 		 * Sets basic authentication for any subsequent requests.
+		 *
 		 * @param username
 		 * @param password
 		 */
@@ -1722,6 +2061,7 @@ declare namespace api {
 
 		/**
 		 * Sets digest authentication for any subsequent requests.
+		 *
 		 * @param username
 		 * @param password
 		 */
@@ -1729,12 +2069,14 @@ declare namespace api {
 
 		/**
 		 * Sets token based authentication for any subsequent requests.
+		 *
 		 * @param token
 		 */
 		setTokenAuthentication(token: string): void
 
 		/**
 		 * Adds a header for any following requests. API keys, app keys, content types and so forth can be added in this way.
+		 *
 		 * @param key
 		 * @param value
 		 */
@@ -1924,5 +2266,70 @@ declare namespace api {
 		 * communication with things like midi-controllers.
 		 */
 		setRealtime(): void
+	}
+
+	/**
+	 * Timers can be used in UI scripts and can be useful for polling Web APIs.
+	 * When the Timer is triggered it will call an `onTimeout()` function on
+	 * the Timer object. Implement this function for a Timer to execute logic
+	 * when this happens.
+	 *
+	 * Caution: Timers should not be used to detect changes to the scene,
+	 * please use callbacks for this purpose.
+	 */
+	// TODO: Report this as missing (is actually in `api` namespace)
+	class Timer {
+		// TODO: `object` should be callback `function` or `class`
+		constructor(callback: object)
+		/**
+		 * Start the timer.
+		 */
+		// TODO: Verify return type
+		start(): void
+
+		/**
+		 * Stop the timer.
+		 */
+		// TODO: Verify return type
+		stop(): void
+
+		/**
+		 * Returns if the timer is currently running.
+		 */
+		isActive(): boolean
+
+		/**
+		 * Set how long the timer is (in milliseconds).
+		 * @param interval
+		 */
+		// TODO: Verify return type
+		setInterval(interval: integer): void
+
+		/**
+		 * Set if the timer is repeating (`true` by default).
+		 * @param repeat
+		 */
+		// TODO: Verify return type
+		setRepeating(repeat: boolean): void
+
+		/**
+		 * Implement this callback function on a timer object and it will be called when the timer runs out.
+		 */
+		// TODO: Verify return type
+		onTimeout(): void
+
+		// // Define a callback class to be used by the timer
+		// function Callbacks() {
+		//     // This callback will be called whenever the timer times out
+		//     this.onTimeout = function () {
+		//         console.log("Timer Expired");
+		//     }
+		// }
+
+		// // Create the callback class
+		// var callbackObj = new Callbacks();
+
+		// // Make the timer and feed it the callback object
+		// var timer = new api.Timer(callbackObj);
 	}
 }
