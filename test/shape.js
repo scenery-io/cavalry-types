@@ -1,6 +1,3 @@
-/// <reference path="../index.d.ts" />
-// @ts-check
-
 var write = 'shape\n'
 var layer = api.primitive('circle', 'circle')
 var path = new cavalry.Path()

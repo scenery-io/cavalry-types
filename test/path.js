@@ -1,6 +1,3 @@
-/// <reference path="../index.d.ts" />
-// @ts-check
-
 var write = 'path\n'
 
 var path = new cavalry.Path()

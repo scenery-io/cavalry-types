@@ -1,6 +1,3 @@
-/// <reference path="../index.d.ts" />
-// @ts-check
-
 var write = 'cavalry\n'
 
 var random = cavalry.random(1, 1, 1)

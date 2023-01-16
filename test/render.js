@@ -1,6 +1,3 @@
-/// <reference path="../index.d.ts" />
-// @ts-check
-
 var write = 'render\n'
 
 var compId = api.createComp('comp')

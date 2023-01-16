@@ -1,6 +1,3 @@
-/// <reference path="../index.d.ts" />
-// @ts-check
-
 var write = 'composition\n'
 
 var setFrame = api.setFrame(10)

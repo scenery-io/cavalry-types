@@ -1,6 +1,3 @@
-/// <reference path="../index.d.ts" />
-// @ts-check
-
 var write = 'attribute\n'
 
 var layer = api.primitive('circle', 'circle')

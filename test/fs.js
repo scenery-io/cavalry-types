@@ -1,6 +1,3 @@
-/// <reference path="../index.d.ts" />
-// @ts-check
-
 var write = 'fs\n'
 
 var load = api.load('/Users/Remco/Desktop/hey.js')

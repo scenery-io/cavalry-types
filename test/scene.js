@@ -1,6 +1,3 @@
-/// <reference path="../index.d.ts" />
-// @ts-check
-
 var write = 'scene\n'
 
 var layer = api.primitive('circle', 'circle')
@@ -24,7 +21,7 @@ var textFromAsset = api.textFromAsset(loadAsset)
 log('textFromAsset', textFromAsset)
 var loadGoogleSheet = api.loadGoogleSheet(
 	'1NkcuipSPYmXHvVTzAj4rhdhixtF3mdSZiINlb3wFnfE',
-	''
+	'0'
 )
 log('loadGoogleSheet', loadGoogleSheet)
 var setProject = api.setProject('')

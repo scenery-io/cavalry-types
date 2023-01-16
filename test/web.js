@@ -1,6 +1,3 @@
-/// <reference path="../index.d.ts" />
-// @ts-check
-
 var write = 'web\n'
 
 log('\nCLIENT', '')
@@ -20,8 +17,8 @@ var status = client.status()
 log('status', status)
 var body = client.body()
 log('body', body)
-var get = client.get('https://google.com')
-log('get', get)
+var clientGet = client.get('https://google.com')
+log('get', clientGet)
 var post = client.post('/hello', 'content', 'text/plain')
 log('post', post)
 var put = client.put('/hello', 'content', 'text/plain')
