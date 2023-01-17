@@ -1,54 +1,53 @@
 /**
- * This module gives access to the Path class, functions for creating noise and
+ * This namespace gives access to the `Path` class, functions for creating noise and
  * random numbers along with a number of utilities to make working with color
- * easier, and, a whole host of maths functions such as clamp, norm, map and
- * dist. The following methods are available to the JavaScript Utility, and the
- * JavaScript Editor. Everything in this module is in the cavalry namespace and
- * so methods need prefixing with `cavalry.` e.g `var distance = cavalry.dist(0,0,100,200);`
+ * easier, and, a whole host of maths functions such as `clamp`, `norm`, `map` and
+ * `dist`. The methods are available to the JavaScript Utility, and the JavaScript
+ * Editor. Everything in this namespace needs to be prefixed with `cavalry.`
+ *
+ * @example
+ * var distance = cavalry.dist(0, 0, 100, 200);
  */
 declare namespace cavalry {
 	/**
-	 * The Cavalry module contains a Path class which can be used to construct paths which
-	 * can then be drawn on screen. Path itself contains several methods.
+	 * Construct paths which can then be drawn on screen.
 	 */
 	class Path {
 		/**
 		 * Returns a boolean signifying if the path is closed.
 		 */
-		// isClosed(): boolean
 		readonly isClosed: boolean
 
 		/**
 		 * Returns the length of the path
 		 */
-		// length(): float
-		readonly length: boolean
+		readonly length: float
 
 		/**
 		 * Start a new contour
 		 *
-		 * @param x
-		 * @param y
+		 * @param x X coordinate
+		 * @param y Y coordinate
 		 */
 		moveTo(x: float, y: float): void
 
 		/**
 		 * Draw a line to x, y
 		 *
-		 * @param x The `x` coordinate
-		 * @param y The `y` coordinate
+		 * @param x X coordinate
+		 * @param y Y coordinate
 		 */
 		lineTo(x: float, y: float): void
 
 		/**
 		 * Draw a cubic bezier with two control points, and an end point.
 		 *
-		 * @param cp1X
-		 * @param cp1Y
-		 * @param cp2X
-		 * @param cp2Y
-		 * @param endX
-		 * @param endY
+		 * @param cp1X X position of the 1st control point
+		 * @param cp1Y Y position of the 1st control point
+		 * @param cp2X X position of the 2nd control point
+		 * @param cp2Y Y position of the 2nd control point
+		 * @param endX X position of the end point
+		 * @param endY Y position of the end point
 		 */
 		cubicTo(
 			cp1X: float,
@@ -60,6 +59,17 @@ declare namespace cavalry {
 		): void
 
 		/**
+		 * Draw an arc with two control points and a radius
+		 *
+		 * @param x1 X-axis of the arc's start point
+		 * @param y1 Y-axis of the arc's start point
+		 * @param x2 X-axis of the arc's end point
+		 * @param y2 Y-axis of the arc's end point
+		 * @param radius Distance from arc to circle center
+		 */
+		arcTo(x1: float, y1: float, x2: float, y2: float, radius: float): void
+
+		/**
 		 * Close the path
 		 */
 		close(): void
@@ -69,10 +79,10 @@ declare namespace cavalry {
 		 * separate path and then `.append()` it into this one if needed. The
 		 * position arguments may be removed as a result of this.
 		 *
-		 * @param text
-		 * @param fontSize
-		 * @param positionX
-		 * @param positionY
+		 * @param text Text to draw
+		 * @param fontSize Font size of the text
+		 * @param positionX X position of the text
+		 * @param positionY Y position of the text
 		 */
 		addText(
 			text: string,
@@ -84,20 +94,20 @@ declare namespace cavalry {
 		/**
 		 * Convenience method for drawing a rectangle.
 		 *
-		 * @param fromX
-		 * @param fromY
-		 * @param toX
-		 * @param toY
+		 * @param fromX X position of the starting corner
+		 * @param fromY Y position of the starting corner
+		 * @param toX X position of the ending corner
+		 * @param toY Y position of the ending corner
 		 */
 		addRect(fromX: float, fromY: float, toX: float, toY: float): void
 
 		/**
 		 * Convenience method for drawing an ellipse.
 		 *
-		 * @param centreX
-		 * @param centreY
-		 * @param radiusX
-		 * @param radiusY
+		 * @param centreX X position of the centre
+		 * @param centreY Y position of the centre
+		 * @param radiusX Radius on the X axis
+		 * @param radiusY Radius on the Y axis
 		 */
 		addEllipse(
 			centreX: float,
@@ -114,189 +124,187 @@ declare namespace cavalry {
 		/**
 		 * Move the path by x and y.
 		 *
-		 * @param x
-		 * @param y
+		 * @param x Amount of translation on the X axis
+		 * @param y Amount of translation on the Y axis
 		 */
 		translate(x: float, y: float): void
 
 		/**
 		 * Rotate the path.
 		 *
-		 * @param degrees
+		 * @param degrees Amount of degrees to rotate the path
 		 */
 		rotate(degrees: float): void
 
 		/**
 		 * Scale the path.
 		 *
-		 * @param x
-		 * @param y
+		 * @param x Amount to scale on the X axis
+		 * @param y Amount to scale on the Y axis
 		 */
 		scale(x: float, y: float): void
 
 		/**
 		 * Add one path to another
 		 *
-		 * @param pathToAdd
+		 * @param pathToAdd `Path` to be added to the current path
 		 */
 		append(pathToAdd: Path): void
 
 		/**
 		 * Perform a Boolean intersection.
 		 *
-		 * @param intersectPath
+		 * @param intersectPath `Path` that acts as the intersect on the current path
 		 */
 		intersect(intersectPath: Path): void
 
 		/**
 		 * Perform a Boolean unite.
 		 *
-		 * @param unitePath
+		 * @param unitePath `Path` that gets united with the current path
 		 */
 		unite(unitePath: Path): void
 
 		/**
 		 * Perform a Boolean difference.
 		 *
-		 * @param differencePath
+		 * @param differencePath `Path` that acts as the boolean on the current path
+		 *
+		 * @example
+		 * // The below example can be set on the JavaScript Shape.
+		 * function boolTest() {
+		 *   var mainPath = new cavalry.Path();
+		 *   mainPath.addRect(-100, 100, 100, -100);
+		 *   var boolTest = new cavalry.Path();
+		 *   boolTest.addEllipse(0, 0, 200, 40);
+		 *   mainPath.difference(boolTest);
+		 *   return mainPath;
+		 * }
+		 * boolTest();
 		 */
 		difference(differencePath: Path): void
 
-		// The below example can be set on the JavaScript Shape.
-		// ```js
-		// function boolTest() {
-		//     var mainPath = new cavalry.Path();
-		//     mainPath.addRect(-100,100,100,-100);
-		//     var boolTest = new cavalry.Path();
-		//     boolTest.addEllipse(0,0,200,40);
-		//     mainPath.difference(boolTest);
-		//     return mainPath;
-		// }
-
-		// boolTest();
-		// ```
-
 		/**
 		 * Resample lines as curves (the algorithm used by our Pencil Tool).
-		 * TODO: Requires clarification
 		 */
 		convertToCurves(): void
 
 		/**
 		 * Convert (vectorise) any curves into a series of lines.
 		 *
-		 * @param linesPerCurve
+		 * @param linesPerCurve Number of lines per curve
 		 */
 		convertToLines(linesPerCurve: integer): void
 
 		/**
 		 * Converts the Path to an object that can be saved and read at a later time
+		 *
+		 * @example
+		 * const path = new cavalry.Path();
+		 * path.moveTo(0.,0.);
+		 * path.lineTo(0.,-100.);
+		 * path.lineTo(300.,-100.);
+		 * // Convert to an Object
+		 * const js = path.toObject();
+		 * // Convert from a saved object
+		 * path.fromObject(js);
+		 * console.log(path.length);
 		 */
 		// TODO: Create interface
 		toObject(): object
 
-		// ```js
-		// var path = new cavalry.Path();
-		// path.moveTo(0.,0.);
-		// path.lineTo(0.,-100.);
-		// path.lineTo(300.,-100.);
-		// // Convert to an Object
-		// var js = path.toObject();
-		// // Convert from a saved object
-		// path.fromObject(js);
-		// console.log(path.length);
-		// ```
-
 		/**
 		 * Sets the path data from an object
 		 *
-		 * @param objectToRead
+		 * @param objectToRead TODO: Description
+		 *
+		 * @example
+		 * const path = new cavalry.Path();
+		 * path.moveTo(0.,0.);
+		 * path.lineTo(0.,-100.);
+		 * path.lineTo(300.,-100.);
+		 * // Convert to an Object
+		 * const js = path.toObject();
+		 * // Convert from a saved object
+		 * path.fromObject(js);
+		 * console.log(path.length);
 		 */
 		// TODO: Create interface
 		fromObject(objectToRead: object): void
-
-		// ```js
-		// var path = new cavalry.Path();
-		// path.moveTo(0.,0.);
-		// path.lineTo(0.,-100.);
-		// path.lineTo(300.,-100.);
-		// // Convert to an Object
-		// var js = path.toObject();
-		// // Convert from a saved object
-		// path.fromObject(js);
-		// console.log(path.length);
-		// ```
-
-		/**
-		 * TODO: Description
-		 *
-		 * @param x1 X-axis of the arc's start point
-		 * @param y1 Y-axis of the arc's start point
-		 * @param x2 X-axis of the arc's end point
-		 * @param y2 Y-axis of the arc's end point
-		 * @param radius Distance from arc to circle center
-		 */
-		arcTo(x1: float, y1: float, x2: float, y2: float, radius: float): void
 	}
 
 	// Math Helper Functions
+
 	/**
 	 * Returns a random number
 	 *
-	 * @param min
-	 * @param max
-	 * @param seed
+	 * @param min Minimum allowed value
+	 * @param max Maximum allowed value
+	 * @param seed Seed value
+	 *
+	 * @example
+	 * for (let i = 1; i < 10; i++) {
+	 *   console.log(cavalry.random(0, 10, i));
+	 * }
 	 */
 	function random(min: float, max: float, seed: integer): float
-	// for (var i = 1; i < 10; i +=1){
-	//     console.log(cavalry.random(0, 10, i));
-	// }
 
 	/**
 	 * Returns random numbers with a uniform distribution
 	 *
-	 * @param min
-	 * @param max
-	 * @param seed
+	 * @param min Minimum allowed value
+	 * @param max Maximum allowed value
+	 * @param seed Seed value
+	 *
+	 * @example
+	 * 	for (var i = 1; i < 10; i++) {
+	 *   console.log(cavalry.uniform(0, 10, i));
+	 * }
 	 */
 	function uniform(min: float, max: float, seed: integer): float
-	// for (var i = 1; i < 10; i +=1){
-	//     console.log(cavalry.uniform(0, 10, i));
-	// }
 
 	/**
-	 * Returns 1d Improved Perlin noise
+	 * Returns 1D improved Perlin noise
 	 *
-	 * @param x
-	 * @param seed
-	 * @param frequency
+	 * @param x TODO: Description
+	 * @param seed TODO: Description
+	 * @param frequency TODO: Description
+	 *
+	 * @example
+	 * for (let i = 1; i < 10; i++) {
+	 *   console.log(cavalry.noise1d(i, 0, 1));
+	 * }
 	 */
 	function noise1d(x: float, seed: integer, frequency: float): float
-	// for (var i = 1; i < 10; i += 1){
-	//     console.log(cavalry.noise1d(i, 0, 1));
-	// }
 
 	/**
-	 * Returns 2d Improved Perlin noise
+	 * Returns 2D improved Perlin noise
 	 *
-	 * @param x
-	 * @param y
-	 * @param seed
-	 * @param frequency
+	 * @param x TODO: Description
+	 * @param y TODO: Description
+	 * @param seed TODO: Description
+	 * @param frequency TODO: Description
+	 *
+	 * @example
+	 * for (let i = 1; i < 10; i++) {
+	 *   console.log(cavalry.noise2d(i, api.getFrame(), 0, 1));
+	 * }
 	 */
 	function noise2d(x: float, y: float, seed: integer, frequency: float): float
-	// for (var i = 1; i < 10; i +=1){
-	//     console.log(cavalry.noise2d(i, api.getFrame(), 0, 1));
-	// }
 
 	/**
-	 * Returns 3d Improved Perlin noise
+	 * Returns 3D improved Perlin noise
 	 *
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param seed
-	 * @param frequency
+	 * @param x TODO: Description
+	 * @param y TODO: Description
+	 * @param z TODO: Description
+	 * @param seed TODO: Description
+	 * @param frequency TODO: Description
+	 *
+	 * @example
+	 * for (let i = 1; i < 10; i++) {
+	 *   console.log(cavalry.noise3d(i, i + 100, api.getFrame(), 0, 0.1));
+	 * }
 	 */
 	function noise3d(
 		x: float,
@@ -305,30 +313,33 @@ declare namespace cavalry {
 		seed: integer,
 		frequency: float
 	): float
-	// for (var i = 1; i < 10; i +=1){
-	//     console.log(cavalry.noise3d(i, i+100, api.getFrame(), 0, 0.1));
-	// }
 
 	/**
-	 * Get the distance between two points
+	 * Returns the distance between two points
 	 *
-	 * @param x1
-	 * @param y1
-	 * @param x2
-	 * @param y2
+	 * @param x1 X position of first point
+	 * @param y1 Y position of first point
+	 * @param x2 X position of second point
+	 * @param y2 Y position of second point
+	 *
+	 * @example
+	 * const d = cavalry.dist(0, 0, 100, 100);
+	 * console.log(d);
 	 */
 	function dist(x1: float, y1: float, x2: float, y2: float): float
-	// var d = cavalry.dist(0,0,100,100)
-	// console.log(d);
 
 	/**
 	 * Remap a value into a new range
 	 *
-	 * @param value
-	 * @param inMin
-	 * @param inMax
-	 * @param outMin
-	 * @param outMax
+	 * @param value TODO: Description
+	 * @param inMin TODO: Description
+	 * @param inMax TODO: Description
+	 * @param outMin TODO: Description
+	 * @param outMax TODO: Description
+	 *
+	 * @example
+	 * // Remap 30 from the range 0..60 to the range 100..300. Returns 200.
+	 * console.log(cavalry.map(30, 0, 60, 100, 300));
 	 */
 	function map(
 		value: float,
@@ -337,133 +348,152 @@ declare namespace cavalry {
 		outMin: float,
 		outMax: float
 	): float
-	// remap 30 from the range 0..60 to the range 100..300. Prints 200.
-	// console.log(cavalry.map(30,0,60,100,300));
 
 	/**
-	 * Normalise a value between 0..1
+	 * Normalise a value between 0 and 1
 	 *
-	 * @param value
-	 * @param min
-	 * @param max
+	 * @param value Value to be normalised
+	 * @param min TODO: Description
+	 * @param max TODO: Description
+	 *
+	 * @example
+	 * // Returns 0.55
+	 * console.log(cavalry.norm(55, 0, 100));
 	 */
 	function norm(value: float, min: float, max: float): float
-	// Prints 0.55;
-	// console.log(cavalry.norm(55,0,100));
 
 	/**
-	 * Clamp a value min and max.
+	 * Clamp a value between min and max.
 	 *
-	 * @param value
-	 * @param min
-	 * @param max
+	 * @param value Value to be clamped
+	 * @param min Minimum allowed value
+	 * @param max Maximum allowed value
+	 *
+	 * @example
+	 * // Returns 100
+	 * console.log(cavalry.clamp(150, 0, 100));
 	 */
 	function clamp(value: float, min: float, max: float): float
-	// Prints 100;
-	// console.log(cavalry.clamp(150,0,100));
 
 	/**
 	 * Interpolate between a minimum and maximum value. The value returned is the value at `t` (between 0 and 1).
 	 *
-	 * @param min
-	 * @param max
-	 * @param t
+	 * @param min Minimum value
+	 * @param max Maximum value
+	 * @param t Time between 0 and 1
 	 */
 	function lerp(min: float, max: float, t: float): float
 
 	/**
-	 * Convert an angle (radians) into a vector (x, y) with values between 0..1
-	 *
-	 * @param angle
-	 */
-	function angleFromVector(angle: float): object
-	// var ang = cavalry.angleFromVector(1,0);
-	// console.log(ang);
-	// var vec = cavalry.vectorFromAngle(ang);
-	// console.log(vec["x"]+" "+vec["y"]);
-
-	/**
 	 * Convert a vector into an angle (radians)
 	 *
-	 * @param x
-	 * @param y
+	 * @param x X position
+	 * @param y Y position
+	 *
+	 * @example
+	 * const ang = cavalry.angleFromVector(1, 0);
+	 * console.log(ang);
+	 * const vec = cavalry.vectorFromAngle(ang);
+	 * console.log(JSON.stringify(vec));
 	 */
-	function vectorFromAngle(x: float, y: float): float
-	// var ang = cavalry.angleFromVector(1,0);
-	// console.log(ang);
-	// var vec = cavalry.vectorFromAngle(ang);
-	// console.log(vec["x"]+" "+vec["y"]);
+	function angleFromVector(x: float, y: float): number
+
+	/**
+	 * Convert an angle (radians) into a vector (x, y) with values between 0 and 1
+	 *
+	 * @param angle Angle as a float
+	 *
+	 * @example
+	 * const ang = cavalry.angleFromVector(1, 0);
+	 * console.log(ang);
+	 * const vec = cavalry.vectorFromAngle(ang);
+	 * console.log(JSON.stringify(vec));
+	 */
+	function vectorFromAngle(angle: float): { x: number; y: number }
 
 	// Color Helper Functions
+
 	/**
 	 * Convert an RGB color to HSV. RGB values should be in the range 0..1
 	 *
-	 * @param h
-	 * @param s
-	 * @param v
+	 * @param r Red, between 0 and 1
+	 * @param g Green, between 0 and 1
+	 * @param b Blue, between 0 and 1
+	 *
+	 * @example
+	 * const result = cavalry.rgbToHsv(0.5, 1, 0.5);
+	 * console.log(JSON.stringify(result));
 	 */
-	// TODO: Create interface for return object
-	function rgbToHsv(h: float, s: float, v: float): object
-	// var result = cavalry.rgbToHsv(0.5,1,0.5);
-	// console.log(JSON.stringify(result));
+	function rgbToHsv(
+		r: float,
+		g: float,
+		b: float
+	): { h: number; s: number; v: number }
 
 	/**
-	 * Convert an RGB color to a Hex string. RGB values should be in the range 0..1
+	 * Convert an RGB color to a Hex string, exluding the `#`
 	 *
-	 * @param r
-	 * @param g
-	 * @param b
+	 * @param r Red, between 0 and 1
+	 * @param g Green, between 0 and 1
+	 * @param b Blue, between 0 and 1
+	 *
+	 * @example
+	 * const result = cavalry.rgbToHex(1, 1, 1);
+	 * console.log(result);
 	 */
 	function rgbToHex(r: float, g: float, b: float): string
-	// var result = cavalry.rgbToHex(1,1,1);
-	// console.log(result);
 
 	/**
 	 * Convert an HSV color to RGB.
 	 *
-	 * @param h
-	 * @param s
-	 * @param v
+	 * @param h Hue, between 0 and 360
+	 * @param s Saturation, between 0 and 1
+	 * @param v Value, between 0 and 1
+	 *
+	 * @example
+	 * const result = cavalry.hsvToRgb(180, 1, 0.5);
+	 * console.log(JSON.stringify(result));
 	 */
-	// TODO: Create interface for return object
 	function hsvToRgb(
 		h: float,
 		s: float,
 		v: float
-	): { h: number; s: number; v: number }
-	// var result = cavalry.hsvToRgb(180,1,0.5);
-	// console.log(JSON.stringify(result));
+	): { r: number; g: number; b: number }
 
 	/**
-	 * Convert an HSV color to a Hex string.
+	 * Convert an HSV color to a Hex string excluding `#`
 	 *
-	 * @param h
-	 * @param s
-	 * @param v
+	 * @param h Hue, between 0 and 360
+	 * @param s Saturation, between 0 and 1
+	 * @param v Value, between 0 and 1
+	 *
+	 * @example
+	 * const result = cavalry.hsvToHex(1, 1, 1);
+	 * console.log(result);
 	 */
 	function hsvToHex(h: float, s: float, v: float): string
-	// var result = cavalry.rgbToHsv(0.5,1,0.5);
-	// console.log(result);
 
 	/**
 	 * Convert an Hex value (e.g `#ffffff`) color to RGB.
 	 *
-	 * @param hexValue
+	 * @param hexValue The RGB hex value (`#` is optional)
+	 *
+	 * @example
+	 * const result = cavalry.hexToRgb("#fc5900");
+	 * console.log(JSON.stringify(result));
 	 */
-	// TODO: Create interface for return object
-	function hexToRgb(hexValue: string): object
-	// var result = cavalry.hexToRgb("#fc5900");
-	// console.log(JSON.stringify(result));
+	function hexToRgb(hexValue: string): { r: number; g: number; b: number }
 
 	/**
 	 * Convert an Hex value (e.g `#ffffff`) color to HSV.
 	 *
-	 * @param hexValue
+	 * @param hexValue The RGB hex value (`#` is optional)
+	 *
+	 * @example
+	 * const result = cavalry.hexToHsv("#ff9801");
+	 * console.log(JSON.stringify(result));
 	 */
-	// TODO: Create interface for return object
-	function hexToHsv(hexValue: string): object
-	// var result = cavalry.hexToHsv("#ff9801");
-	// console.log(JSON.stringify(result));
+	function hexToHsv(hexValue: string): { h: number; s: number; v: number }
 
 	// Utilities
 	/**
@@ -471,9 +501,10 @@ declare namespace cavalry {
 	 * than the specified version. This is useful to add support for
 	 * features in scripts that depend on the version of Cavalry.
 	 *
-	 * @param version Formatted as `'1.5.0'` (`MAJOR.MINOR.PATCH`) or `1.6.0-beta.1` (`MAJOR.MINOR.PATCH.PRE-RELEASE-TYPE.NUMBER`) for preleases.
+	 * @param version Formatted as `1.5.0` (`MAJOR.MINOR.PATCH`) or for prereleases `1.6.0-beta.1` (`MAJOR.MINOR.PATCH.PRE-RELEASE-TYPE.NUMBER`)
+	 *
+	 * @example
+	 * console.log(cavalry.versionLessThan("1.5.1"));
 	 */
 	function versionLessThan(version: string): boolean
-	/// this will return true in Cavalry 1.3, and false in Cavalry 2.0
-	// console.log(cavalry.versionLessThan("1.5.1"));
 }
