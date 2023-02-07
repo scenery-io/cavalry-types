@@ -17,7 +17,7 @@ interface Console {
 	 */
 	error(...data: any[]): void
 	/**
-	 * Print a message to Terminal/Cmd Prompt.
+	 * Print a message to the terminal when Cavalry is launched from the command line.
 	 */
 	debug(...data: any[]): void
 }
