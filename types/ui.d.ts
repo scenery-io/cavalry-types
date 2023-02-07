@@ -1305,6 +1305,86 @@ declare namespace ui {
 	}
 
 	/**
+	 * Draw custom shapes using `cavalry.Path`. Describe how paths look by using the `paint` object (see examples).
+	 *
+	 * The `pathObject` is an object made from a `cavalry.Path()` object when calling `.toObject()`, for example:
+	 *
+	 * @example
+	 * const path = new cavalry.Path();
+	 * const paint = { color: "#4fac3c", stroke: true, strokeWidth: 5 };
+	 * draw.addPath(path.toObject(), paint);
+	 *
+	 * @example
+	 * // If you wish for a path to have a fill and a stroke, add the path via
+	 * // `addPath()` twice, first with a fill paint object, and then with a stroke
+	 * // object.
+	 * // The paint object has keys for `color`, `stroke` (to determine if the paint
+	 * // is a stroke or fill, it's fill by default), and `strokeWidth`. e.g:
+	 * const examplePaint = { color: "#4ffd7a", stroke: true, strokeWidth: 4 }
+	 *
+	 * @example
+	 * // A full example of the Draw Widget:
+	 * ui.setTitle("Custom Draw");
+	 * const draw = new ui.Draw();
+	 * const size = 200;
+	 * const margin = 2;
+	 * draw.setSize(size, size);
+	 * const bezierPath = new cavalry.Path();
+	 * bezierPath.moveTo(0, margin);
+	 * bezierPath.cubicTo(size * 0.6, 0.0, size * 0.4, size, size, size - margin);
+	 * const bezierPaint = { color: "#4ffd7a", stroke: true, strokeWidth: margin * 2 };
+	 * draw.addPath(bezierPath.toObject(), bezierPaint);
+	 * const textPath = new cavalry.Path();
+	 * textPath.addText("easeInOut", 24, 30, 10);
+	 * const textPaint = { color: "#6437ff" }
+	 * draw.addPath(textPath.toObject(), textPaint)
+	 * draw.setBackgroundColor("#c8c8c8");
+	 * const saveButton = ui.Button("Save Image");
+	 * saveButton.onClick = () => {
+	 *   // YOUR PATH HERE
+	 *   draw.saveImage("/Path/To/TestSave.png")
+	 * }
+	 * const layout = ui.HLayout()
+	 * layout.addStretch()
+	 * layout.add(draw)
+	 * layout.addStretch()
+	 * ui.add(layout)
+	 * ui.add(saveButton)
+	 * ui.setMinimumHeight(240)
+	 * ui.setMinimumWidth(220)
+	 * ui.show()
+	 */
+
+	class Draw extends Widget {
+		/**
+		 * Adds a path to be drawn.
+		 *
+		 * @param pathObject
+		 * @param paintInfo
+		 */
+		addPath(pathObject: cavalry.Path, paintInfo: object): void
+
+		/**
+		 * Erase all paths from the draw store.
+		 */
+		clearPaths(): void
+
+		/**
+		 * Ask for an update, use this if you update the paths once the UI has been created.
+		 */
+		redraw(): void
+
+		/**
+		 * Save the contents of the draw to the filesystem. Use width and height to scale the output to your desired size.
+		 *
+		 * @param filePath
+		 * @param width
+		 * @param height
+		 */
+		saveImage(filePath: string, width: integer, height: integer): boolean
+	}
+
+	/**
 	 * A vertical layout that can be used to create more complex UIs. Layouts
 	 * can be nested so highly complex layouts are possible.
 	 *
@@ -1623,6 +1703,16 @@ declare namespace ui {
 		 * @param height
 		 */
 		setFixedHeight(height: integer): void
+
+		/**
+		 * TODO: Description
+		 */
+		alwaysShowHorizontalScrollBar(): void
+
+		/**
+		 * TODO: Description
+		 */
+		alwaysShowVerticalScrollBar(): void
 	}
 
 	// ui.setTitle("Test Callbacks Script");
