@@ -156,6 +156,67 @@ declare namespace api {
 	 */
 	function getNthBeat(beat: integer): integer
 
+	/**
+	 * Add a Ruler Guide to the given Composition. This function returns an id
+	 * which can be used to delete the Guide later.
+	 *
+	 * Note that 0, 0 is the centre of the Composition.
+	 *
+	 * @param compId The ID of the composition
+	 * @param isVertical Is the guide vertical or not
+	 * @param position Position of the guide
+	 * @returns ID of the guide
+	 *
+	 * @example
+	 * const id = api.addGuide(api.getActiveComp(), false, 100);
+	 * console.log(id);
+	 */
+	function addGuide(
+		compId: string,
+		isVertical: boolean,
+		position: integer
+	): integer
+
+	/**
+	 * Delete a Ruler Guide with the corresponding id from the given Composition.
+	 *
+	 * @param compId The ID of the composition
+	 * @param id The ID of the guide
+	 *
+	 * @example
+	 * // If you run this in a new scene, there should be no guides.
+	 * const id = api.addGuide(api.getActiveComp(), false, 100);
+	 * console.log(id);
+	 * api.deleteGuide(api.getActiveComp(), 1);
+	 */
+	function deleteGuide(compId: string, id: integer): void
+
+	/**
+	 * Clear all Ruler Guides from the given Composition.
+	 *
+	 * @param compId The ID of the composition
+	 *
+	 * @example
+	 * // If you run this in a new scene, there should be no guides.
+	 * api.addGuide(api.getActiveComp(), true, -100);
+	 * api.addGuide(api.getActiveComp(), false, 100);
+	 * api.clearGuides(api.getActiveComp());
+	 */
+	function clearGuides(compId: string): void
+
+	/**
+	 * Get the ids of all the Ruler Guides in the given Composition.
+	 *
+	 * @param compId The ID of the composition
+	 *
+	 * @example
+	 * // If you run this in a new scene, there should be no guides.
+	 * api.addGuide(api.getActiveComp(), true, -100);
+	 * api.addGuide(api.getActiveComp(), false, 100);
+	 * console.log(api.getGuides(api.getActiveComp()));
+	 */
+	function getGuides(compId: string): void
+
 	// # Working with Layers
 	/**
 	 * Creates a Primitive Shape
@@ -185,8 +246,7 @@ declare namespace api {
 	 * path.close();
 	 * api.createEditable(path, "My Path");
 	 */
-	// TODO: `path` is a `cavalry.Path`
-	function createEditable(path: object, name: string): string
+	function createEditable(path: cavalry.Path, name: string): string
 
 	/**
 	 * Creates a Layer of any type. The name argument specifies the name of the Layer in the Scene Window.
@@ -201,9 +261,9 @@ declare namespace api {
 	function create(layerType: string, name: string): string
 
 	/**
-	 * TODO: Description
+	 * Check if a layer with the given `layerId` exists.
 	 *
-	 * @param layerId
+	 * @param layerId The ID of the layer
 	 *
 	 * @example
 	 * // Delete all render queue items
@@ -212,9 +272,7 @@ declare namespace api {
 	 *   api.delete(layer);
 	 * }
 	 */
-	// TODO: Rename to `deleteLayer` once released
-	// @ts-ignore
-	// function delete(layerId: string)
+	function deleteLayer(layerId: string): void
 
 	/**
 	 * Returns `true` if a layer with the given layerId exists.
@@ -222,10 +280,11 @@ declare namespace api {
 	 * @param layerId ID of the layer
 	 *
 	 * @example
-	 * console.log(`Made up id exists: ${api.exists("madeUpId#1")}`);
-	 * console.log(`Active Comp exists: ${api.exists(api.getActiveComp())}`);
+	 * const layerId = api.create('basicShape', 'Layer');
+	 * console.log(`Layer exists: ${api.layerExists(layerId)}.`);
+	 * console.log(`Active Comp exists: ${api.layerExists(api.getActiveComp())}`);
 	 */
-	function exists(layerId: string): boolean
+	function layerExists(layerId: string): boolean
 
 	/**
 	 * Get the layer's type (which can be used to create new instances of this layer).
@@ -266,6 +325,17 @@ declare namespace api {
 	 * api.select([primId]);
 	 */
 	function select(layers: string[]): void
+
+	/**
+	 * Deselect any selected Layers and select any deselected Layers.
+	 *
+	 * @example
+	 * const rect1 = api.primitive("rectangle", "Selected");
+	 * const rect2 = api.primitive("rectangle", "Not Selected");
+	 * api.select([rect2]);
+	 * api.invertSelection();
+	 */
+	function invertSelection(): void
 
 	/**
 	 * Gets the children of the specified layer.
@@ -524,7 +594,7 @@ declare namespace api {
 	function getGenerators(layerId: string): string[]
 
 	/**
-	 * Returns the current Generator type (that can be used with setGenerator).
+	 * Returns the current Generator type (which can be used with `setGenerator`).
 	 *
 	 * @param layerId ID of the layer
 	 * @param attrId ID of the attribute
@@ -1024,12 +1094,11 @@ declare namespace api {
 	 * const value = api.get(layerId, "array.1");
 	 * console.log(value);
 	 */
-	// TODO: Is the return type mentioned in the docs?
 	function addDynamic(
 		layerId: string,
 		attrId: string,
 		type: DynamicType
-	): DynamicType
+	): string
 
 	/**
 	 * Rename dynamic or array Attributes. Array Attributes can be found on the
@@ -1072,14 +1141,15 @@ declare namespace api {
 	 * List the input connections to a Layer.
 	 *
 	 * @param layerId
+	 *
+	 * @example
+	 * const layer = api.primitive('ellipse', 'Ellipse')
+	 * api.connect(layer, 'scale.x', layer, 'scale.y')
+	 * api.connect(layer, 'position.x', layer, 'position.y')
+	 * const inConn = api.getInConnectedAttributes(layer)
+	 * console.log(inConn)
 	 */
 	function getInConnectedAttributes(layerId: string): string[]
-
-	// const layer = api.primitive('ellipse', 'Ellipse')
-	// api.connect(layer, 'scale.x', layer, 'scale.y')
-	// api.connect(layer, 'position.x', layer, 'position.y')
-	// const inConn = api.getInConnectedAttributes(layer)
-	// console.log(inConn)
 
 	/**
 	 * TODO: Description
@@ -1187,7 +1257,6 @@ declare namespace api {
 	 * @param attrId ID of the attribute
 	 * @param presetIndex One of `0` for s-curve, `1` for ramp, `2` for linear or `3` for flat
 	 */
-	// TODO: Confirm return type is correct
 	// TODO: Replace with enum once implemented
 	function graphPreset(
 		layerId: string,
@@ -1360,11 +1429,13 @@ declare namespace api {
 	}[]
 
 	/**
-	 * This will set the Editable Path on an Editable Shape. See
-	 * `getEditablePath` for details on the Editable Path schema. The
-	 * `worldSpace` argument will determine if path point coordinates are set
-	 * in **local** space – unaware of the Editable Shape's position, rotation
-	 * and scale – or **world** space where those transformations are applied.
+	 * This will set the Editable Path on an Editable Shape. Primitives are
+	 * not supported.
+	 *
+	 * See `getEditablePath` for details on the Editable Path schema. The
+	 * `worldSpace` argument will determine if path point coordinates are set in
+	 * **local** space – unaware of the Editable Shape's position, rotation and
+	 * scale – or **world** space where those transformations are applied.
 	 *
 	 * If the Editable Path is accessed in world space, it should also be set
 	 * in world space.
@@ -1400,8 +1471,7 @@ declare namespace api {
 	function setEditablePath(
 		layerId: string,
 		worldSpace: boolean,
-		// TODO: Should be a cavalry.Path
-		pathObject: object
+		pathObject: cavalry.Path
 	): void
 
 	/**
@@ -1573,12 +1643,11 @@ declare namespace api {
 	 * @param filePath Absolute path to a `.cv` file
 	 * @param force Don't save changes when there's an unsaved scene
 	 */
-	// TODO: Confirm return type is correct
 	function openScene(filePath: string, force: boolean): void
 
 	/**
-	 * Save the current Scene to a new location.
-	 * TODO: Does this include the `.cv` extension?
+	 * Save the current Scene to a new location. It does not automatically add
+	 * the `.cv` file extension.
 	 *
 	 * @param filePath Absolute path to save the scene to
 	 */
@@ -1591,12 +1660,15 @@ declare namespace api {
 	function saveScene(): void
 
 	/**
-	 * Import a Cavalry Scene `.cv` or Component `.cvc` into the currently
-	 * open Composition.
+	 * Import a Cavalry Scene (.cv) or Component (.cvc). A `.cv` file will be
+	 * added to the Assets Window, a `.cvc` file will be added to the active
+	 * Composition.
 	 *
 	 * @param path Absolute path to the `.cv` or `.cvc` file
+	 *
+	 * @example
+	 * api.importScene("path/to/scene.cv");
 	 */
-	// TODO: Confirm return type
 	function importScene(path: string): void
 
 	/**
@@ -2024,17 +2096,18 @@ declare namespace api {
 	function getFolderFromPath(path: string): string
 
 	/**
-	 * TODO: Paths have to be absolute and parent folders need to exist, they are not created
-	 * TODO: Existing paths will not be overwritten
 	 * This will create a folder at the location given in path and return if
-	 * the operation was a success.
+	 * the operation was a success. Existing paths will not be overwritten.
+	 * Paths have to be absolute and parent folders need to exist, they are
+	 * not created.
 	 *
 	 * @param path Absolute path to the folder
 	 */
 	function makeFolder(path: string): boolean
 
 	/**
-	 * Get the location of the App Assets (this is useful for accessing app icons for your scripts).
+	 * Get the location of the App Assets (this is useful for accessing app icons
+	 * for your scripts).
 	 *
 	 * @example
 	 * console.log(api.getAppAssetsPath());
@@ -2054,12 +2127,17 @@ declare namespace api {
 	 * write binary data from this API, for that, please use
 	 * `writeEncodedToBinaryFile`.
 	 *
+	 * If a file already exists, an error is returned. Set the `overwrite`
+	 * argument to `true` to override the error and replace the existing file
+	 * - proceed with caution.
+	 *
 	 * JavaScript does not support single backslashes (`\`) in file paths (it is
 	 * an escape character) but slashes (`/`) are valid on Windows. Alternatively,
 	 * replace single backslashes with double backslashes (`\\`).
 	 *
 	 * @param filePath Absolute path to the file to be written
 	 * @param content Preferred content of the file
+	 * @param overwrite Overwrite the file. Default is `false`
 	 *
 	 * @example
 	 * const primId = api.primitive("polygon", "My Polygon");
@@ -2085,12 +2163,18 @@ declare namespace api {
 	 * // This line is commented out as you will need to provide a file path
 	 * //api.writeToFile("/some/folder/test.obj", objContents);
 	 */
-	function writeToFile(filePath: string, content: string): boolean
+	function writeToFile(
+		filePath: string,
+		content: string,
+		overwrite?: boolean
+	): boolean
 
 	/**
-	 * Write an encoded string to a file. Returns `true` if the write was successful.
+	 * Write an encoded string to a file. Returns `true` if the write was
+	 * successful. It overwrites the file.
 	 *
-	 * Please note, only files encoded using `encodeBinary` will be properly decoded.
+	 * Please note, only files encoded using `encodeBinary` will be properly
+	 * decoded.
 	 *
 	 * @param filePath Absolute path to the file to be written
 	 * @param content Preferred content of the file encoded as `base64`
@@ -2154,7 +2238,7 @@ declare namespace api {
 	 * This runs a system process and waits for the result which is returned as
 	 * a string. GUI scripts that try to run this function will trigger a
 	 * warning asking for users to trust the script. This is a blocking action,
-	 * the UI will freeze until the process completes; for non blocking processes
+	 * the UI will freeze until the process completes. For non blocking processes
 	 * see `runDetachedProcess`.
 	 *
 	 * Proceed with caution when running system processes to ensure scripts do not
@@ -2165,13 +2249,25 @@ declare namespace api {
 	 *
 	 * @example
 	 * // macOS example
-	 * const res = api.runProcess("sh", ["-c", "python3 --version"]);
-	 * console.log(res);
-	 * // on Windows the command to run (first argument) would be "cmd.exe" or "path/to/powerShell.exe" and so forth.
-	 * const res = api.runProcess("cmd.exe", ["/c echo hello world"]);
-	 * console.log(res);
+	 * const res = api.runProcess('sh', ['-c', 'python3 --version'])
+	 * if (res.error) {
+	 * 	console.log(res.error)
+	 * } else {
+	 * 	console.log(res.output)
+	 * }
+	 * // on Windows the command to run (first argument) would be "cmd.exe"
+	 * // or "path/to/powerShell.exe" and so forth.
+	 * const res = api.runProcess('cmd.exe', ['/c echo hello world'])
+	 * if (res.error) {
+	 * 	console.log(res.error)
+	 * } else {
+	 * 	console.log(res.output)
+	 * }
 	 */
-	function runProcess(command: string, arguments: string[]): string
+	function runProcess(
+		command: string,
+		arguments: string[]
+	): { output: string; error: string }
 
 	/**
 	 * This runs a system process in a separate thread. GUI scripts that try to
@@ -2186,10 +2282,10 @@ declare namespace api {
 	 *
 	 * @example
 	 * // macOS example
-	 * const res = api.runProcess("sh", ["-c", "python3 --version"]);
+	 * const res = api.runDetachedProcess("sh", ["-c", "python3 --version"]);
 	 * console.log(res);
 	 * // on Windows the command to run (first argument) would be "cmd.exe" or "path/to/powerShell.exe" and so forth.
-	 * const res = api.runProcess("cmd.exe", ["/c echo hello world"]);
+	 * const res = api.runDetachedProcess("cmd.exe", ["/c echo hello world"]);
 	 * console.log(res);
 	 */
 	function runDetachedProcess(command: string, arguments: string[]): void
@@ -2264,20 +2360,22 @@ declare namespace api {
 	 *
 	 * @example
 	 * const primId = api.primitive("polygon", "My Polygon");
-	 * api.set(primId, {"material.materialColor": "#8dc429"})
+	 * api.set(primId, {"material.materialColor": "#8dc429"});
 	 * api.writeToFile("/Users/username/Desktop/textExport.txt", api.serialise([primId], false));
 	 */
 	function serialise(layerIds: string[], withConnections: boolean): string
 
 	/**
-	 * TODO: Description
+	 * Deserialise a JSON string to Layers. This function is the opposite of `serialise`.
 	 *
 	 * @param filePath Absolute path to the file to be deserialised
 	 *
 	 * @example
-	 * api.deserialise("/Users/username/Desktop/textExport.txt")
+	 * // Select a Layer
+	 * const sel = api.getSelection();
+	 * const str = api.serialise(sel, true);
+	 * api.deserialise(str);
 	 */
-	// TODO: Verify return type
 	function deserialise(filePath: string): void
 
 	/**
@@ -2291,7 +2389,6 @@ declare namespace api {
 	 * const hello = { first: "Hello, ", second: "World", third: "!" };
 	 * api.setPreferenceObject("testKey", hello);
 	 */
-	// TODO: Verify return type
 	function setPreferenceObject(key: string, preferences: unknown): void
 
 	/**
@@ -2332,7 +2429,6 @@ declare namespace api {
 	 * const primId = api.primitive("star", "Star");
 	 * api.setUserData(primId, "test", "Hello, World!");
 	 */
-	// TODO: Verify a return type
 	function setUserData(layerId: string, key: string, value: unknown): void
 
 	/**
@@ -2400,23 +2496,23 @@ declare namespace api {
 		/**
 		 * Sets basic authentication for any subsequent requests.
 		 *
-		 * @param username
-		 * @param password
+		 * @param username The username to authenticate with
+		 * @param password The user's password
 		 */
 		setBasicAuthentication(username: string, password: string): void
 
 		/**
 		 * Sets digest authentication for any subsequent requests.
 		 *
-		 * @param username
-		 * @param password
+		 * @param username The username to authenticate with
+		 * @param password The user's password
 		 */
 		setDigestAuthentication(username: string, password: string): void
 
 		/**
 		 * Sets token based authentication for any subsequent requests.
 		 *
-		 * @param token
+		 * @param token The token to authenticate with
 		 */
 		setTokenAuthentication(token: string): void
 
@@ -2521,6 +2617,29 @@ declare namespace api {
 		 * @param path Absolute path to the file
 		 */
 		writeBodyToBinaryFile(path: string): boolean
+
+		/**
+		 * Enter a proxy server's IP and port number.
+		 *
+		 * @param hostAddress Address of the proxy server
+		 * @param port Port of the proxy server
+		 */
+		setProxy(hostAddress: string, port: number): void
+
+		/**
+		 * Enter a username and password to authenticate to a proxy server.
+		 *
+		 * @param username Username for the proxy server
+		 * @param password Password for the proxy server
+		 */
+		setProxyBasicAuthentication(username: string, password: string): void
+
+		/**
+		 * Enter a password for a proxy server that uses a bearer token.
+		 *
+		 * @param password Password for the proxy server
+		 */
+		setProxyBearerAuthentication(password: string): void
 	}
 
 	/**
@@ -2575,7 +2694,7 @@ declare namespace api {
 		 * specified port number.
 		 *
 		 * @param host URL of the host to listen to
-		 * @param port
+		 * @param port Port of the host
 		 */
 		listen(host: string, port: integer): void
 
@@ -2678,13 +2797,11 @@ declare namespace api {
 		/**
 		 * Start the timer.
 		 */
-		// TODO: Verify return type
 		start(): void
 
 		/**
 		 * Stop the timer.
 		 */
-		// TODO: Verify return type
 		stop(): void
 
 		/**
@@ -2697,7 +2814,6 @@ declare namespace api {
 		 *
 		 * @param interval Interval in milliseconds
 		 */
-		// TODO: Verify return type
 		setInterval(interval: integer): void
 
 		/**
@@ -2705,7 +2821,6 @@ declare namespace api {
 		 *
 		 * @param repeat Repeat the timer
 		 */
-		// TODO: Verify return type
 		setRepeating(repeat: boolean): void
 
 		/**
@@ -2725,7 +2840,6 @@ declare namespace api {
 		 * // Make the timer and feed it the callback object
 		 * const timer = new api.Timer(callbackObj);
 		 */
-		// TODO: Verify return type
 		onTimeout(): void
 	}
 }
