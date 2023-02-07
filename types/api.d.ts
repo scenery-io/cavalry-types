@@ -2416,6 +2416,7 @@ declare namespace api {
 	 * const myPrefs = api.getPreferenceObject("testKey");
 	 * console.log(`${myPrefs.first}, ${myPrefs.second}${myPrefs.third});
 	 */
+	// TODO: Define return value
 	function getPreferenceObject(key: string): object
 
 	/**
@@ -2642,6 +2643,10 @@ declare namespace api {
 		setProxyBearerAuthentication(password: string): void
 	}
 
+	interface WebServerCallbacks {
+		onPost(): void
+	}
+
 	/**
 	 * TODO: Description
 	 *
@@ -2719,14 +2724,14 @@ declare namespace api {
 		 * name and value. Please note only non binary data is supported for `/post`
 		 * events.
 		 */
-		// TODO: Create interface
+		// TODO: Define return value
 		getNextPost(): object
 
 		/**
 		 * This is just like `getNextPost`, only instead of getting the oldest
 		 * unprocessed `/post`, it will skip to the newest and pop that from the queue.
 		 */
-		// TODO: Create interface
+		// TODO: Define return value
 		getNewestPost(): object
 
 		/**
@@ -2759,8 +2764,7 @@ declare namespace api {
 		 * const callbackObj = new Callbacks();
 		 * server.addCallbackObject(callbackObj);
 		 */
-		// TODO: Create interface
-		addCallbackObject(callback: object): void
+		addCallbackObject(callback: WebServerCallbacks): void
 
 		/**
 		 * Calling this after setting a Callback object will change the polling
@@ -2774,6 +2778,10 @@ declare namespace api {
 		 * communication with things like midi-controllers.
 		 */
 		setRealtime(): void
+	}
+
+	interface TimerCallbacks {
+		onTimeout(): void
 	}
 
 	/**
@@ -2791,8 +2799,7 @@ declare namespace api {
 		 *
 		 * @param callback
 		 */
-		// TODO: `object` should be callback `function` or `class`
-		constructor(callback: object)
+		constructor(callback: TimerCallbacks)
 
 		/**
 		 * Start the timer.

@@ -210,7 +210,7 @@ declare namespace cavalry {
 		 * path.fromObject(js);
 		 * console.log(path.length);
 		 */
-		// TODO: Create interface
+		// TODO: Define return value
 		toObject(): object
 
 		/**
@@ -229,7 +229,7 @@ declare namespace cavalry {
 		 * path.fromObject(js);
 		 * console.log(path.length);
 		 */
-		// TODO: Create interface
+		// TODO: Define `objectToRead` value
 		fromObject(objectToRead: object): void
 
 		/**
