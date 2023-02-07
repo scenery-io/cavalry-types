@@ -231,6 +231,11 @@ declare namespace cavalry {
 		 */
 		// TODO: Create interface
 		fromObject(objectToRead: object): void
+
+		/**
+		 * Return an object containing `x` and `y` keys describing the final point in a path.
+		 */
+		back(): { x: number; y: number }
 	}
 
 	// Math Helper Functions
@@ -414,34 +419,54 @@ declare namespace cavalry {
 	// Color Helper Functions
 
 	/**
-	 * Convert an RGB color to HSV. RGB values should be in the range 0..1
+	 * Convert an RGB color to HSV
 	 *
-	 * @param r Red, between 0 and 1
-	 * @param g Green, between 0 and 1
-	 * @param b Blue, between 0 and 1
+	 * If the scaled argument is set to `true` (default) then RGB values
+	 * should be in the range 0 to 1.
+	 *
+	 * If set to `false` then RGB values should be in the 0 to 255 range.
+	 *
+	 * @param r Red, between 0 and 1 (or 0 and 255 when `scaled` is `false`)
+	 * @param g Green, between 0 and 1 (or 0 and 255 when `scaled` is `false`)
+	 * @param b Blue, between 0 and 1 (or 0 and 255 when `scaled` is `false`)
+	 * @param scaled Accept normalised input range. Defaults to `true`
 	 *
 	 * @example
-	 * const result = cavalry.rgbToHsv(0.5, 1, 0.5);
-	 * console.log(JSON.stringify(result));
+	 * const unscaled = cavalry.rgbToHsv(255, 0, 255, false)
+	 * const scaled = cavalry.rgbToHsv(1, 0, 1, true)
+	 * console.log(
+	 * 	`Unscaled = ${JSON.stringify(unscaled)} - Scaled = ${JSON.stringify(scaled)}`
+	 * )
 	 */
 	function rgbToHsv(
 		r: float,
 		g: float,
-		b: float
+		b: float,
+		scaled?: boolean
 	): { h: number; s: number; v: number }
 
 	/**
 	 * Convert an RGB color to a Hex string, exluding the `#`
 	 *
-	 * @param r Red, between 0 and 1
-	 * @param g Green, between 0 and 1
-	 * @param b Blue, between 0 and 1
+	 * If the scaled argument is set to `true` (default) then RGB values should
+	 * be in the range 0 to 1.
+	 *
+	 * If set to `false` then RGB values should be in the 0 to 255 range.
+	 * @param r Red, between 0 and 1 (or 0 and 255 when `scaled` is `false`)
+	 * @param g Green, between 0 and 1 (or 0 and 255 when `scaled` is `false`)
+	 * @param b Blue, between 0 and 1 (or 0 and 255 when `scaled` is `false`)
+	 * @param scaled Accept normalised input range. Defaults to `true`
 	 *
 	 * @example
-	 * const result = cavalry.rgbToHex(1, 1, 1);
-	 * console.log(result);
+	 * const label1 = new ui.Label('Unscaled')
+	 * label1.setTextColor(`#${cavalry.rgbToHex(255, 0, 255, false)}`)
+	 * ui.add(label1)
+	 * const label2 = new ui.Label('Scaled')
+	 * label2.setTextColor(`#${cavalry.rgbToHex(1, 0, 1, true)}`)
+	 * ui.add(label2)
+	 * ui.show()
 	 */
-	function rgbToHex(r: float, g: float, b: float): string
+	function rgbToHex(r: float, g: float, b: float, scaled?: boolean): string
 
 	/**
 	 * Convert an HSV color to RGB.
