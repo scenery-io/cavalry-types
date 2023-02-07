@@ -853,6 +853,12 @@ declare namespace ui {
 		 * ui.show()
 		 */
 		setFilter(filter: string): void
+
+		/**
+		 * A callback function that will be called whenever the FilePath value
+		 * changes.
+		 */
+		onValueChanged(): void
 	}
 
 	/**
@@ -1027,6 +1033,11 @@ declare namespace ui {
 		getText(): string
 
 		/**
+		 * Populate the widget with a string.
+		 */
+		setText(text: string): void
+
+		/**
 		 * TODO: Description
 		 *
 		 * @param text
@@ -1074,6 +1085,13 @@ declare namespace ui {
 		 * TODO: Description
 		 */
 		getText(): string
+
+		/**
+		 * Populate the widget with a string.
+		 *
+		 * @param text
+		 */
+		setText(text: string): void
 
 		/**
 		 * TODO: Description
@@ -1284,11 +1302,6 @@ declare namespace ui {
 		 * Get the total number of tabs
 		 */
 		tabCount(): integer
-
-		/**
-		 * Implement this callback function to do something when the slider's value changes.
-		 */
-		onValueChanged(): void
 	}
 
 	/**
