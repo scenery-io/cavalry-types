@@ -100,7 +100,7 @@ declare namespace api {
 	 *   console.log(api.getNiceName(layer));
 	 * }
 	 */
-	function getCompLayersOfType(topLevel: boolean, type: LayerTypes): string[]
+	function getCompLayersOfType(topLevel: boolean, type: string): string[]
 
 	/**
 	 * Adds a new Time Marker. The second example sets up a Time Marker as a controller for a Scheduling Group.
@@ -217,6 +217,19 @@ declare namespace api {
 	 */
 	function getGuides(compId: string): void
 
+	type Primitive =
+		| 'rectangle'
+		| 'ellipse'
+		| 'polygon'
+		| 'star'
+		| 'ring'
+		| 'arc'
+		| 'superEllipse'
+		| 'arrow'
+		| 'circle'
+		| 'capsule'
+		| 'superShape'
+
 	// # Working with Layers
 	/**
 	 * Creates a Primitive Shape
@@ -227,9 +240,9 @@ declare namespace api {
 	 * @example
 	 * // Returns the layerId for the new shape
 	 * const primId = api.primitive("rectangle", "My Rectangle");
+	 * console.log(primId)
 	 */
-	// TODO: Define allowed values for `type`
-	function primitive(type: string, name: string): string
+	function primitive(type: Primitive, name: string): string
 
 	/**
 	 * Creates and Editable Shape from a Path
@@ -539,9 +552,6 @@ declare namespace api {
 	// TODO: Confirm the return type is `string | object`?
 	function get(layerId: string, attrId: string): unknown
 
-	// TODO: Define valid values for `type`
-	type GeneratorTypes = 'circleDistribution'
-
 	/**
 	 * Some layers in Cavalry contain Generators, these are discrete feature
 	 * blocks that are used to extend the functionality of layers. For example
@@ -569,11 +579,8 @@ declare namespace api {
 	 * // Set the Distribution count
 	 * api.set(duplicatorId, { "generator.count": 10 });
 	 */
-	function setGenerator(
-		layerId: string,
-		attrId: string,
-		type: GeneratorTypes
-	): void
+	// TODO: Define allowed values for `type`
+	function setGenerator(layerId: string, attrId: string, type: string): void
 
 	/**
 	 * Some layers in Cavalry contain Generators, these are discrete feature
@@ -936,7 +943,7 @@ declare namespace api {
 	 */
 	function getSelectedKeyframeIds(): string[]
 
-	type MagicEasingType =
+	type MagicEasing =
 		| 'SlowIn'
 		| 'SlowOut'
 		| 'SlowInSlowOut'
@@ -971,7 +978,7 @@ declare namespace api {
 		layerId: string,
 		attrId: string,
 		frame: integer,
-		easingName: MagicEasingType
+		easingName: MagicEasing
 	): void
 
 	/**
@@ -990,8 +997,19 @@ declare namespace api {
 	 */
 	function deleteAnimation(layerId: string, attrId: string): void
 
-	// TODO: Define possible attribute types
-	type AttributeType = 'string' | 'int' | 'int2' | 'double' | 'double2'
+	type AttributeType =
+		| 'string'
+		| 'int'
+		| 'int2'
+		| 'double'
+		| 'double2'
+		| 'bool'
+		| 'enum'
+		| 'nodeId'
+		| 'assetId'
+		| 'list'
+		| 'color'
+		| 'polyMesh'
 
 	/**
 	 * TODO: Description
@@ -1053,7 +1071,7 @@ declare namespace api {
 	function getArrayCount(layerId: string, attrId: string): integer
 
 	// TODO: Define all available values
-	type DynamicType =
+	type Dynamic =
 		| 'double'
 		| 'boolean'
 		| 'string'
@@ -1094,11 +1112,7 @@ declare namespace api {
 	 * const value = api.get(layerId, "array.1");
 	 * console.log(value);
 	 */
-	function addDynamic(
-		layerId: string,
-		attrId: string,
-		type: DynamicType
-	): string
+	function addDynamic(layerId: string, attrId: string, type: string): string
 
 	/**
 	 * Rename dynamic or array Attributes. Array Attributes can be found on the
