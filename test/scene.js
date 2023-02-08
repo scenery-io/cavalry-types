@@ -4,9 +4,8 @@ var layer = api.primitive('circle', 'circle')
 
 var saveSceneAs = api.saveSceneAs('/Users/Remco/Desktop/test.cv')
 log('saveSceneAs', saveSceneAs)
-// TODO: Report crashes Cavalry regardles of `force` value
-// var openScene = api.openScene('/Users/Remco/Desktop/test.cv', false)
-// log('openScene', openScene)
+var openScene = api.openScene('/Users/Remco/Desktop/test.cv', false)
+log('openScene', openScene)
 var saveScene = api.saveScene()
 log('saveScene', saveScene)
 var loadAsset = api.loadAsset('/Users/Remco/Desktop/bun.jpg', false)

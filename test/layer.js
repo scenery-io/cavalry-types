@@ -1,13 +1,13 @@
 var write = 'layer\n'
 
+var path = new cavalry.Path()
 var primitive = api.primitive('circle', 'circle')
 log('primitive', primitive)
-// TODO: Find out what type of object `createEditable` requires
-// var createEditable = api.createEditable(primitive, 'hello')
-// log('createEditable', createEditable)
+var createEditable = api.createEditable(path, 'hello')
+log('createEditable', createEditable)
 var create = api.create('null', 'my null')
 log('create', create)
-var exists = api.exists(create)
+var exists = api.layerExists(create)
 log('exists', exists)
 var getLayerType = api.getLayerType(create)
 log('getLayerType', getLayerType)

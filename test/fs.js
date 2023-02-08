@@ -2,6 +2,8 @@ var write = 'fs\n'
 
 var load = api.load('/Users/Remco/Desktop/hey.js')
 log('load', load)
+var exec = api.exec('com.test.types', 'console.log("Testing `api.exec`")')
+log('exec', exec)
 var getProjectPath = api.getProjectPath()
 log('getProjectPath', getProjectPath)
 var getRenderPath = api.getRenderPath()

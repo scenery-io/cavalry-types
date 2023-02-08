@@ -2,6 +2,7 @@ var write = 'attribute\n'
 
 var layer = api.primitive('circle', 'circle')
 var layer2 = api.primitive('circle', 'circle2')
+var stagger = api.create('stagger', 'graph test')
 
 var getSelectedAttributes = api.getSelectedAttributes()
 log('getSelectedAttributes', getSelectedAttributes)
@@ -29,9 +30,8 @@ log('setGenerator', setGenerator)
 
 var getGenerators = api.getGenerators(layer)
 log('getGenerators', getGenerators)
-// TODO: Report error
-// var getCurrentGeneratorType = api.getCurrentGeneratorType(layer)
-// log('getCurrentGeneratorType', getCurrentGeneratorType)
+var getCurrentGeneratorType = api.getCurrentGeneratorType(layer, 'generator')
+log('getCurrentGeneratorType', getCurrentGeneratorType)
 var setAttributeExpression = api.setAttributeExpression(
 	layer,
 	'position.x',
@@ -61,9 +61,8 @@ var magicEasing = api.magicEasing(layer, 'position.x', 10, 'SlowInSlowOut')
 log('magicEasing', magicEasing)
 var getKeyframeTimes = api.getKeyframeTimes(layer, 'position.x')
 log('getKeyframeTimes', getKeyframeTimes)
-// TODO: Report crashes Cavalry
-// var deleteKeyframe = api.deleteKeyframe(layer, 'position.x', 1)
-// log('deleteKeyframe', deleteKeyframe)
+var deleteKeyframe = api.deleteKeyframe(layer, 'position.x', 1)
+log('deleteKeyframe', deleteKeyframe)
 var deleteAnimation = api.deleteAnimation(layer, 'position.x')
 log('deleteAnimation', deleteAnimation)
 var getAttrType = api.getAttrType(layer, 'position.x')
@@ -98,9 +97,8 @@ var getOutFrame = api.getOutFrame(layer)
 log('getOutFrame', getOutFrame)
 var setOutFrame = api.setOutFrame(layer, 20)
 log('setOutFrame', setOutFrame)
-// TODO: Report crashes Cavalry
-// var graphPreset = api.graphPreset(layer, 'position.x', 2)
-// log('graphPreset', graphPreset)
+var graphPreset = api.graphPreset(stagger, 'graph', 2)
+log('graphPreset', graphPreset)
 var flipGraph = api.flipGraph(layer, 'position.x', 'vertical')
 log('flipGraph', flipGraph)
 
