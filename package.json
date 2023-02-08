@@ -10,13 +10,13 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Klustre/cavalry-types.git"
+		"url": "git+https://github.com/scenery-io/cavalry-types.git"
 	},
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/Klustre/cavalry-types/issues"
+		"url": "https://github.com/scenery-io/cavalry-types/issues"
 	},
-	"homepage": "https://github.com/Klustre/cavalry-types#readme",
+	"homepage": "https://github.com/scenery-io/cavalry-types#readme",
 	"devDependencies": {
 		"np": "^7.6.2",
 		"prettier": "^2.8.1"
