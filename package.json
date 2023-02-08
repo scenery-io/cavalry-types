@@ -1,12 +1,11 @@
 {
-	"name": "cavalry-types",
-	"version": "0.0.1",
+	"name": "@scenery/cavalry-types",
+	"version": "0.1.0",
 	"description": "Typescript definitions for Cavalry",
 	"main": "index.d.ts",
 	"types": "index.d.ts",
 	"scripts": {
 		"release": "npx np",
-		"bundle": "npx tsc src/index.ts --declaration --emitDeclarationOnly --outDir .",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {
