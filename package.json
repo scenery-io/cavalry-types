@@ -4,15 +4,18 @@
 	"description": "Typescript definitions for Cavalry",
 	"main": "index.d.ts",
 	"types": "index.d.ts",
+	"license": "MIT",
 	"scripts": {
 		"release": "npx np",
 		"test": "echo \"No test specified\""
 	},
+	"files": [
+		"types/**"
+	],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/scenery-io/cavalry-types.git"
 	},
-	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/scenery-io/cavalry-types/issues"
 	},
