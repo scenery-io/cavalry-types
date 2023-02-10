@@ -6,7 +6,7 @@
 	"types": "index.d.ts",
 	"scripts": {
 		"release": "npx np",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"No test specified\""
 	},
 	"repository": {
 		"type": "git",
