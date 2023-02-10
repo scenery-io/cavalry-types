@@ -12,6 +12,9 @@
 	"files": [
 		"types/**"
 	],
+	"publishConfig": {
+		"access": "public"
+	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/scenery-io/cavalry-types.git"
