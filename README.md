@@ -25,7 +25,7 @@ It's recommended that you use the [Stallion VSCode extension](https://github.com
 Make sure you first initialise a new [NPM](https://www.npmjs.com/) project. In your terminal run:
 
 ```bash
-npm init
+npm init --yes
 ```
 
 then install the Typescript definitions:
@@ -40,10 +40,17 @@ You can either use [Triple-Slash Directives](#triple-slash-directives) for one-o
 
 ### Triple-Slash Directives
 
-Add the following [triple-slash directive](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html) at the top of your script file and include a `@ts-check` comment.
+Add the following [triple-slash directive](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html) at the top of your script file.
 
 ```js
-/// <reference types="@scenery/cavalry-types" />
+/// <reference types="@scenery/cavalry-types"/>
+```
+
+Optionally include a `@ts-check` comment to enable type checking.
+
+```js
+/// <reference types="@scenery/cavalry-types"/>
+// Optional, enables type checking
 // @ts-check
 ```
 
@@ -52,7 +59,7 @@ Add the following [triple-slash directive](https://www.typescriptlang.org/docs/h
 If you want to target a specific version you can add it to the path:
 
 ```ts
-/// <reference types="@scenery/cavalry-types/1.4.1" />
+/// <reference types="@scenery/cavalry-types/1.5.1" />
 ``` -->
 
 ### Typescript Config
@@ -62,7 +69,7 @@ Create a [`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig
 ```json
 {
 	"compilerOptions": {
-		"types": ["/node_modules/@scenery/cavalry-types"]
+		"types": ["@scenery/cavalry-types"]
 	}
 }
 ```
