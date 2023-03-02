@@ -133,7 +133,8 @@ declare namespace ui {
 	}
 
 	/**
-	 * The path to the folder which contains this script. This is blank for UIs created from the JavaScript Editor.
+	 * The path to the folder which contains this script. This is blank for UIs
+	 * created from the JavaScript Editor.
 	 *
 	 * @example
 	 * const button = new ui.ImageButton(`${ui.scriptLocation}/myScript_assets/icon.png`)
@@ -160,7 +161,8 @@ declare namespace ui {
 	function setTitle(title: string): void
 
 	/**
-	 * Add stretch to the default layout. Adding stretch will push widgets to the other side of the layout.
+	 * Add stretch to the default layout. Adding stretch will push widgets to
+	 * the other side of the layout.
 	 *
 	 */
 	function addStretch(): void
@@ -173,14 +175,16 @@ declare namespace ui {
 	function addSpacing(spacing: integer): void
 
 	/**
-	 * Set the amount of spacing automatically added between each item added to the default layout. The default is 3 pixels.
+	 * Set the amount of spacing automatically added between each item added to
+	 * the default layout. The default is 3 pixels.
 	 *
 	 * @param spacing
 	 */
 	function setSpaceBetween(spacing: integer): void
 
 	/**
-	 * Set the margins of the default layout (how far from the edges the widgets can be). The default value is 3 pixels on all sides.
+	 * Set the margins of the default layout (how far from the edges the widgets
+	 * can be). The default value is 3 pixels on all sides.
 	 *
 	 * @param left
 	 * @param top
@@ -238,7 +242,8 @@ declare namespace ui {
 	function setToolbar(): void
 
 	/**
-	 * Tells a toolbar window to expect a vertical layout, it will not include a docking tab.
+	 * Tells a toolbar window to expect a vertical layout, it will not include
+	 * a docking tab.
 	 *
 	 * @example
 	 * ui.setToolbar()
@@ -427,14 +432,14 @@ declare namespace ui {
 		/**
 		 * Set the height.
 		 *
-		 * @param buttonText
+		 * @param height
 		 */
 		setFixedHeight(height: integer): void
 
 		/**
 		 * Set the width.
 		 *
-		 * @param buttonText
+		 * @param width
 		 */
 		setFixedWidth(width: integer): void
 
@@ -487,8 +492,10 @@ declare namespace ui {
 		setImage(path: string): void
 
 		/**
+		 * By default buttons have a stroke affordance, you can remove this by
+		 * calling this method with `false`
+		 *
 		 * TODO: Requires clarification of stroke affordance meaning
-		 * By default buttons have a stroke affordance, you can remove this by calling this method with `false`
 		 *
 		 * @param removeAffordance
 		 */
@@ -549,7 +556,10 @@ declare namespace ui {
 	}
 
 	/**
-	 * A color picker widget. You can use this to set colours using the Color Editor. The callback which loads the Color Editor on double clicking is hooked up for you — the colours returned and set are all hex values. The utilities in the Cavalry Module can be used to help with conversions.
+	 * A color picker widget. You can use this to set colours using the Color
+	 * Editor. The callback which loads the Color Editor on double clicking is
+	 * hooked up for you — the colours returned and set are all hex values. The
+	 * utilities in the Cavalry Module can be used to help with conversions.
 	 */
 	class ColorChip extends Widget {
 		/**
@@ -576,7 +586,11 @@ declare namespace ui {
 	}
 
 	/**
-	 * A widget that can be used to display multiple colours at once, it's useful for creating scripts that deal with color workflows. This is a feedback widget in that users cannot directly interact with it. The setColors function is not fussy about the # prefix on the hex color strings (if the hash is missing it will be added automatically).
+	 * A widget that can be used to display multiple colours at once, it's useful
+	 * for creating scripts that deal with color workflows. This is a feedback
+	 * widget in that users cannot directly interact with it. The `setColors` function
+	 * is not fussy about the # prefix on the hex color strings (if the hash is
+	 * missing it will be added automatically).
 	 *
 	 * @example
 	 * // This example demos a simple Color Palette generator script.
@@ -647,7 +661,8 @@ declare namespace ui {
 	}
 
 	/**
-	 * An eye dropper button you can use to pick colours from the screen. It offers interaction callbacks.
+	 * An eye dropper button you can use to pick colours from the screen. It
+	 * offers interaction callbacks.
 	 *
 	 * @example
 	 * const picker = new ui.ColorPicker();
@@ -690,7 +705,8 @@ declare namespace ui {
 		setColor(color: string): void
 
 		/**
-		 * A callback function that will be called whenever the ColorWheel value changes.
+		 * A callback function that will be called whenever the ColorWheel value
+		 * changes.
 		 */
 		onColorChanged(): void
 	}
@@ -765,7 +781,8 @@ declare namespace ui {
 		setText(label: string): void
 
 		/**
-		 * A callback function that will be called whenever the dropdown value changes.
+		 * A callback function that will be called whenever the dropdown value
+		 * changes.
 		 */
 		onValueChanged(): void
 
@@ -788,7 +805,8 @@ declare namespace ui {
 	}
 
 	/**
-	 * A file path widget that can be used to read folders and files or to create a new file path.
+	 * A file path widget that can be used to read folders and files or to create
+	 * a new file path.
 	 *
 	 * @example
 	 * // Get a file path to an exact document
@@ -879,7 +897,8 @@ declare namespace ui {
 		constructor(imagePath: string)
 
 		/**
-		 * Path to an image (relative paths can be built using the `ui.scriptLocation` property)
+		 * Path to an image (relative paths can be built using the
+		 * `ui.scriptLocation` property)
 		 *
 		 * @param path
 		 */
@@ -905,13 +924,17 @@ declare namespace ui {
 	 */
 	class ImageButton extends Widget {
 		/**
-		 * Requires the path to an image be provided (relative paths can be built using the `ui.scriptLocation` property)
+		 * Requires the path to an image be provided (relative paths can be
+		 * built using the `ui.scriptLocation` property)
+		 *
 		 * @param imagePath
 		 */
 		constructor(imagePath: string)
 
 		/**
-		 * Path to an image (relative paths can be built using the ui.scriptLocation property)
+		 * Path to an image (relative paths can be built using the
+		 * `ui.scriptLocation` property)
+		 *
 		 * @param path
 		 */
 		setImage(path: string): void
@@ -925,19 +948,26 @@ declare namespace ui {
 		setImageSize(width: integer, height: integer): void
 
 		/**
-		 * By default buttons have a stroke affordance, you can remove this by calling this method with false.
+		 * By default buttons have a stroke affordance, you can remove this by
+		 * calling this method with false.
+		 *
 		 * @param draw
 		 */
 		setDrawStroke(draw: boolean): void
 
 		/**
-		 * Setting to true will convert the button to a state button (on/off) and clicking the button will toggle its state between `true` and `false`. When `true`, the button will colourise light parts of the image with green.
+		 * Setting to true will convert the button to a state button (on/off)
+		 * and clicking the button will toggle its state between `true` and
+		 * `false`. When `true`, the button will colourise light parts of the
+		 * image with green.
+		 *
 		 * @param state
 		 */
 		setStateButton(state: boolean): void
 
 		/**
 		 * Sets the button's state.
+		 *
 		 * @param state
 		 */
 		setState(state: boolean): void
@@ -962,7 +992,8 @@ declare namespace ui {
 	}
 
 	/**
-	 * This is a non editable piece of text which can be used to give feedback, or provide instructions. This text field accepts Markdown.
+	 * This is a non editable piece of text which can be used to give feedback,
+	 * or provide instructions. This text field accepts Markdown.
 	 *
 	 * @example
 	 * const label = new ui.Label("Super Amazing Label");
@@ -1010,7 +1041,8 @@ declare namespace ui {
 	}
 
 	/**
-	 * This widget can be used for a single line of text entry. Use `MultiLineEdit` when more than one line is required.
+	 * This widget can be used for a single line of text entry. Use
+	 * `MultiLineEdit` when more than one line is required.
 	 *
 	 * @example
 	 * const lineEdit = ui.LineEdit();
@@ -1120,7 +1152,9 @@ declare namespace ui {
 	}
 
 	/**
-	 * A numeric entry field, much like the ones seen in the Attribute Editor. Numeric Fields can be both doubles or ints. The type of the field is set with the setType function.
+	 * A numeric entry field, much like the ones seen in the Attribute Editor.
+	 * Numeric Fields can be both doubles or ints. The type of the field is set
+	 * with the setType function.
 	 *
 	 * @example
 	 * const num = new ui.NumericField(50);
@@ -1182,7 +1216,8 @@ declare namespace ui {
 		setType(type: 0 | 1): void
 
 		/**
-		 * Implement this callback function to do something when the field's value changes.
+		 * Implement this callback function to do something when the field's
+		 * value changes.
 		 */
 		onValueChanged(): void
 	}
@@ -1216,7 +1251,8 @@ declare namespace ui {
 		setRange(min: number, max: number): void
 
 		/**
-		 * Implement this callback function to do something when the slider's value changes.
+		 * Implement this callback function to do something when the slider's
+		 * value changes.
 		 */
 		onValueChanged(): void
 	}
@@ -1243,7 +1279,9 @@ declare namespace ui {
 		setValue(value: number): void
 
 		/**
-		 * Set the maximum value, the bar will show a percentage result of the value when compared to the maximum.
+		 * Set the maximum value, the bar will show a percentage result of the
+		 * value when compared to the maximum.
+		 *
 		 * @param value
 		 */
 		setMaximum(value: integer): void
@@ -1305,9 +1343,11 @@ declare namespace ui {
 	}
 
 	/**
-	 * Draw custom shapes using `cavalry.Path`. Describe how paths look by using the `paint` object (see examples).
+	 * Draw custom shapes using `cavalry.Path`. Paths can be described by using
+	 * the `paint` object (examples below).
 	 *
-	 * The `pathObject` is an object made from a `cavalry.Path()` object when calling `.toObject()`, for example:
+	 * The `pathObject` is an object made from a `cavalry.Path()` object when
+	 * calling `.toObject()`, for example:
 	 *
 	 * @example
 	 * const path = new cavalry.Path();
@@ -1354,7 +1394,6 @@ declare namespace ui {
 	 * ui.setMinimumWidth(220)
 	 * ui.show()
 	 */
-
 	class Draw extends Widget {
 		/**
 		 * Adds a path to be drawn.
@@ -1370,18 +1409,69 @@ declare namespace ui {
 		clearPaths(): void
 
 		/**
-		 * Ask for an update, use this if you update the paths once the UI has been created.
+		 * Ask for an update, use this if you update the paths once the UI has
+		 * been created.
 		 */
 		redraw(): void
 
 		/**
-		 * Save the contents of the draw to the filesystem. Use width and height to scale the output to your desired size.
+		 * Save the contents of the draw to the filesystem. Use width and height
+		 * to scale the output to your desired size.
 		 *
 		 * @param filePath
 		 * @param width
 		 * @param height
 		 */
 		saveImage(filePath: string, width: integer, height: integer): boolean
+	}
+
+	/**
+	 * A Container can be used to give a background to a layout and/or to make
+	 * separate controls look like they're related. You can also use Containers
+	 * to detect drag and drop events and respond to mouse events (e.g. trigger
+	 * a context menu). See `addMenuItem` for more information on creating
+	 * context menus.
+	 *
+	 * @example
+	 * const prefix = new ui.Label("X1");
+	 * prefix.setTextColor("#c8c8c8");
+	 * const numeric = new ui.NumericField(100);
+	 * const layout = new ui.HLayout();
+	 * layout.add(prefix);
+	 * layout.add(numeric);
+	 * // Container can be used to compose layouts into 'widgets'
+	 * // That way different elements can be designed to seem connected
+	 * const container = new ui.Container();
+	 * container.setBackgroundColor("#6437ff");
+	 * container.setRadius(3,3,3,3);
+	 * container.setSize(150,22);
+	 * container.setLayout(layout);
+	 * ui.setMargins(6, 6, 6, 6);
+	 * ui.add(container);
+	 * ui.show();
+	 */
+	class Container {
+		/**
+		 * Set the corner rounding of the Container.
+		 *
+		 * @param topLeft
+		 * @param topRight
+		 * @param bottomRight
+		 * @param bottomLeft
+		 */
+		setRadius(
+			topLeft: float,
+			topRight: float,
+			bottomRight: float,
+			bottomLeft: float
+		): void
+
+		/**
+		 * Set a layout for the container.
+		 *
+		 * @param layout Layout that the container will contain
+		 */
+		setLayout(layout: ui.VLayout | ui.HLayout): void
 	}
 
 	/**
@@ -1421,14 +1511,16 @@ declare namespace ui {
 		addSpacing(pixels: integer): void
 
 		/**
-		 * Set the padding space between widgets in the layout. The default value is 3 pixels.
+		 * Set the padding space between widgets in the layout. The default
+		 * value is 3 pixels.
 		 *
 		 * @param space
 		 */
 		setSpaceBetween(space: integer): void
 
 		/**
-		 * Set the margins of the layout (how far from the edges the widgets can be). The default value is 3 pixels on all sides.
+		 * Set the margins of the layout (how far from the edges the widgets can
+		 * be). The default value is 3 pixels on all sides.
 		 *
 		 * @param left
 		 * @param top
@@ -1454,7 +1546,8 @@ declare namespace ui {
 		itemCount(): integer
 
 		/**
-		 * Clear the Layout. All references to any added Widgets will be invalidated.
+		 * Clear the Layout. All references to any added Widgets will be
+		 * invalidated.
 		 *
 		 * @example
 		 * // Clear layout example
@@ -1547,14 +1640,16 @@ declare namespace ui {
 		addSpacing(pixels: integer): void
 
 		/**
-		 * Set the padding space between widgets in the layout. The default value is 3 pixels.
+		 * Set the padding space between widgets in the layout. The default
+		 * value is 3 pixels.
 		 *
 		 * @param pixels
 		 */
 		setSpaceBetween(pixels: integer): void
 
 		/**
-		 * Set the margins of the layout (how far from the edges the widgets can be). The default value is 3 pixels on all sides.
+		 * Set the margins of the layout (how far from the edges the widgets can
+		 * be). The default value is 3 pixels on all sides.
 		 *
 		 * @param left
 		 * @param top
@@ -1574,7 +1669,8 @@ declare namespace ui {
 		itemCount(): integer
 
 		/**
-		 * Clear the Layout. All references to any added Widgets will be invalidated.
+		 * Clear the Layout. All references to any added Widgets will be
+		 * invalidated.
 		 */
 		clear(): void
 	}

@@ -25,7 +25,7 @@ type float = number
  */
 declare namespace api {
 	/**
-	 * TODO: Description
+	 * Move the playhead to a specific frame.
 	 *
 	 * @param frame
 	 *
@@ -36,7 +36,7 @@ declare namespace api {
 	function setFrame(frame: integer): void
 
 	/**
-	 * TODO: Description
+	 * Return the frame number the playhead is on.
 	 */
 	function getFrame(): integer
 
@@ -49,7 +49,7 @@ declare namespace api {
 	function play(): void
 
 	/**
-	 * TODO: Description
+	 * Return all the Layers in the active Composition of a certain type.
 	 *
 	 * @param topLevel Only return layers in the top level
 	 *
@@ -103,7 +103,8 @@ declare namespace api {
 	function getCompLayersOfType(topLevel: boolean, type: string): string[]
 
 	/**
-	 * Adds a new Time Marker. The second example sets up a Time Marker as a controller for a Scheduling Group.
+	 * Adds a new Time Marker. The second example sets up a Time Marker as a
+	 * controller for a Scheduling Group.
 	 *
 	 * @param time
 	 *
@@ -138,15 +139,17 @@ declare namespace api {
 	function getTimeMarkers(): string[]
 
 	/**
-	 * A convenience function for removing Time Markers. This forwards to `api.delete(layerId)`.
+	 * A convenience function for removing Time Markers. This forwards to
+	 * `api.delete(layerId)`.
 	 *
 	 * @param markerId ID of the marker to be removed
 	 */
 	function removeTimeMarker(markerId: string): void
 
 	/**
-	 * Return the frame of the 'n'th beat from the Beat Marker settings. For example, an argument
-	 * of 3 will return the frame number that the 3rd beat falls on.
+	 * Return the frame of the 'n'th beat from the Beat Marker settings. For
+	 * example, an argument of 3 will return the frame number that the 3rd
+	 * beat falls on.
 	 *
 	 * @param beat Number of the beat
 	 *
@@ -262,7 +265,8 @@ declare namespace api {
 	function createEditable(path: cavalry.Path, name: string): string
 
 	/**
-	 * Creates a Layer of any type. The name argument specifies the name of the Layer in the Scene Window.
+	 * Creates a Layer of any type. The name argument specifies the name of the
+	 * Layer in the Scene Window.
 	 *
 	 * @param layerType Layer type
 	 * @param name Preferred name of the new layer
@@ -274,7 +278,7 @@ declare namespace api {
 	function create(layerType: string, name: string): string
 
 	/**
-	 * Check if a layer with the given `layerId` exists.
+	 * Delete a Layer.
 	 *
 	 * @param layerId The ID of the layer
 	 *
@@ -282,13 +286,13 @@ declare namespace api {
 	 * // Delete all render queue items
 	 * const items = api.getRenderQueueItems();
 	 * for (let layer of items) {
-	 *   api.delete(layer);
+	 *   api.deleteLayer(layer);
 	 * }
 	 */
 	function deleteLayer(layerId: string): void
 
 	/**
-	 * Returns `true` if a layer with the given layerId exists.
+	 * Check if a layer with the given `layerId` exists.
 	 *
 	 * @param layerId ID of the layer
 	 *
@@ -300,7 +304,8 @@ declare namespace api {
 	function layerExists(layerId: string): boolean
 
 	/**
-	 * Get the layer's type (which can be used to create new instances of this layer).
+	 * Get the layer's type (which can be used to create new instances of this
+	 * layer).
 	 *
 	 * @param layerId ID of the layer
 	 *
@@ -365,7 +370,7 @@ declare namespace api {
 	function getChildren(layerId: string): string[]
 
 	/**
-	 * TODO: Description
+	 * Make one Layer the child of another.
 	 *
 	 * @param layerId ID of the layer
 	 * @param newParentId ID of the preferred parent layer
@@ -378,7 +383,7 @@ declare namespace api {
 	function parent(layerId: string, newParentId: string): void
 
 	/**
-	 * TODO: Description
+	 * Return the `layerId` of a Layer's parent.
 	 *
 	 * @param layerId ID of the layer
 	 *
@@ -391,7 +396,7 @@ declare namespace api {
 	function getParent(layerId: string): string
 
 	/**
-	 * TODO: Description
+	 * Return the human-readable ('nice name') of a Layer.
 	 *
 	 * @param layerId ID of the layer
 	 *
@@ -402,7 +407,7 @@ declare namespace api {
 	function getNiceName(layerId: string): string
 
 	/**
-	 * TODO: Description
+	 * Rename a Layer.
 	 *
 	 * @param layerId ID of the layer
 	 * @param name Preferred new name for the layer
@@ -417,15 +422,20 @@ declare namespace api {
 	function rename(layerId: string, name: string): void
 
 	/**
-	 * TODO: Description
+	 * Offset a Layer's Visibility Clip and any related animation in time.
 	 *
 	 * @param layerId ID of the layer
 	 * @param delta Amount of frames to offset the layer
+	 *
+	 * @example
+	 * const layerId = api.primitive("rectangle", "Rectangle");
+	 * api.setOutFrame(layerId, 50);
+	 * api.offsetLayerTime(layerId, 100);
 	 */
 	function offsetLayerTime(layerId: string, delta: integer): void
 
 	/**
-	 * TODO: Description
+	 * Enable/disable the Stroke for a Shape.
 	 *
 	 * @param layerId ID of the layer
 	 * @param enabled Enables the stroke
@@ -439,7 +449,7 @@ declare namespace api {
 	function setStroke(layerId: string, enabled: boolean): void
 
 	/**
-	 * Returns true if a layer has a Stroke.
+	 * Returns `true` if a Shape has a Stroke.
 	 *
 	 * @param layerId ID of the layer
 	 *
@@ -451,7 +461,7 @@ declare namespace api {
 	function hasStroke(layerId: string): boolean
 
 	/**
-	 * TODO: Description
+	 * Enable/disable the Fill for a Shape.
 	 *
 	 * @param layerId ID of the layer
 	 * @param enabled Enables the fill
@@ -464,7 +474,7 @@ declare namespace api {
 	function setFill(layerId: string, enabled: boolean): void
 
 	/**
-	 * Returns `true` if a layer has a Fill.
+	 * Returns `true` if a Shape has a Fill.
 	 *
 	 * @param layerId ID of the layer
 	 *
@@ -504,7 +514,7 @@ declare namespace api {
 	function getSelectedAttributes(): [string, string][]
 
 	/**
-	 * TODO: Description
+	 * Set values for a Layer's attributes.
 	 *
 	 * @param layerId ID of the layer
 	 * @param arguments Object of attribute names and values
@@ -532,7 +542,7 @@ declare namespace api {
 	function set(layerId: string, arguments: unknown): void
 
 	/**
-	 * TODO: Description
+	 * Get the values for a Layer's attributes.
 	 *
 	 * @param layerId ID of the layer
 	 * @param attrId ID of the attribute
@@ -617,7 +627,8 @@ declare namespace api {
 	 * Set an attribute expression, this will take whatever the input value is
 	 * in the expression, and manipulate it in some way (multiply, add to it etc.).
 	 *
-	 * Caution: Attributes require an in-connection for the expression to take effect.
+	 * Caution: Attributes require an in-connection for the expression to take
+	 * effect.
 	 *
 	 * Caution: If the attribute is of type `int2` or `double2` the expression needs
 	 * to be set on the `x` or `y` axis of the attribute.
@@ -651,7 +662,7 @@ declare namespace api {
 	): void
 
 	/**
-	 * Connect one layer to another. The result or output of a Layer is
+	 * Connect one attribute to another. The result or output of a Layer is
 	 * referred to as the `in` connection.
 	 *
 	 * @param fromLayerId ID of the sending layer
@@ -677,7 +688,7 @@ declare namespace api {
 	): void
 
 	/**
-	 * TODO: Description
+	 * Remove connections between attributes.
 	 *
 	 * @param fromLayerId ID of the sending layer
 	 * @param fromAttrId ID of the sending attribute
@@ -726,6 +737,7 @@ declare namespace api {
 	 * api.connect(oscillatorId, 'id', primId, 'rotation')
 	 * console.log(api.getOutConnections(oscillatorId, 'id'))
 	 */
+	// TODO: Also takes in `keyframeId`
 	function getOutConnections(layerId: string, attrId: string): string[]
 
 	/**
@@ -742,7 +754,7 @@ declare namespace api {
 	function getSelectedKeyframes(): { [key: string]: integer[] }
 
 	/**
-	 * TODO: Description
+	 * Set keyframes for Layers.
 	 *
 	 * @param layerId ID of the layer
 	 * @param frame Preferred frame number
@@ -760,7 +772,7 @@ declare namespace api {
 	): void
 
 	/**
-	 * TODO: Description
+	 * Remove a Layer's keyframes.
 	 *
 	 * @param layerId ID of the layer
 	 * @param attrId ID of the attribute
@@ -990,7 +1002,7 @@ declare namespace api {
 	function getKeyframeTimes(layerId: string, attrId: string): number[]
 
 	/**
-	 * TODO: Description
+	 * Delete all keyframes on an attribute.
 	 *
 	 * @param layerId ID of the layer
 	 * @param attrId ID of the attribute
@@ -1166,7 +1178,7 @@ declare namespace api {
 	function getInConnectedAttributes(layerId: string): string[]
 
 	/**
-	 * TODO: Description
+	 * Return a list of all the attributes that exist on a Layer.
 	 *
 	 * @param layerId ID of the layer
 	 *
@@ -1193,7 +1205,7 @@ declare namespace api {
 	function hasAttribute(layerId: string, attrId: string): boolean
 
 	/**
-	 * TODO: Description
+	 * Return a list of all the animated attributes that exist on a Layer.
 	 *
 	 * @param layerId ID of the layer
 	 *
@@ -1209,7 +1221,7 @@ declare namespace api {
 	function getAnimatedAttributes(layerId: string): string[]
 
 	/**
-	 * TODO: Description
+	 * Check to find out if a particular attribute on a Layer is animated.
 	 *
 	 * @param layerId ID of the layer
 	 * @param attrId ID of the attribute
@@ -1223,7 +1235,7 @@ declare namespace api {
 	function isAnimatedAttribute(layerId: string, attrId: string): boolean
 
 	/**
-	 * TODO: Description
+	 * Return the first frame of a visibility clip.
 	 *
 	 * @param layerId ID of the layer
 	 *
@@ -1236,15 +1248,19 @@ declare namespace api {
 	function getInFrame(layerId: string): integer
 
 	/**
-	 * TODO: Description
+	 * Set the first frame of a visibility clip.
 	 *
 	 * @param layerId ID of the layer
 	 * @param frame Frame number
+	 *
+	 * @example
+	 * const layerId = api.primitive("rectangle", "Rectangle");
+	 * api.setInFrame(layerId, 50);
 	 */
 	function setInFrame(layerId: string, frame: integer): void
 
 	/**
-	 * TODO: Description
+	 * Return the last frame of a visibility clip.
 	 *
 	 * @param layerId ID of the layer
 	 *
@@ -1257,15 +1273,20 @@ declare namespace api {
 	function getOutFrame(layerId: string): integer
 
 	/**
-	 * TODO: Description
+	 * Set the last frame of a visibility clip.
 	 *
 	 * @param layerId ID of the layer
 	 * @param frame Frame number
+	 *
+	 * @example
+	 * const layerId = api.primitive("rectangle", "Rectangle");
+	 * api.setOutFrame(layerId, 50);
 	 */
 	function setOutFrame(layerId: string, frame: integer): void
 
 	/**
-	 * Sets a preset for a Graph Attribute. The `presetIndex` can be 0: s-curve, 1: ramp, 2: linear, 3: flat
+	 * Sets a preset for a Graph Attribute. The `presetIndex` can be
+	 * 0: s-curve, 1: ramp, 2: linear, 3: flat
 	 *
 	 * @param layerId ID of the layer
 	 * @param attrId ID of the attribute
@@ -1279,7 +1300,8 @@ declare namespace api {
 	): void
 
 	/**
-	 * Flips the points on a Graph Attribute - valid `direction` arguments are "horizontal" and "vertical".
+	 * Flips the points on a Graph Attribute - valid `direction` arguments are
+	 * "horizontal" and "vertical".
 	 *
 	 * @param layerId ID of the layer
 	 * @param attrId ID of the attribute
@@ -1308,7 +1330,7 @@ declare namespace api {
 	function addToControlCentre(layerId: string, attrId: string): void
 
 	/**
-	 * Remove an attribute from the [Control Centre](../../user-interface/menus/window-menu/control-centre.mdx).\
+	 * Remove an attribute from the Control Centre
 	 *
 	 * @param layerId ID of the layer
 	 * @param attrId ID of the attribute
@@ -1534,7 +1556,7 @@ declare namespace api {
 
 	// # Rendering
 	/**
-	 * TODO: Description
+	 * Render a specific Render Queue Item.
 	 *
 	 * @param renderQueueItemId ID of the render queue item
 	 *
@@ -1546,7 +1568,7 @@ declare namespace api {
 	function render(renderQueueItemId: string): void
 
 	/**
-	 * TODO: Description
+	 * Render all Render Queue Items in the Render Manager.
 	 *
 	 * @example
 	 * const activeComp = api.getActiveComp();
@@ -1606,7 +1628,7 @@ declare namespace api {
 	): void
 
 	/**
-	 * TODO: Description
+	 * Return a list of the Render Queue Items in the Render Manager.
 	 *
 	 * @example
 	 * api.addRenderQueueItem(api.getActiveComp());
@@ -1619,7 +1641,7 @@ declare namespace api {
 	function getRenderQueueItems(): string[]
 
 	/**
-	 * TODO: Description
+	 * Add a new Render Queue Item to the Render Manager.
 	 *
 	 * @example
 	 * const activeComp = api.getActiveComp();
@@ -1629,7 +1651,7 @@ declare namespace api {
 	function addRenderQueueItem(compId: string): string
 
 	/**
-	 * TODO: Description
+	 * Connect the Render Manager's Dynamic Index to another attribute.
 	 *
 	 * @param layerId ID of the layer
 	 * @param attrId ID of the attribute
@@ -1642,7 +1664,7 @@ declare namespace api {
 	function connectDynamicIndex(layerId: string, attrId: string): void
 
 	/**
-	 * TODO: Description
+	 * Return the current Dynamic Index.
 	 *
 	 * @example
 	 * console.log(api.getDynamicIndex());
@@ -1768,14 +1790,21 @@ declare namespace api {
 	function loadGoogleSheet(spreadsheetId: string, sheetId: string): string
 
 	/**
-	 * TODO: Description
+	 * Set the location of `projectDescription.json` in order to use
+	 * relative filepaths.
 	 *
 	 * @param path Absolute path to where to save the project
+	 *
+	 * @example
+	 * api.setProject(path/to/project/);
 	 */
 	function setProject(path: string): void
 
 	/**
-	 * TODO: Description
+	 * Clear the Project.
+	 *
+	 * @example
+	 * api.clearProject();
 	 */
 	function clearProject(): void
 
@@ -2003,7 +2032,8 @@ declare namespace api {
 	function exec(scriptId: string, scriptSource: string): boolean
 
 	/**
-	 * Gets the Project path (if a Project is set). This path does not include a trailing `/`
+	 * Gets the Project path (if a Project is set). This path does not include
+	 * a trailing `/`
 	 *
 	 * @returns Absolute path of the project, excluding trailing slash
 	 *
@@ -2013,7 +2043,8 @@ declare namespace api {
 	function getProjectPath(): string
 
 	/**
-	 * Gets the Render path (if a Project is set). This path does not include a trailing `/`
+	 * Gets the Render path (if a Project is set). This path does not include
+	 * a trailing `/`
 	 *
 	 * @returns Absolute path of the render path, excluding trailing slash
 	 *
@@ -2023,7 +2054,8 @@ declare namespace api {
 	function getRenderPath(): string
 
 	/**
-	 * Gets the Project Asset path (if a Project is set). This path does not include a trailing `/`
+	 * Gets the Project Asset path (if a Project is set). This path does not
+	 * include a trailing `/`
 	 *
 	 * @returns Absolute path of the render path, excluding trailing slash
 	 *
@@ -2033,7 +2065,8 @@ declare namespace api {
 	function getAssetPath(): string
 
 	/**
-	 * Gets the Scenes path (if a Project is set). This path does not include a trailing `/`
+	 * Gets the Scenes path (if a Project is set). This path does not include
+	 * a trailing `/`
 	 *
 	 * @returns Absolute path of the scenes path, excluding trailing slash
 	 *
@@ -2116,6 +2149,15 @@ declare namespace api {
 	 * not created.
 	 *
 	 * @param path Absolute path to the folder
+	 *
+	 * @example
+	 * // Update the example path below and uncomment the line
+	 * const newFolder = api.makeFolder("/path/to/newFolder");
+	 * if (newFolder == true) {
+	 *   console.log("New folder created.");
+	 * } else {
+	 *   console.log("New folder failed.");
+	 * }
 	 */
 	function makeFolder(path: string): boolean
 
@@ -2184,11 +2226,13 @@ declare namespace api {
 	): boolean
 
 	/**
-	 * Write an encoded string to a file. Returns `true` if the write was
-	 * successful. It overwrites the file.
+	 * Write an encoded string to a file and returns if the write was
+	 * successful.
 	 *
-	 * Please note, only files encoded using `encodeBinary` will be properly
-	 * decoded.
+	 * Caution, this will overwrite any existing file.
+	 *
+	 * Please note, only files encoded using `encodeBinary` will be
+	 * properly decoded.
 	 *
 	 * @param filePath Absolute path to the file to be written
 	 * @param content Preferred content of the file encoded as `base64`
@@ -2230,7 +2274,7 @@ declare namespace api {
 
 	// # Utilities
 	/**
-	 * TODO: Description
+	 * Add a string to the clipboard.
 	 *
 	 * @param text
 	 *
@@ -2240,7 +2284,7 @@ declare namespace api {
 	function setClipboardText(text: string): void
 
 	/**
-	 * TODO: Description
+	 * Return the contents of the clipboard as a string.
 	 *
 	 * @example
 	 * 	api.setClipboardText("Copy test from Cavalry");
@@ -2305,13 +2349,16 @@ declare namespace api {
 	function runDetachedProcess(command: string, arguments: string[]): void
 
 	/**
-	 * TODO: Description + Opens files and folders too
+	 * Open a web URL in a browser or file URI in the OS finder.
 	 *
 	 * @param url Web URL or file URI i.e. `file://`
 	 *
 	 * @example
 	 * api.openURL("http://cavalry.scenegroup.co");
+	 * // On MacOS
 	 * api.openURL("file:///Users/User/Desktop");
+	 * // On Windows (note the slash before `c:/`)
+	 * api.openURL("file:///c:/Users/User/Desktop");
 	 */
 	function openURL(url: string): void
 
@@ -2393,8 +2440,11 @@ declare namespace api {
 	function deserialise(filePath: string): void
 
 	/**
-	 * Save a preference
+	 * Save script preferences as an object
+	 *
 	 * TODO: Add info regarding the prefs file
+	 * TODO: Note it doesn't work for native prefs
+	 * TODO: Recommend reverse URL notation ie. com.scenery.scriptName
 	 *
 	 * @param key Name of preference key to be set
 	 * @param preferences Object of keys and values
@@ -2431,7 +2481,7 @@ declare namespace api {
 	 * console.log(`${myPrefs.first}, ${myPrefs.second}${myPrefs.third});
 	 */
 	// TODO: Define return value
-	function getPreferenceObject(key: string): object
+	function getPreferenceObject(key: string): object | undefined
 
 	/**
 	 * Save arbitrary data to a layer. This could be a string, or an object.
@@ -2446,9 +2496,12 @@ declare namespace api {
 	 */
 	function setUserData(layerId: string, key: string, value: unknown): void
 
+	// {@link TextDocument.uri TextDocument.uri.fsPath}
+	// {@linkcode Uri.scheme}
 	/**
 	 * Query to see if user data with a given `key` exists.
-	 * TODO: Link to `setUserData`
+	 *
+	 * TODO: Link to `setUserData` see above
 	 *
 	 * @param key Name of the user key
 	 *
@@ -2496,8 +2549,8 @@ declare namespace api {
 	 *
 	 * Further to the WebClient, Cavalry also provides a simple WebServer. You can
 	 * call `/get` to retrieve whatever response you have set on the server, or,
-	 * for those of an adventurous persuasion, you can use `/post`. To aid when using
-	 * `/post` the WebServer can poll for new data and will fire a callback
+	 * for those of an adventurous persuasion, you can use `/post`. To aid when
+	 * using `/post` the WebServer can poll for new data and will fire a callback
 	 * function when a data drop has been detected.
 	 */
 	class WebClient {
@@ -2723,7 +2776,8 @@ declare namespace api {
 		stop(): void
 
 		/**
-		 * Set the result for `/get` requests, only `text/plain` is currently supported.
+		 * Set the result for `/get` requests, only `text/plain` is currently
+		 * supported.
 		 *
 		 * @param resultText
 		 */
