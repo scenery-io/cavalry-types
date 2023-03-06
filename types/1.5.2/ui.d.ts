@@ -425,7 +425,7 @@ declare namespace ui {
 	 * // show the window
 	 * ui.show()
 	 */
-	function runFileScript(filePath: string): void
+	function runFileScript(filePath: string): boolean
 
 	/**
 	 * Add a new context (right click) menu item to a UI window or Container.
