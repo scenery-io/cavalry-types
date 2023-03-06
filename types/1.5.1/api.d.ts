@@ -836,6 +836,13 @@ declare namespace api {
 	function modifyKeyframe(
 		layerId: string,
 		// TODO: Define as interface
+		// TODO: Incorrect, should be:
+		//  api.modifyKeyframe(ellipseId, {
+		//     "position.x": {
+		//       "frame": frame,
+		//       "type": 2
+		//     }
+		//   });
 		data: {
 			frame: integer
 			newFrame?: integer // Specify a new frame for the keyframe.
