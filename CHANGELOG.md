@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   `Fixed` for any bug fixes
 -   `Security` in case of vulnerabilities
 
+## [0.2.1] - 2023-03-06
+
+### Changed
+
+-   Renames `types` folder to `versions`
+
 ## [0.2.0] - 2023-03-06
 
 ### Added

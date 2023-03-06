@@ -2,7 +2,7 @@
 
 Typescript definitions for [Cavalry](https://docs.cavalry.scenegroup.co/tech-info/scripting/getting-started/)
 
-> **NOTE**  
+> **Note**  
 > Current supported API version is [Cavalry 1.5.2](https://docs.cavalry.scenegroup.co/tech-info/release-notes/1-5-2-release-notes)
 
 These definitions describe the whole Cavalry scripting API. Essentially it gives you all the documentation inside your editor. After [installation](#installation) and following the [usage guidelines](#usage) you can simply start writing your script and get suggestions about available methods and parameters.
@@ -75,7 +75,7 @@ The types will always point to the latest API version. Add a version number to t
 #### Javascript
 
 ```ts
-/// <reference types="@scenery/cavalry-types/1.5.1" />
+/// <reference types="@scenery/cavalry-types/versions/1.5.1" />
 ```
 
 #### Typescript
@@ -83,7 +83,7 @@ The types will always point to the latest API version. Add a version number to t
 ```json
 {
 	"compilerOptions": {
-		"types": ["@scenery/cavalry-types/1.5.1"]
+		"types": ["@scenery/cavalry-types/versions/1.5.1"]
 	}
 }
 ```
@@ -100,8 +100,8 @@ Cavalry has namespaces for specific parts of the app, such as [`render`](https:/
 #### For a specific version
 
 ```js
-/// <reference types="@scenery/cavalry-types/1.5.1"/>
-/// <reference types="@scenery/cavalry-types/1.5.1/render"/>
+/// <reference types="@scenery/cavalry-types/versions/1.5.1"/>
+/// <reference types="@scenery/cavalry-types/versions/1.5.1/render"/>
 ```
 
 #### In a [Typescript config](#typescript-config)
