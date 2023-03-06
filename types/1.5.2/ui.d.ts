@@ -44,7 +44,7 @@
  */
 
 declare namespace ui {
-	type Layouts = HLayout | VLayout
+	type Layouts = HLayout | VLayout | FlowLayout
 	type Widgets =
 		| Button
 		| Checkbox
@@ -359,6 +359,297 @@ declare namespace ui {
 	 */
 	function setFixedSize(width: integer, height: integer): void
 
+	type MimeType = 'layerIds' | 'assetIds' | 'url' | 'color' | 'text'
+	/**
+	 * UI windows support drag and drop functionality. At least one `MimeType`
+	 * for the UI window to accept **must** be registered. To register multiple
+	 * MimeTypes, register each on a separate line.
+	 *
+	 * TODO: Link to `Container` class
+	 * A Container Widget can also be used to create multiple, distinct drag and
+	 * drop areas within the same UI window – meaning the event will only occur
+	 * within the Container rather than the entire UI window.
+	 *
+	 * @param mimeType Mimetype string, `url` can be a file URI or web URL
+	 *
+	 * @example
+	 * // Drag and drop example
+	 * const label = new ui.Label("Drag and drop a layer in here");
+	 * const layout = new ui.HLayout();
+	 * layout.addStretch();
+	 * layout.add(label);
+	 * layout.addStretch();
+	 *
+	 * const container = new ui.Container();
+	 * container.setBackgroundColor("#1755a6");
+	 * container.setRadius(3,3,3,3);
+	 * container.setLayout(layout);
+	 *
+	 * // This step is essential, register at least one MimeType that the Window should accept.
+	 * ui.registerDragDropMimeType("layerIds")
+	 * ui.onDragEnter = () => {
+	 *     console.log("Drag Enter")
+	 *     container.setBorder("#e62163", "2")
+	 * }
+	 * ui.onDragLeave = () => {
+	 *    console.log("Drag Leave")
+	 *    container.setBorder()
+	 * }
+	 * ui.onDrop = (dropInfo) => {
+	 *     container.setBorder()
+	 *     const firstLayer = dropInfo["layerIds"][0]
+	 *     label.setText(`You dropped: ${api.getNiceName(firstLayer)}`)
+	 * }
+	 * ui.setMargins(6, 6, 6, 6);
+	 * ui.add(container);
+	 * ui.show();
+	 */
+	function registerDragDropMimeType(mimeType: MimeType): void
+
+	/**
+	 * Run UI Scripts from within other UI Scripts. This creates a new context
+	 * for UI scripts only. Headless scripts are run in the same context as the
+	 * UI script that runs this method.
+	 *
+	 * @param filePath Absolute path to the script file
+	 *
+	 * @example
+	 * // create a button
+	 * const button = new ui.Button("Run Script");
+	 * // set the onClick callback function
+	 * button.onClick = () => {
+	 *   ui.runFileScript("/Path/To/Script.js")
+	 * }
+	 * // add the button to the layout
+	 * ui.add(button);
+	 * // show the window
+	 * ui.show()
+	 */
+	function runFileScript(filePath: string): void
+
+	/**
+	 * Add a new context (right click) menu item to a UI window or Container.
+	 *
+	 * @param menuItem Object describing a menu item
+	 *
+	 * @example
+	 * // Context Menu example
+	 * const label = new ui.Label("Right click in here");
+	 * const layout = new ui.HLayout();
+	 * layout.addStretch();
+	 * layout.add(label);
+	 * layout.addStretch();
+	 * const firstMenuItem = {
+	 *   name: "Item One",
+	 *   onMouseRelease: () => {
+	 *     return console.log("Clicked "+ firstMenuItem.name)
+	 *   },
+	 *   icon: `${api.getAppAssetsPath()}/icons/load.png`
+	 * };
+	 * const separatorItem = {
+	 *   name: "",
+	 * };
+	 * const secondMenuItem = {
+	 *   name: "Item Two",
+	 *   onMouseRelease: () => {
+	 *     return console.log("Clicked "+ secondMenuItem.name)
+	 *   }
+	 * };
+	 * const thirdMenuItem = {
+	 *   name: "Item Three",
+	 *   onMouseRelease: () => {
+	 *     return console.log("Clicked "+ thirdMenuItem.name)
+	 *   },
+	 *   enabled: false
+	 * };
+	 * ui.addMenuItem(firstMenuItem);
+	 * ui.addMenuItem(separatorItem);
+	 * ui.addMenuItem(secondMenuItem);
+	 * ui.addMenuItem(thirdMenuItem);
+	 * ui.showContextMenuOnRightClick();
+	 * ui.setMargins(6, 6, 6, 6);
+	 * ui.add(layout);
+	 * ui.show();
+	 *
+	 * @example
+	 * // Context Menu example including a `showContextMenu()` function
+	 * const label = new ui.Label("Right click in here");
+	 * const layout = new ui.HLayout();
+	 * layout.addStretch();
+	 * layout.add(label);
+	 * layout.addStretch();
+	 * const container = new ui.Container();
+	 * container.setBackgroundColor("#1755a6");
+	 * container.setRadius(3, 3, 3, 3);
+	 * container.setLayout(layout);
+	 * const firstMenuItem = {
+	 *   name: "Item One",
+	 *   onMouseRelease : () => {
+	 *     return console.log("Clicked "+ firstMenuItem.name)
+	 *   },
+	 *   icon: `${api.getAppAssetsPath()}/icons/load.png`
+	 * };
+	 * const separatorItem = {
+	 *   name: "",
+	 * };
+	 * const secondMenuItem = {
+	 *   name: "Item Two",
+	 *   onMouseRelease : () => {
+	 *     return console.log("Clicked "+ secondMenuItem.name)
+	 *   }
+	 * };
+	 * const thirdMenuItem = {
+	 *   name: "Item Three",
+	 *   onMouseRelease : () => {
+	 *     return console.log("Clicked "+ thirdMenuItem.name)
+	 *   },
+	 *   enabled: false
+	 * };
+	 * ui.addMenuItem(firstMenuItem);
+	 * ui.addMenuItem(separatorItem);
+	 * ui.addMenuItem(secondMenuItem);
+	 * ui.addMenuItem(thirdMenuItem);
+	 * container.onMousePress =  (position, button) => {
+	 *     if (button == "right") {
+	 *         ui.showContextMenu();
+	 *     }
+	 * }
+	 * ui.setMargins(6, 6, 6, 6);
+	 * ui.add(container);
+	 * ui.show();
+	 */
+	function addMenuItem(menuItem: {
+		name: string
+		onMouseRelease: () => void
+		enabled: boolean
+		icon: string
+	}): void
+
+	// The object contains the following properties:
+	// - `name` // The menu item text. If the name is empty (i.e. ""), a separator will be added.
+	// - `enabled` // This is optional. Set this to false to disable the context menu item.
+	// - `onMouseRelease` // this is a callback function. Set a function on this property and it will be called when the menu item is clicked.
+	// - `icon` // an optional path to an icon for the menu item.
+
+	/**
+	 * Add a new sub menu item to a context menu item. A menu object must be
+	 * created, populated and then added to the Menu Item via the `addSubMenu`
+	 * function with a new Menu class.
+	 *
+	 * @param menu Object
+	 *
+	 * @example
+	 * // Context Menu with sub-menu example
+	 * const label = new ui.Label("Right click in here");
+	 * const layout = new ui.HLayout();
+	 * layout.addStretch();
+	 * layout.add(label);
+	 * layout.addStretch();
+	 * const container = new ui.Container();
+	 * container.setBackgroundColor("#1755a6");
+	 * container.setRadius(3,3,3,3);
+	 * container.setLayout(layout);
+	 * const firstMenuItem = {
+	 *   name: "Item One",
+	 *   onMouseRelease: () => {
+	 *     return console.log("Clicked "+ firstMenuItem.name)
+	 *   },
+	 *   icon: `${api.getAppAssetsPath()}/icons/load.png`
+	 * };
+	 * const separatorItem = {
+	 *   name: "",
+	 * };
+	 * const secondMenuItem = {
+	 *   name: "Item Two",
+	 *   onMouseRelease: () => {
+	 *     return console.log("Clicked "+ secondMenuItem.name)
+	 *   }
+	 * };
+	 * const thirdMenuItem = {
+	 *   name: "Item Three",
+	 *   onMouseRelease: () => {
+	 *     return console.log("Clicked "+ thirdMenuItem.name)
+	 *   },
+	 *   enabled: false
+	 * };
+	 * ui.addMenuItem(firstMenuItem);
+	 * ui.addMenuItem(separatorItem);
+	 * ui.addMenuItem(secondMenuItem);
+	 * ui.addMenuItem(thirdMenuItem);
+	 * const subMenu = new ui.Menu("Sub-Menu")
+	 * const subOne = {
+	 *   name: "Sub One",
+	 * };
+	 * const subTwo = {
+	 *   name: "Sub Two",
+	 * };
+	 * subMenu.addMenuItem(subOne)
+	 * subMenu.addMenuItem(subTwo)
+	 * ui.addSubMenu(subMenu);
+	 * container.onMousePress = (position, button) => {
+	 *     if (button == "right") {
+	 *         ui.showContextMenu();
+	 *     }
+	 * }
+	 * ui.setMargins(6, 6, 6, 6);
+	 * ui.add(container);
+	 * ui.show();
+	 */
+	function addSubMenu(menu: ui.Menu): void
+
+	/**
+	 * Automatically show the context menu at the mouse location when right
+	 * clicking in the window.
+	 *
+	 * @example
+	 * ui.showContextMenuOnRightClick()
+	 * ui.addMenuItem({
+	 *   name: 'Item',
+	 *   onMouseRelease: () => console.log('Clicked'),
+	 *   enabled: true,
+	 * })
+	 * ui.show()
+	 */
+	function showContextMenuOnRightClick(): void
+
+	/**
+	 * Show the context at the mouse location. Use this to show menus on left
+	 * click.
+	 */
+	function showContextMenu(): void
+
+	/**
+	 * Clear the context menu. This can be used to update context menu items.
+	 */
+	function clearContextMenu(): void
+
+	/**
+	 * A callback functon that can be used to perform actions (e.g. remove
+	 * temporary files) when closing the ui Window.
+	 *
+	 * @example
+	 * ui.show();
+	 * ui.onClose = () => {
+	 *   console.log("About to close");
+	 * }
+	 */
+	function onClose(): void
+
+	/**
+	 * A callback function that fires when the drag event enters the UI window
+	 */
+	function onDragEnter(): void
+
+	/**
+	 * A callback function that fires when the drag event leaves the UI window
+	 */
+	function onDragLeave(): void
+
+	/**
+	 * A callback function that fires when the drop event occurs on the UI window
+	 */
+	function onDrop(): void
+
 	// Widgets
 
 	// Supported widgets:
@@ -384,6 +675,27 @@ declare namespace ui {
 	//     TabView
 
 	// Layouts can be nested so highly complex layouts are possible.
+
+	class Menu {
+		/**
+		 * Creates a menu that can be used to add a sub-menu
+		 *
+		 * @param name Name of the menu item
+		 */
+		constructor(name: string)
+
+		/**
+		 * Add a new context sub-menu item to a UI window or Container.
+		 *
+		 * @param menuItem Object describing a menu item
+		 */
+		addMenuItem(menuItem: {
+			name: string
+			onMouseRelease: () => void
+			enabled: boolean
+			icon: string
+		}): void
+	}
 
 	/**
 	 * Internal base class for widgets. You cannot call `new Widget()`.
@@ -449,6 +761,11 @@ declare namespace ui {
 		 * @param enabled
 		 */
 		setToolTip(enabled: string): void
+
+		/**
+		 * Returns a unique identifier for the widget
+		 */
+		getUUID(): void
 	}
 
 	/**
@@ -1393,6 +1710,66 @@ declare namespace ui {
 	 * ui.setMinimumHeight(240)
 	 * ui.setMinimumWidth(220)
 	 * ui.show()
+	 *
+	 * @example
+	 * // Draw example using interactivity
+	 * ui.setTitle("Click and Drag")
+	 * const draw = new ui.Draw()
+	 * const size = 200;
+	 * const margin = 2;
+	 * draw.setSize(size,size);
+	 *
+	 * // enable this line to have the circle follow the mouse even when the mouse isn't pressed
+	 * // draw.useHoverEvents(true);
+	 * draw.onMousePress = (position, button) => {
+	 *   if (button == "left") {
+	 *     mouseDraw(position)
+	 *   }
+	 * }
+	 *
+	 * draw.onMouseRelease = (position, button) => {
+	 *   console.log(`Release, x: ${position.x}, y: ${position.y}, button: ${button}`)
+	 * }
+	 *
+	 * draw.onMouseDoubleClick = (position, button) => {
+	 *   console.log(`Double Click, x: ${position.x}, y: ${position.y}, button: ${button}`)
+	 * }
+	 *
+	 * draw.onMouseMove = (position) => {
+	 *   mouseDraw(position)
+	 * }
+	 *
+	 * function commonDraw() {
+	 *   var textPath = new cavalry.Path();
+	 *   textPath.addText("Click and drag!", 22, 0, 10);
+	 *   // centre the text in the window, size is declared above
+	 *   let bbox = textPath.boundingBox();
+	 *   textPath.translate((size-bbox.width)/2,0);
+	 *   let textPaint = {"color": "#6437ff"}
+	 *   draw.addPath(textPath.toObject(), textPaint)
+	 * }
+	 *
+	 * function mouseDraw(position) {
+	 *   draw.clearPaths()
+	 *   commonDraw()
+	 *   var mousePath = new cavalry.Path();
+	 *   mousePath.addEllipse(position.x, position.y, 5,5);
+	 *   let mousePaint = {"color": "#ff24e0"}
+	 *   draw.addPath(mousePath.toObject(), mousePaint)
+	 *   draw.redraw()
+	 * }
+	 *
+	 * commonDraw()
+	 * draw.setBackgroundColor("#c8c8c8");
+	 *
+	 * const layout = ui.HLayout()
+	 * layout.addStretch()
+	 * layout.add(draw)
+	 * layout.addStretch()
+	 * ui.add(layout)
+	 * ui.setMinimumHeight(220)
+	 * ui.setMinimumWidth(220)
+	 * ui.show()
 	 */
 	class Draw extends Widget {
 		/**
@@ -1423,6 +1800,53 @@ declare namespace ui {
 		 * @param height
 		 */
 		saveImage(filePath: string, width: integer, height: integer): boolean
+
+		/**
+		 * If set to `true`, `mouseMoveEvents` will fire even when the mouse isn't pressed.
+		 *
+		 * @param use Use hover events or not
+		 */
+		useHoverEvents(use: boolean): void
+
+		/**
+		 * Fires when the mouse is pressed
+		 *
+		 * @param position Position of the click within the container. Measured from the bottom left.
+		 * @param button Type of the mouse button, ie. "right"
+		 */
+		onMousePress(
+			position: { x: number; y: number },
+			button: 'left' | 'right' | 'middle'
+		): void
+
+		/**
+		 * Fires when the mouse is released
+		 *
+		 * @param position Position of the click within the container. Measured from the bottom left.
+		 * @param button Type of the mouse button, ie. "right"
+		 */
+		onMouseRelease(
+			position: { x: number; y: number },
+			button: 'left' | 'right' | 'middle'
+		): void
+
+		/**
+		 * Fires when the mouse is double clicked
+		 *
+		 * @param position Position of the click within the container. Measured from the bottom left.
+		 * @param button Type of the mouse button, ie. "right"
+		 */
+		onMouseDoubleClick(
+			position: { x: number; y: number },
+			button: 'left' | 'right' | 'middle'
+		): void
+
+		/**
+		 * Only fires when the mouse is pressed unless `useHoverEvents` is `true`
+		 *
+		 * @param position Position of the cursor within the container. Measured from the bottom left.
+		 */
+		onMouseMove(position: { x: number; y: number }): void
 	}
 
 	/**
@@ -1471,7 +1895,102 @@ declare namespace ui {
 		 *
 		 * @param layout Layout that the container will contain
 		 */
-		setLayout(layout: ui.VLayout | ui.HLayout): void
+		setLayout(layout: Layouts): void
+
+		/**
+		 * If set to `true`, `mouseMoveEvents` will fire even when the mouse isn't pressed.
+		 *
+		 * @param use Use hover events or not
+		 */
+		useHoverEvents(use: boolean): void
+
+		/**
+		 * Adds a border to the container. A border can be removed by calling `setBorder()`.
+		 *
+		 * @param color Color of the border as hex rgb string
+		 * @param width Width of the border in pixels
+		 * @param dashWidth Width of the dashes
+		 * @param dashGap Width of the gap between dashes
+		 */
+		setBorder(
+			color: string,
+			width: number,
+			dashWidth?: number,
+			dashGap?: number
+		): void
+
+		/**
+		 *
+		 * Containers support drag and drop functionality to create multiple,
+		 * distinct drag and drop areas within the same UI window – meaning the
+		 * event will only occur within the Container rather than the entire UI
+		 * window.
+		 *
+		 * At least one `MimeType` for the Container to accept **must**
+		 * be registered. To register multiple MimeTypes, register each on a
+		 * separate line.
+		 *
+		 * @param mimeType Mimetype string, `url` can be a file URI or web URL
+		 */
+		registerDragDropMimeType(mimeType: MimeType): void
+
+		/**
+		 * Fires when the mouse is pressed
+		 *
+		 * @param position Position of the click within the container. Measured from the bottom left.
+		 * @param button Type of the mouse button, ie. "right"
+		 */
+		onMousePress(
+			position: { x: number; y: number },
+			button: 'left' | 'right' | 'middle'
+		): void
+
+		/**
+		 * Fires when the mouse is released
+		 *
+		 * @param position Position of the click within the container. Measured from the bottom left.
+		 * @param button Type of the mouse button, ie. "right"
+		 */
+		onMouseRelease(
+			position: { x: number; y: number },
+			button: 'left' | 'right' | 'middle'
+		): void
+
+		/**
+		 * Fires when the mouse is double clicked
+		 *
+		 * @param position Position of the click within the container. Measured from the bottom left.
+		 * @param button Type of the mouse button, ie. "right"
+		 */
+		onMouseDoubleClick(
+			position: { x: number; y: number },
+			button: 'left' | 'right' | 'middle'
+		): void
+
+		/**
+		 * Only fires when the mouse is pressed unless `useHoverEvents` is `true`
+		 *
+		 * @param position Position of the cursor within the container. Measured from the bottom left.
+		 */
+		onMouseMove(position: { x: number; y: number }): void
+
+		/**
+		 * Fires when the drag event enters the Container. See
+		 * `Container.registerDragDropMimeType` for more information.
+		 */
+		onDragEnter(): void
+
+		/**
+		 * Fires when the drag event leaves the Container. See
+		 * `Container.registerDragDropMimeType` for more information.
+		 */
+		onDragLeave(): void
+
+		/**
+		 * Fires when the drop event occurs. See
+		 * `Container.registerDragDropMimeType` for more information.
+		 */
+		onDrop(): void
 	}
 
 	/**
@@ -1673,6 +2192,76 @@ declare namespace ui {
 		 * invalidated.
 		 */
 		clear(): void
+	}
+
+	class FlowLayout {
+		/**
+		 * Add a layout where its content can reflow dependent on the layout's
+		 * dimensions.
+		 *
+		 * @param horizontalSpacing Horizontal spacing between the children in pixels
+		 * @param verticalSpacing Vertical spacing between the children in pixels
+		 *
+		 * @example
+		 * ui.setTitle("Flow Layout");
+		 * const flowLayout = new ui.FlowLayout(2, 2)
+		 * flowLayout.setSpaceBetween(3)
+		 * flowLayout.setMargins(2,2,2,2)
+		 * for (let step = 0; step < 25; step++) {
+		 *   const container = new ui.Container();
+		 *   container.setSize(60,60);
+		 *   container.setBackgroundColor("#4ffd7a");
+		 *   container.setRadius(3,3,3,3);
+		 *   container.onMousePress = () => {
+		 *     container.setBackgroundColor("#c8c8c8");
+		 *   }
+		 *   flowLayout.add(container)
+		 * }
+		 * ui.add(flowLayout);
+		 * ui.show();
+		 */
+		constructor(horizontalSpacing: integer, verticalSpacing: integer)
+
+		/**
+		 * Set the padding space between widgets in the layout. The default value
+		 * is 3 pixels.
+		 *
+		 * @param space Space between the children in pixels
+		 */
+		setSpaceBetween(space: integer): void
+
+		/**
+		 * Set the margins of the layout (how far from the edges the widgets can
+		 * be). The default value is 3 pixels on all sides.
+		 *
+		 * @param left
+		 * @param top
+		 * @param right
+		 * @param bottom
+		 */
+		setMargins(
+			left: integer,
+			top: integer,
+			right: integer,
+			bottom: integer
+		): void
+
+		/**
+		 * Returns the number of items in the layout.
+		 */
+		itemCount(): integer
+
+		/**
+		 * Clear the Layout.
+		 */
+		clear(): void
+
+		/**
+		 * Remove an item at the given index.
+		 *
+		 * @param index Index of the child to be removed
+		 */
+		removeAt(index: integer): void
 	}
 
 	/**

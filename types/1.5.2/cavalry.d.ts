@@ -236,6 +236,17 @@ declare namespace cavalry {
 		 * Return an object containing `x` and `y` keys describing the final point in a path.
 		 */
 		back(): { x: number; y: number }
+
+		/**
+		 * Return the bounding box of a path.
+		 *
+		 * @example
+		 * const path = new cavalry.Path();
+		 * path.addText("Some text!", 22, 0, 10);
+		 * const bbox = path.boundingBox();
+		 * console.log(JSON.stringify(bbox));
+		 */
+		boundingBox(): { posX: float; posY: float; width: float; height: float }
 	}
 
 	// Math Helper Functions
@@ -532,4 +543,108 @@ declare namespace cavalry {
 	 * console.log(cavalry.versionLessThan("1.5.1"));
 	 */
 	function versionLessThan(version: string): boolean
+
+	/**
+	 * Returns `true` if a font is available to Cavalry.
+	 *
+	 * @param fontFamily Display name of the font family
+	 * @param fontStyle Name of the font style
+	 *
+	 * @example
+	 * // Prints `true`
+	 * console.log(cavalry.fontExists("Lato", "Regular"));
+	 */
+	function fontExists(fontFamily: string, fontStyle: string): boolean
+
+	/**
+	 * Returns a list of all the font families available to Cavalry.
+	 *
+	 * @example
+	 * console.log(cavalry.getFontFamilies());
+	 */
+	function getFontFamilies(): string[]
+
+	/**
+	 * Returns a list of all the available styles for the given font family.
+	 *
+	 * @param fontFamily Display name of the font family
+	 *
+	 * @example
+	 * console.log(cavalry.getFontStyles("Lato"));
+	 */
+	function getFontStyles(fontFamily: string): string[]
+
+	/**
+	 * Returns an object representing the bounding box of some text without the
+	 * need to actually create a text shape.
+	 *
+	 * @param string Text to be measured
+	 * @param fontFamily Display name of the font family
+	 * @param fontStyle Name of the font style
+	 * @param fontSize Size of the font in points
+	 *
+	 * @example
+	 * const measure = cavalry.measureText("Some text to measure", "Lato", "Regular", 72);
+	 * console.log(JSON.stringify(measure));
+	 */
+	function measureText(
+		string: string,
+		fontFamily: string,
+		fontStyle: string,
+		fontSize: number
+	): {
+		width: float
+		height: float
+		x: float
+		y: float
+		centreX: float
+		centreY: float
+	}
+	// - width - The width of the text
+	// - height - The height of the text
+	// - x - The left edge of the text
+	// - y - The top edge of the text
+	// - centreX - The average of the left and right edges
+	// - centreY - The average of the top and bottom edges
+
+	/**
+	 * Returns an object containing information about the given font. The
+	 * resulting metrics are scaled by the font size.
+	 *
+	 * @param fontFamily Display name of the font family
+	 * @param fontStyle Name of the font style
+	 * @param fontSize Size of the font in points
+	 *
+	 * @example
+	 * const metrics = cavalry.fontMetrics("Lato", "Regular", 72);
+	 * console.log(JSON.stringify(metrics));
+	 */
+	function fontMetrics(
+		fontFamily: string,
+		fontStyle: string,
+		fontSize: number
+	): {
+		top: float
+		ascent: float
+		descent: float
+		bottom: float
+		leading: integer
+		averageCharacterWidth: float
+		maxCharacterWidth: float
+		xMin: float
+		xMax: float
+		xHeight: float
+		capHeight: float
+	}
+	// - top - greatest extent above origin of any glyph bounding box, typically negative; deprecated with variable fonts
+	// - ascent - distance to reserve above baseline, typically negative
+	// - descent - distance to reserve below baseline, typically positive
+	// - bottom - greatest extent below origin of any glyph bounding box, typically positive; deprecated with variable fonts
+	// - leading - distance to add between lines, typically positive or zero
+	// - averageCharacterWidth - average character width, zero if unknown
+	// - maxCharacterWidth - maximum character width, zero if unknown
+	// - xMin - greatest extent to left of origin of any glyph bounding box, typically negative; deprecated with variable fonts
+	// - xMax - greatest extent to right of origin of any glyph bounding box, typically positive; deprecated with variable fonts
+	// - xHeight - height of lower-case 'x', zero if unknown, typically negative
+	// - capHeight - height of an upper-case letter, zero if unknown, typically negative
 }

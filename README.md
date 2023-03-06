@@ -1,6 +1,9 @@
 # cavalry-types
 
-Typescript definitions for [Cavalry](https://docs.cavalry.scenegroup.co/tech-info/scripting/getting-started/) (1.5.1).
+Typescript definitions for [Cavalry](https://docs.cavalry.scenegroup.co/tech-info/scripting/getting-started/)
+
+> **NOTE**  
+> Current supported API version is [Cavalry 1.5.2](https://docs.cavalry.scenegroup.co/tech-info/release-notes/1-5-2-release-notes)
 
 These definitions describe the whole Cavalry scripting API. Essentially it gives you all the documentation inside your editor. After [installation](#installation) and following the [usage guidelines](#usage) you can simply start writing your script and get suggestions about available methods and parameters.
 
@@ -22,7 +25,7 @@ It's recommended that you use the [Stallion VSCode extension](https://github.com
 
 ## Installation
 
-Make sure you first initialise a new [NPM](https://www.npmjs.com/) project. In your terminal run:
+Make sure you first initialise a new [npm](https://www.npmjs.com/) project. In your terminal run:
 
 ```bash
 npm init --yes
@@ -50,17 +53,8 @@ Optionally include a `@ts-check` comment to enable type checking.
 
 ```js
 /// <reference types="@scenery/cavalry-types"/>
-// Optional, enables type checking
 // @ts-check
 ```
-
-<!-- This will always point to the latest version.
-
-If you want to target a specific version you can add it to the path:
-
-```ts
-/// <reference types="@scenery/cavalry-types/1.5.1" />
-``` -->
 
 ### Typescript Config
 
@@ -70,6 +64,52 @@ Create a [`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig
 {
 	"compilerOptions": {
 		"types": ["@scenery/cavalry-types"]
+	}
+}
+```
+
+## Versioning
+
+The types will always point to the latest API version. Add a version number to the path to target a specific version.
+
+#### Javascript
+
+```ts
+/// <reference types="@scenery/cavalry-types/1.5.1" />
+```
+
+#### Typescript
+
+```json
+{
+	"compilerOptions": {
+		"types": ["@scenery/cavalry-types/1.5.1"]
+	}
+}
+```
+
+## Specific Namespaces
+
+Cavalry has namespaces for specific parts of the app, such as [`render`](https://docs.cavalry.scenegroup.co/tech-info/scripting/render-scripts) for render scripts and [`ctx`](https://docs.cavalry.scenegroup.co/tech-info/scripting/context-module) in the [Javascript Utility](https://docs.cavalry.scenegroup.co/nodes/utilities/javascript). Add an additional [Triple-Slash Directive](#triple-slash-directives) to expose the types for it.
+
+```js
+/// <reference types="@scenery/cavalry-types"/>
+/// <reference types="@scenery/cavalry-types/render"/>
+```
+
+#### For a specific version
+
+```js
+/// <reference types="@scenery/cavalry-types/1.5.1"/>
+/// <reference types="@scenery/cavalry-types/1.5.1/render"/>
+```
+
+#### In a [Typescript config](#typescript-config)
+
+```json
+{
+	"compilerOptions": {
+		"types": ["@scenery/cavalry-types", "@scenery/cavalry-types/render"]
 	}
 }
 ```

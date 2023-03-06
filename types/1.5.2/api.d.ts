@@ -208,17 +208,24 @@ declare namespace api {
 	function clearGuides(compId: string): void
 
 	/**
-	 * Get the ids of all the Ruler Guides in the given Composition.
+	 * Get the Ids of all the Ruler Guides in the given Composition.
 	 *
-	 * @param compId The ID of the composition
+	 * Direction returns:
+	 * - 0 for Horizontal Guides
+	 * - 1 for Vertical Guides
+	 *
+	 * @param compId ID of the composition
 	 *
 	 * @example
-	 * // If you run this in a new scene, there should be no guides.
-	 * api.addGuide(api.getActiveComp(), true, -100);
-	 * api.addGuide(api.getActiveComp(), false, 100);
-	 * console.log(api.getGuides(api.getActiveComp()));
+	 * const activeCompId = api.getActiveComp()
+	 * api.addGuide(activeCompId, true, -100);
+	 * api.addGuide(activeCompId, false, 100);
+	 * const guideInfo = api.getGuideInfo()
+	 * console.log(JSON.stringify(guideInfo));
 	 */
-	function getGuides(compId: string): void
+	function getGuideInfo(
+		compId: string
+	): { id: integer; direction: 0 | 1; position: integer }[]
 
 	type Primitive =
 		| 'rectangle'
@@ -752,6 +759,37 @@ declare namespace api {
 	 * }
 	 */
 	function getSelectedKeyframes(): { [key: string]: integer[] }
+
+	/**
+	 * Set the keyframe selection. To clear the keyframe selection send an empty
+	 * array through.
+	 *
+	 * @param keyframeIds Array of keyframe IDs to be selected
+	 *
+	 * @example
+	 * // Create a Shape and add some keyframes to scale.x
+	 * const primId = api.primitive("rectangle", "My Rectangle");
+	 * api.keyframe(primId, 0, { "scale.x": 4 });
+	 * api.keyframe(primId, 50, { "scale.x": 3 });
+	 * api.keyframe(primId, 100, { "scale.x": 1 });
+	 * console.log(api.getKeyframeIdsForAttribute(primId, "scale.x"));
+	 * // Select the first and third keyframes
+	 * api.setSelectedKeyframeIds(["keyframe#3", "keyframe#5"]);
+	 */
+	function setSelectedKeyframeIds(keyframeIds: string[]): void
+
+	/**
+	 * Get the attribute path for a given keyframe.
+	 *
+	 * @param keyframeId ID of the keyframe
+	 *
+	 * @example
+	 * const keyIds = api.getSelectedKeyframeIds();
+	 * for (const keyId of keyIds) {
+	 *     console.log(api.getAttributeFromKeyframeId(keyId))
+	 * }
+	 */
+	function getAttributeFromKeyframeId(keyframeId: string): string
 
 	/**
 	 * Set keyframes for Layers.
@@ -1788,13 +1826,31 @@ declare namespace api {
 	 * the first sheet will be loaded. This function returns the newly created
 	 * `assetId`.
 	 *
-	 * The spreadsheetId and sheetId can be extracted from a Google Sheet's URL:
+	 * The `spreadsheetId` and `sheetId` can be extracted from a Google Sheet's URL:
 	 * https://docs.google.com/spreadsheets/d/[spreadsheetId]/edit#gid=[sheetId]
 	 *
 	 * @param spreadsheetId ID of the Google spreadsheet
 	 * @param sheetId ID of the sheet inside the spreadsheet
 	 */
 	function loadGoogleSheet(spreadsheetId: string, sheetId: string): string
+
+	/**
+	 * Replace an existing Google Sheet Asset with another. If the `sheetId`
+	 * argument is left blank (e.g. "") then the first sheet will be loaded.
+	 *
+	 * The `spreadsheetId` and `sheetId` can be extracted from a Google Sheet's URL:
+	 * https://docs.google.com/spreadsheets/d/[spreadsheetId]/edit#gid=[sheetId]
+	 *
+	 * @param assetId ID of the Google Sheet asset
+	 * @param spreadsheetId ID of the spreadsheet
+	 * @param sheetId ID of the sheet inside the spreadsheet
+	 */
+	// TODO: Verify return type
+	function replaceGoogleSheet(
+		assetId: string,
+		spreadsheetId: string,
+		sheetId: string
+	): string
 
 	/**
 	 * Set the location of `projectDescription.json` in order to use
@@ -2386,6 +2442,133 @@ declare namespace api {
 	 * console.log(api.getPlatform());
 	 */
 	function getPlatform(): 'macOS' | 'Windows'
+
+	/**
+	 * Open and filter a dialogue window to load/import files. Returns the file
+	 * name to be loaded or an empty string if the user cancels the dialogue.
+	 *
+	 * The `fileFilter` is a title, followed by parenthesis containing space
+	 * separated file type descriptions. e.g. `"Data File (*.json *.csv)"`,
+	 * `"Cavalry File (*.cv *.cvc)"`, `"Palettes (*.pal)"`.
+	 *
+	 * Multiple fileFilters can be added by separating the file types with a
+	 * double semi-colon (`;;`). A drop-down menu will then appear within the
+	 * dialogue for a user to choose a file type from.
+	 *
+	 * @param startPath Absolute path that the dialog should open initially
+	 * @param title Title of the dialog
+	 * @param fileFilter Description of file filter(s) e.g. `"Data File (*.json *.csv)"`
+	 *
+	 * @example
+	 * // Create a button
+	 * const button = new ui.Button("Import File");
+	 * // Set the onClick callback function
+	 * button.onClick = () => {
+	 *   const filePath = api.presentOpenFile(
+	 *     api.getProjectPath(),
+	 *     'Import JSON or CSV',
+	 *     'Data File (*.json *.csv)'
+	 * 	 )
+	 *   console.log(filePath)
+	 * }
+	 * // Add the button to the layout
+	 * ui.add(button);
+	 * // Show the window
+	 * ui.show();
+	 */
+	function presentOpenFile(
+		startPath: string,
+		title: string,
+		fileFilter: string
+	): string
+
+	/**
+	 * Open a dialogue window to save files. Returns the saved file name or an
+	 * empty string if the user cancels the dialogue.
+	 *
+	 * The `fileFilter` is a title, followed by parenthesis containing the file
+	 * type description. e.g. `"Save JSON", "JSON File (*.json)",
+	 * "Config File.json"`.
+	 *
+	 * Multiple fileFilters can be added by separating the file types with a
+	 * double semi-colon (`;;`). A drop-down menu will then appear within the
+	 * dialogue for a user to choose a file type from.
+	 *
+	 * @param startPath Absolute path that the dialog should open initially
+	 * @param title Title of the dialog
+	 * @param fileFilter Description of file filter(s) e.g. `"Data File (*.json *.csv)"`
+	 * @param defaultFileName Preferred name for the file
+	 *
+	 * @example
+	 * // Simple example
+	 * // Create a button
+	 * const button = new ui.Button("Save File");
+	 * // Set the onClick callback function
+	 * button.onClick =  () => {
+	 *   const filePath = api.presentSaveFile(
+	 *     api.getProjectPath(),
+	 *     'Save JSON',
+	 *     'JSON File (*.json)',
+	 *     'Config File.json'
+	 *   )
+	 *   console.log(filePath);
+	 * }
+	 * // Add the button to the layout
+	 * ui.add(button);
+	 * // Show the window
+	 * ui.show();
+	 *
+	 * @example
+	 * 	// Example including a filter for multiple file types
+	 * // Create a button
+	 * const button = new ui.Button('Save File')
+	 * // Set the onClick callback function
+	 * button.onClick = () => {
+	 *   const filePath = api.presentSaveFile(
+	 *     api.getProjectPath(),
+	 *     'Save Data',
+	 *     'JSON File (*.json);;CSV File (*.csv)',
+	 *     'Config File'
+	 * 	)
+	 * 	console.log(filePath)
+	 * }
+	 * // Add the button to the layout
+	 * ui.add(button)
+	 * // Show the window
+	 * ui.show()
+	 */
+	function presentSaveFile(
+		startPath: string,
+		title: string,
+		fileFilter: string,
+		defaultFileName: string
+	): string
+
+	/**
+	 * Return whether or not the `Alt` or `Option` key is held when a script is run.
+	 *
+	 * `isAltHeld()` cannot be tested in the JavaScript Editor. It can only be
+	 * tested in a Script run from the Script menu, or from a UI script launched
+	 * from the JavaScript Editor. This is because Cavalry intercepts
+	 * `alt`/`option` clicks for native actions.
+	 */
+	function isAltHeld(): boolean
+
+	/**
+	 * Return whether or not the `Shift` key is held when a script is run.
+	 */
+	function isShiftHeld(): boolean
+
+	/**
+	 * Return whether or not the `Control` key is held when a script is run.
+	 */
+	function isControlHeld(): boolean
+
+	/**
+	 * Return whether or not the `Windows` (Windows) or `Command` (macOS) key is
+	 * held when a script is run.
+	 */
+	function isMetaHeld(): boolean
 
 	// 	 * @example
 	//  * // Simple get request.

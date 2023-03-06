@@ -12,6 +12,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   `Fixed` for any bug fixes
 -   `Security` in case of vulnerabilities
 
+## [0.2.0] - 2023-03-06
+
+### Added
+
+-   Types for Cavalry 1.5.2
+-   Types for `ctx` and `render` namespaces
+-   Numerous missing descriptions
+
 ## [0.1.0] - 2023-02-10
 
 -   Initial release

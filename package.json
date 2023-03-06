@@ -1,6 +1,6 @@
 {
 	"name": "@scenery/cavalry-types",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Typescript definitions for Cavalry",
 	"main": "index.d.ts",
 	"types": "index.d.ts",
@@ -10,7 +10,9 @@
 		"test": "echo \"No test specified\""
 	},
 	"files": [
-		"types/**"
+		"types/**",
+		"render.d.ts",
+		"ctx.d.ts"
 	],
 	"publishConfig": {
 		"access": "public"
