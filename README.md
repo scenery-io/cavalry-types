@@ -3,7 +3,7 @@
 Typescript definitions for [Cavalry](https://docs.cavalry.scenegroup.co/tech-info/scripting/getting-started/)
 
 > **Note**  
-> Current supported API version is [Cavalry 1.5.2](https://docs.cavalry.scenegroup.co/tech-info/release-notes/1-5-2-release-notes)
+> Current supported API version is [Cavalry 1.5.4](https://docs.cavalry.scenegroup.co/tech-info/release-notes/1-5-2-release-notes)
 
 These definitions describe the whole Cavalry scripting API. Essentially it gives you all the documentation inside your editor. After [installation](#installation) and following the [usage guidelines](#usage) you can simply start writing your script and get suggestions about available methods and parameters.
 
