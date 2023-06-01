@@ -1,1 +1,1 @@
-/// <reference path="./versions/1.5.5/index.d.ts" />
+/// <reference path="./versions/1.5.6/index.d.ts" />
