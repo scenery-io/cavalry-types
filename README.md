@@ -2,7 +2,7 @@
 
 Typescript definitions for [Cavalry](https://docs.cavalry.scenegroup.co/tech-info/scripting/getting-started/)
 
-> **Note**  
+> [!NOTE]
 > Current supported API version is [Cavalry 1.5.6](https://docs.cavalry.scenegroup.co/tech-info/release-notes/1-5-6-release-notes)
 
 These definitions describe the whole Cavalry scripting API. Essentially it gives you all the documentation inside your editor. After [installation](#installation) and following the [usage guidelines](#usage) you can simply start writing your script and get suggestions about available methods and parameters.
@@ -16,7 +16,7 @@ A few pointers:
 -   Even though there might be errors and warnings in the code, it will still run (with or without errors). This is because the error checking happens only in your editor.
 -   If you're writing in Typescript, the code will not run in Cavalry. You will have to compile the code first.
 
-> **Note**  
+> [!NOTE]
 > This project is still in progress. There are some descriptions and Typescript features missing, but the API is mostly documented. The definition files were written by hand, so there might be some mistakes. Please report any issues you find.
 
 ## Stallion
@@ -113,3 +113,12 @@ Cavalry has namespaces for specific parts of the app, such as [`render`](https:/
 	}
 }
 ```
+
+## Sponsors
+
+Huge thanks to Cavalry for sponsoring this project! Interested in sponsoring? Send us [a message](https://scenery.io/support).
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./images/cavalry-white.png">
+  <img alt="Cavalry" src="./images/cavalry-black.png" width="300">
+</picture>
