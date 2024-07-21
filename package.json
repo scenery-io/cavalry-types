@@ -4,6 +4,7 @@
 	"description": "Typescript definitions for Cavalry",
 	"main": "index.d.ts",
 	"types": "index.d.ts",
+	"type": "module",
 	"license": "MIT",
 	"scripts": {
 		"test": "echo \"No test specified\""
@@ -25,6 +26,14 @@
 	},
 	"homepage": "https://github.com/scenery-io/cavalry-types#readme",
 	"devDependencies": {
-		"prettier": "^2.8.1"
+		"@types/node": "^20.14.10",
+		"just-group-by": "^2.2.0",
+		"prettier": "^2.8.1",
+		"remark": "^15.0.1",
+		"remark-mdx": "^3.0.1",
+		"remark-parse": "^11.0.0",
+		"unified": "^11.0.5",
+		"unist-util-find-after": "^5.0.0",
+		"unist-util-visit": "^5.0.0"
 	}
 }

@@ -1,0 +1,163 @@
+---
+title: Getting Started with Scripting
+description: Use JavaScript to access layers and data within a Scene so that it's possible to write scripts that perform custom workflows.
+keywords: [api, scripts, data, scripting, expression, code, id, layerid, attrid, members, int, double, bool]
+---
+
+:::info Pro Feature
+
+Pro features are only available with a **Professional** licence. To upgrade, visit [cavalry.scenegroup.co](https://cavalry.scenegroup.co/pricing?utm_source=docs&utm_medium=page&utm_campaign=pro-feature&utm_content=scripting).
+
+:::
+
+## Introduction
+
+**JavaScript** in Cavalry provides access to layers and data within a Scene so that it's possible to write scripts that perform custom workflows. This includes creating Layers, setting Attributes, making [Connections](../../getting-started/key-concepts/connections.mdx) and much more.
+
+The easiest way to get started is by taking a look at the examples in the `Create > Demo Scenes > JavaScript` menu.
+
+Here's an example script that will create a [Text Shape](../../nodes/shapes/text-shape.mdx) and animate it. This script can be run in the [JavaScript Editor](../../user-interface/menus/window-menu/javascript-editor.mdx) by copy and pasting it into a tab and pressing the `Run Script` button.
+
+```js
+// Get the height of the composition (we're going to drop the text from the top)
+let height = api.get(api.getActiveComp(), "resolution.y");
+// The time difference between the first and last letters dropping
+let timeOffset = 20;
+
+// Make a text shape
+let textShapeId = api.create("textShape", "Bouncy Text");
+// Set some attributes on the text layer
+// The attributes are set via a dictionary of (key, value) pairs
+// This means many attributes can be set at once.
+api.set(textShapeId, {"horizontalAlignment": 1, 
+                      "fontSize": 120,
+                      "font.style": "Black",
+                      "verticalAlignment": 1, 
+                      "material.materialColor": "#ff24e0", 
+                      "autoWidth": true,  
+                      "autoHeight": true});
+
+// Get the bounding box of the text layer
+let bbox = api.getBoundingBox(textShapeId, true);
+// How far to we need to move the text shape to get it 'offscreen'
+let distToEdge = bbox.y * -1 + height * .5;
+
+// Get the start frame of the text shape (this could just be 0, but we're getting the in frame just to show off)
+let startFrame = api.getInFrame(textShapeId);
+// Set the end frame
+let endFrame = startFrame+40;
+
+// Create a Sub-Mesh layer which will power the 'per character' animation.
+let subMeshId = api.create("subMesh", "Bounce In Animator");
+// Set some keyframes, and set magic easing
+api.keyframe(subMeshId, startFrame, {"shapePosition.y": distToEdge});
+api.keyframe(subMeshId, endFrame, {"shapePosition.y": 0});
+api.magicEasing(subMeshId, "shapePosition.y", startFrame, "BounceOut");
+// Connect the Sub-Mesh to the Text layer's Deformers Attribute
+api.connect(subMeshId, "id", textShapeId, "deformers");
+// Parent the Sub-Mesh to the Text.
+api.parent(subMeshId, textShapeId);
+
+// Create a Stagger - this will be used to create the time offset
+let staggerId = api.create("stagger", "Bounce In Stagger");
+// Set the minimum/ maximum attributes on the Stagger
+api.set(staggerId, {"minimum": -timeOffset, "maximum": 0});
+// Flip the Graph on the Stagger so that the first letter bounces in first (by default the last letter would go first).
+api.flipGraph(staggerId, "graph", "vertical");
+// Connect the Stagger to the Sub-Mesh
+api.connect(staggerId, "id", subMeshId, "shapeTimeOffset");
+// Parent the Stagger to the Text
+api.parent(staggerId, textShapeId);
+// Start playback
+api.play();
+```
+
+<PageRef page="/tech-info/scripting/example-scripts" caption="Example Scripts" />
+
+
+## Installing UI Scripts
+
+To install a [UI Script](./script-uis.mdx), go to `Help > Show Scripts Folder` then drag the Script file into this folder. Nested folders are allowed and will appear as sub-menus. Scripts saved to this folder will be immediately available from the `Window > Scripts` menu without the need to restart Cavalry.
+
+## Cavalry Scenes
+
+Every Cavalry Scene consists of several trees of layers. There is an Asset tree, which contains all of the Asset layers in a Scene, and beyond that, every Composition in Cavalry has its own tree of layers. JavaScript can be used to walk these trees to access (almost) every layer in Cavalry. Each tree can be made up of any number of layers, at any number of levels.
+
+## Accessing Layers and Attributes
+To access Layers and Attributes in a Composition, their `LayerId` and/or `AttributeId`s are required.
+
+### Layer Ids
+To get the `layerId`, which can be used to access a **Layer** when scripting, right click on the Layer in the [Attribute Editor](../../user-interface/menus/window-menu/attribute-editor/intro.mdx), [Scene Window](../../user-interface/menus/window-menu/scene-window/intro.mdx) or [Viewport](../../user-interface/menus/window-menu/viewport/intro.mdx) and choose `Copy Layer Id` from the contextual menu.
+
+### Layer Type
+The `layerType` is part of the `layerId` so can be accessed in the same way as above. `layerType` is the part of the `layerId` that comes before the `#`. For example, if the `layerId` is **basicShape#1**, then the `layerType` is **basicShape**.
+
+### Attribute Ids
+To get the `attrId` which can be used to access an **Attribute** in scripting, right click on an **Attribute** in the [Attribute Editor](../../user-interface/menus/window-menu/attribute-editor/intro.mdx) and choose `Copy Scripting Path` from the contextual menu. For example:
+
+1. Create a [Basic Shape](../../nodes/shapes/basic-shape/basic-shape.mdx).
+2. In the Attribute Editor, right click on the `Position` attribute.
+3. Choose `Copy Scripting Path` from the contextual menu.
+
+This will copy `position` to the clipboard which can then be used as a argument within a script:
+
+```js
+api.get("basicShape#1", "position");
+```
+
+## Modules
+
+JavaScript can be used in several places and Cavalry includes 4 modules providing access to data from the Scene. A number of convenience methods are also provided to make working with that data easier. Note that not all the JavaScript modules that Cavalry provides are available everywhere.
+
+### [API Module](./api-module.mdx)
+
+- This is only available in the [JavaScript Editor](../../user-interface/menus/window-menu/javascript-editor.mdx).
+- This provides editing access to the Scene and file system.
+- The prefix for this module is `api`.
+
+
+### [Context Module](./context-module.mdx)
+
+- This is available in the [JavaScript Layers](../../nodes/general/javascript-layers.mdx).
+- It provides access to methods related to the calculation of the [JavaScript Utility](../../nodes/utilities/javascript-utility.mdx)'s output.
+- The prefix for this module is `ctx`.
+
+
+### [Cavalry Module](./cavalry-module.mdx)
+
+- This is available in the [JavaScript Layers](../../nodes/general/javascript-layers.mdx) and the [JavaScript Editor](../../user-interface/menus/window-menu/javascript-editor.mdx).
+- This provides utility methods and classes for working and creating data for use elsewhere.
+- The prefix for this module is `cavalry`.
+
+
+### [Deformer Module](./deformer-module.mdx)
+
+- This is only available to the [JavaScript Deformer](../../nodes/behaviours/javascript-deformer.mdx).
+- The prefix for this module is `def`.
+
+
+## Logging
+
+Use `console.<method>()` to write a message to Cavalry's [JavaScript Console](../../user-interface/menus/window-menu/javascript-console.mdx). The methods below can be used to print context specific messages which include different coloured accents for faster recognition.
+
+```js
+console.log("This is a test."); // Typically used in testing (green).
+console.info("Confirming this happened as expected."); // Confirm when something expected has happened (green).
+console.warn("Just to let you know..."); // Warn a user when they've done something unexpected (yellow).
+console.error("Something went wrong."); // Flag when something has gone wrong (red).
+console.debug("I am a developer."); // Print a message to Terminal/Cmd Prompt.
+```
+
+## Glossary
+
+Many Member Functions can accept arguments as inputs and/or will return values of different types:
+
+- `int` - An integer is a number without a decimal point. e.g. `4`.
+- `number` - A number with decimal digits. e.g. `4.153`. |
+- `string` - A String can contain alphanumeric characters and symbols and should be wrapped in double quotes. e.g.
+- `"string"`.
+- `bool` - A boolean value can be `true` or `false`.
+- `array` - An array is a list of items. e.g. `["one", "two", "three"]` or `[1, 2, 3]`.
+- `object` - An object is a collection of properties (a name (or key) and a value). e.g. `{width:10, height:10}`.
+
+

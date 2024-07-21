@@ -1,0 +1,57 @@
+---
+title: Example Expressions
+description: A selection of example experiment to experiment with Cavalry's APIs.
+keywords: [api, scripts, data, scripting, expression, code, id, layerid, attrid, test, example]
+---
+
+## Introduction
+
+A collection of example JavaScript expressions.
+
+## Expressions
+
+### If Statement
+
+1. Create a [JavaScript Utility](../../nodes/utilities/javascript-utility.mdx)
+2. Add a **string** variable called `n0`
+3. Copy and paste the **expression** below into the JavaScript Utility.
+4. Create a [Value Behaviour](../../nodes/behaviours/value.mdx).
+5. Connect <Connect>javascriptUtility.id value.value</Connect>.
+
+The JavaScript Utility will output **0** if the string in `n0` is `Text1`, **1** if it is `Text2` or **2** if it anything else.
+
+```js
+function getIndex() {
+    if (n0 == "Text1") {
+        return 0;
+    } else if (n0 == "Text2") {
+        return 1;
+    } else {
+        return 2;
+    } 
+}
+
+getIndex();
+```
+
+### Split a word into letters
+
+1. Create a [JavaScript Utility](../../nodes/utilities/javascript-utility.mdx)
+2. Copy and paste the **expression** below into the JavaScript Utility.
+3. Create a [Text Shape](../../nodes/shapes/text-shape.mdx).
+4. Connect <Connect>javascriptUtility.id text.string</Connect>.
+5. Add the Text Shape to a [Duplicator](../../nodes/shapes/duplicator.mdx).
+
+```js
+function getString(n) {
+    let string = "Cavalry";
+    let array = Array.from(string);
+    if (ctx.index < array.length) {
+        return array[ctx.index];
+    } else {
+        return "";
+    }
+}
+
+getString();
+```
