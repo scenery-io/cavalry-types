@@ -1,1 +1,1 @@
-/// <reference path="./versions/1.5.6/render.d.ts" />
+/// <reference path="./types/render.d.ts" />
