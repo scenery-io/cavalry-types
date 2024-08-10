@@ -6,6 +6,7 @@ import { existsSync } from 'fs'
 import { mkdir, writeFile } from 'fs/promises'
 import { __dirname } from './modules/const.js'
 import * as prettier from 'prettier'
+import { cwd } from 'process'
 
 const app = 'Cavalry Beta'
 const defs = await parseDefinitions(app)
@@ -18,17 +19,16 @@ for (const ns in defs) {
 	})
 }
 
-const defsPath = resolve(__dirname, '..', '..', 'defs')
-if (!existsSync(defsPath)) {
-	await mkdir(defsPath)
-}
-const file = join(defsPath, `defs.json`)
-await writeFile(file, JSON.stringify(merged, undefined, 2), 'utf-8')
+await writeFile(
+	join(cwd(), `merged-defs.json`),
+	JSON.stringify(merged, undefined, 2),
+	'utf-8',
+)
 
 const ts = createTsDefinitions(merged)
 for (const ns in ts) {
 	const data = ts[ns]
-	const path = resolve(__dirname, '..', '..', 'output')
+	const path = join(cwd(), 'types')
 	const file = join(path, `${ns}.d.ts`)
 	const formatted = await prettier.format(data, {
 		filepath: resolve('.prettierrc.json'),

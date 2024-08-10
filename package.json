@@ -7,6 +7,7 @@
 	"type": "module",
 	"license": "MIT",
 	"scripts": {
+		"build": "node ./src/bin",
 		"test": "echo \"No test specified\""
 	},
 	"files": [
