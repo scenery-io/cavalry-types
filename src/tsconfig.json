@@ -1,5 +1,5 @@
 {
-	"include": ["./bin/*.js"],
+	"include": ["**/*.js"],
 	"compilerOptions": {
 		"noEmit": true,
 		"allowJs": true,

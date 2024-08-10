@@ -3,7 +3,6 @@ import { readdir } from 'fs/promises'
 import groupBy from 'just-group-by'
 import { join } from 'path'
 import { readFile } from 'fs/promises'
-import { resolve } from 'path'
 import remarkParse from 'remark-parse'
 import directive from 'remark-directive'
 import markdownx from 'remark-mdx'
@@ -11,6 +10,7 @@ import group from './remark-group.js'
 import { unified } from 'unified'
 import { __dirname, Namespaces } from './const.js'
 import { assert } from 'console'
+import { cwd } from 'process'
 
 export async function parseDefinitions(packageName = 'Cavalry') {
 	const path = join(
@@ -37,7 +37,7 @@ export async function parseDocs() {
 		const { files } = Namespaces[ns]
 		for (const file of files) {
 			// TODO: Check Web APIs are merged correctly
-			const path = resolve(__dirname, '..', '..', 'docs', file)
+			const path = join(cwd(), 'src', 'docs', file)
 			console.log(path)
 			const mdx = await readFile(path, 'utf-8')
 			const ast = unified().use(remarkParse).parse(mdx)
