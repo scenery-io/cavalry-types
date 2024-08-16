@@ -31,3 +31,35 @@ export const Namespaces = {
 	// 	files: ['render-scripts.mdx'],
 	// },
 }
+
+export const contexts = [
+	// TODO: Verify available namespaces for each
+	{
+		name: 'script',
+		namespaces: ['console', 'api', 'cavalry', 'ui'],
+	},
+	{
+		name: 'utility',
+		namespaces: ['console', 'ctx', 'cavalry'],
+	},
+	{
+		name: 'shape',
+		namespaces: ['console', 'ctx', 'cavalry'],
+	},
+	{
+		name: 'deformer',
+		namespaces: ['console', 'ctx', 'cavalry', 'def'],
+	},
+	{
+		name: 'emitter',
+		namespaces: ['console', 'ctx'],
+	},
+	{
+		name: 'modifier',
+		namespaces: ['console', 'ctx'],
+	},
+	{
+		name: 'render',
+		namespaces: ['console', 'api', 'render'],
+	},
+]

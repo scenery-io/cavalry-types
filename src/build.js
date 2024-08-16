@@ -4,9 +4,10 @@ import { createTsDefinitions } from './modules/generate.js'
 import { parseDefinitions, parseDocs } from './modules/parse.js'
 import { existsSync } from 'fs'
 import { mkdir, writeFile } from 'fs/promises'
-import { __dirname } from './modules/const.js'
+import { __dirname, contexts } from './modules/const.js'
 import * as prettier from 'prettier'
 import { cwd } from 'process'
+import { mkdirp } from 'mkdirp'
 
 const app = 'Cavalry Beta'
 const defs = await parseDefinitions(app)
@@ -43,4 +44,15 @@ for (const ns in ts) {
 		await mkdir(path)
 	}
 	await writeFile(file, formatted, 'utf-8')
+}
+
+for (const { name, namespaces } of contexts) {
+	const file = resolve(cwd(), `${name}.d.ts`)
+	const baseLibs = [`no-default-lib="true"`, `lib="es2021"`]
+	const cavalryLibs = namespaces.map((lib) => `path="./types/${lib}.d.ts"`)
+	const libs = baseLibs
+		.concat(cavalryLibs)
+		.map((lib) => `/// <reference ${lib} />`)
+		.join('\n')
+	await writeFile(file, libs, 'utf-8')
 }

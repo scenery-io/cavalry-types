@@ -29,6 +29,8 @@
 	"devDependencies": {
 		"@types/node": "^20.14.10",
 		"just-group-by": "^2.2.0",
+		"mdast-util-to-markdown": "^2.1.0",
+		"mkdirp": "^3.0.1",
 		"prettier": "^3.3.3",
 		"remark": "^15.0.1",
 		"remark-directive": "^3.0.0",
