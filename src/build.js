@@ -47,10 +47,10 @@ for (const ns in ts) {
 }
 
 for (const { name, namespaces } of contexts) {
-	const file = resolve(cwd(), `${name}.d.ts`)
+	const file = join(cwd(), 'types', `${name}.d.ts`)
 	const baseLibs = [`no-default-lib="true"`, `lib="es2021"`]
 	const cavalryLibs = namespaces.map(
-		(lib) => `path="./types/namespaces/${lib}.d.ts"`,
+		(lib) => `path="./namespaces/${lib}.d.ts"`,
 	)
 	const libs = baseLibs
 		.concat(cavalryLibs)
