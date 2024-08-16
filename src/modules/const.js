@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url'
 
 export const __filename = fileURLToPath(import.meta.url)
 export const __dirname = dirname(__filename)
+
 export const Namespaces = {
 	'@JS_GUI_API': {
 		name: 'api',
@@ -10,15 +11,15 @@ export const Namespaces = {
 	},
 	'@JS_CTX': {
 		name: 'ctx',
-		files: ['cavalry-module.mdx'],
+		files: ['context-module.mdx'],
 	},
 	'@JS_DEFORMER': {
 		name: 'def',
-		files: ['context-module.mdx'],
+		files: ['deformer-module.mdx'],
 	},
 	'@JS_CORE_API': {
 		name: 'cavalry',
-		files: ['deformer-module.mdx'],
+		files: ['cavalry-module.mdx'],
 	},
 	'@JS_WIDGET_API': {
 		name: 'ui',
