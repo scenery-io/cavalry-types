@@ -3,7 +3,7 @@ import { join, resolve } from 'path'
 import { createTsDefinitions } from './modules/generate.js'
 import { parseDefinitions, parseDocs } from './modules/parse.js'
 import { existsSync } from 'fs'
-import { mkdir, writeFile } from 'fs/promises'
+import { writeFile } from 'fs/promises'
 import { __dirname, contexts } from './modules/const.js'
 import * as prettier from 'prettier'
 import { cwd } from 'process'
@@ -34,14 +34,14 @@ await writeFile(
 const ts = createTsDefinitions(merged)
 for (const ns in ts) {
 	const data = ts[ns]
-	const path = join(cwd(), 'types')
+	const path = join(cwd(), 'types', 'namespaces')
 	const file = join(path, `${ns}.d.ts`)
 	const formatted = await prettier.format(data, {
 		filepath: resolve(cwd(), '.prettierrc.json'),
 		parser: 'typescript',
 	})
 	if (!existsSync(path)) {
-		await mkdir(path)
+		await mkdirp(path)
 	}
 	await writeFile(file, formatted, 'utf-8')
 }
@@ -49,7 +49,9 @@ for (const ns in ts) {
 for (const { name, namespaces } of contexts) {
 	const file = resolve(cwd(), `${name}.d.ts`)
 	const baseLibs = [`no-default-lib="true"`, `lib="es2021"`]
-	const cavalryLibs = namespaces.map((lib) => `path="./types/${lib}.d.ts"`)
+	const cavalryLibs = namespaces.map(
+		(lib) => `path="./types/namespaces/${lib}.d.ts"`,
+	)
 	const libs = baseLibs
 		.concat(cavalryLibs)
 		.map((lib) => `/// <reference ${lib} />`)
