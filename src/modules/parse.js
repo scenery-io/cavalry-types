@@ -5,14 +5,15 @@ import { join } from 'path'
 import { readFile } from 'fs/promises'
 import remarkParse from 'remark-parse'
 import directive from 'remark-directive'
-import markdownx from 'remark-mdx'
 import group from './remark-group.js'
 import { unified } from 'unified'
 import { __dirname, Namespaces } from './const.js'
 import { assert } from 'console'
 import { cwd } from 'process'
+import { toMarkdown } from 'mdast-util-to-markdown'
 
 export async function parseDefinitions(packageName = 'Cavalry') {
+	// TODO: Support Windows
 	const path = join(
 		'/Applications',
 		`${packageName}.app`,
@@ -40,13 +41,9 @@ export async function parseDocs() {
 			const path = join(cwd(), 'src', 'docs', file)
 			console.log(path)
 			const mdx = await readFile(path, 'utf-8')
-			const ast = unified().use(remarkParse).parse(mdx)
-			const content = await unified()
-				.use(markdownx)
-				.use(directive)
-				.use(group)
-				.run(ast)
-
+			const ast = unified().use(directive).use(remarkParse).parse(mdx)
+			const content = await unified().use(group).run(ast)
+			// TODO: Turn this into a remark plugin?
 			// @ts-ignore
 			const docs = content.children.reduce((obj, curr) => {
 				if (curr.type === 'api') {
@@ -61,9 +58,7 @@ export async function parseDocs() {
 							examples.push(child.value)
 						}
 						if (child.type === 'paragraph') {
-							child.children.forEach((doc) => {
-								descriptions.push(doc.value)
-							})
+							descriptions.push(toMarkdown(child).trim())
 						}
 					})
 					obj[name] = {
