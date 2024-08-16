@@ -31,7 +31,7 @@ for (const ns in ts) {
 	const path = join(cwd(), 'types')
 	const file = join(path, `${ns}.d.ts`)
 	const formatted = await prettier.format(data, {
-		filepath: resolve('.prettierrc.json'),
+		filepath: resolve(cwd(), '.prettierrc.json'),
 		parser: 'typescript',
 	})
 	if (!existsSync(path)) {
