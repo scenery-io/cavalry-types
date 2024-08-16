@@ -14,9 +14,14 @@ const docs = await parseDocs()
 
 let merged = {}
 for (const ns in defs) {
-	merged[ns] = defs[ns].map((obj) => {
-		return Object.assign({}, obj, docs[obj.name])
-	})
+	const order = Object.keys(docs[ns])
+	merged[ns] = defs[ns]
+		.slice()
+		.sort((a, b) => order.indexOf(a.name) - order.indexOf(b.name))
+		.map((def) => {
+			const doc = docs[ns][def.name]
+			return Object.assign({}, def, doc)
+		})
 }
 
 await writeFile(

@@ -62,6 +62,7 @@ export async function parseDocs() {
 						}
 					})
 					obj[name] = {
+						// TODO: Check admonition issue here
 						docs_description: descriptions.join('\n\n'),
 						examples,
 					}
@@ -72,7 +73,7 @@ export async function parseDocs() {
 				}
 				return obj
 			}, {})
-			apis = { ...apis, ...docs }
+			apis[ns] = Object.assign({}, apis[ns], docs)
 		}
 	}
 	return apis
