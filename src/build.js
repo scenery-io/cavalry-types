@@ -20,7 +20,7 @@ for (const ns in defs) {
 }
 
 await writeFile(
-	join(cwd(), `merged-defs.json`),
+	join(cwd(), `definitions.json`),
 	JSON.stringify(merged, undefined, 2),
 	'utf-8',
 )
