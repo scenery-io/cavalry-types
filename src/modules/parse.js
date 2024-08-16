@@ -70,10 +70,10 @@ export async function parseDocs() {
 						docs_description: descriptions.join('\n\n'),
 						examples,
 					}
-					// assert(
-					// 	obj[name].examples.length,
-					// 	`Missing example for ${name}`
-					// )
+					assert(
+						obj[name].examples.length,
+						`Missing example for ${name}`,
+					)
 				}
 				return obj
 			}, {})

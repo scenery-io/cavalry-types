@@ -12,11 +12,10 @@ export function createTsDefinitions(defs) {
 		const namespace = Namespaces[ns].name
 		let data = [`declare namespace ${namespace} {`]
 		for (const api of defs[ns]) {
-			// data.push(`/**${api.description || api.name}*/`)
-			// assert(
-			// 	api.description,
-			// 	`Missing description: ${namespace}.${api.name}`
-			// )
+			assert(
+				api.docs_description,
+				`Missing description: ${namespace}.${api.name}`,
+			)
 			data.push(formatDocs(api))
 			if (api.type === 'class') {
 				data.push(`class ${api.name} {`)
