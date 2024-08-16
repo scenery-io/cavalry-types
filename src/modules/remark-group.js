@@ -22,7 +22,7 @@ function group(node, index, parent) {
 	const endIndex = parent.children.indexOf(end)
 	const between = parent.children.slice(
 		startIndex,
-		endIndex > 0 ? endIndex : undefined
+		endIndex > 0 ? endIndex : undefined,
 	)
 	const group = {
 		type: 'api',

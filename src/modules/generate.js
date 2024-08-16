@@ -62,12 +62,12 @@ function formatDocs(api) {
 	return `/**${docs.join('\n\t* ')}\n\t*/`
 }
 
-function fixInvalidKeys(key) {
-	// TODO: Request upstream fix
-	// NOTE: Because some keys have invalid/incorrect values
+function fixInvalidValues(value) {
+	// TODO: Follow up on upstream bug report
+	// NOTE: Because some values have invalid/incorrect values
 	// See definitions for `cavalry.translate` and `def.setTransformAtDepthAtIndex`
 	// Doesn't solve the issue, just fixes formatting for now
-	return key.replace(/[{}]/g, '')
+	return value.replace(/[{}]/g, '')
 }
 
 function coerceTypes(type) {
@@ -90,7 +90,7 @@ function coerceTypes(type) {
 	if (type === 'bool') {
 		return 'boolean'
 	}
-	return fixInvalidKeys(type)
+	return fixInvalidValues(type)
 }
 
 function formatArgs(api, args) {
@@ -100,7 +100,7 @@ function formatArgs(api, args) {
 		// 	required === true && def === undefined,
 		// 	`${api.name}: ${name} is missing default value`
 		// )
-		name = fixInvalidKeys(name)
+		name = fixInvalidValues(name)
 		return `${name}${!required ? '?' : ''}: ${coerceTypes(type)}`
 	})
 	return list.join(', ')
