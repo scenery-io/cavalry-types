@@ -8,7 +8,6 @@ import directive from 'remark-directive'
 import group from './remark-group.js'
 import { unified } from 'unified'
 import { __dirname, Namespaces } from './const.js'
-import { assert } from 'console'
 import { cwd } from 'process'
 import { toMarkdown } from 'mdast-util-to-markdown'
 import { removeNullValues } from './utils.js'
@@ -49,7 +48,7 @@ export async function parseDocs() {
 		for (const file of files) {
 			// TODO: Check Web APIs are merged correctly
 			const path = join(cwd(), 'src', 'docs', file)
-			console.log(path)
+			console.log(`Parsing ${basename(path)}`)
 			const mdx = await readFile(path, 'utf-8')
 			const ast = unified().use(directive).use(remarkParse).parse(mdx)
 			const content = await unified().use(group).run(ast)
@@ -65,8 +64,28 @@ export async function parseDocs() {
 							name = child.children[0].value.split(/\(|\s/)[0]
 						}
 						if (child.type === 'code') {
+							// NOTE: Turns block comments into line comments
+							// to avoid early termination of jsdoc comments
+							if (child.value.includes('/*')) {
+								const start = child.value.indexOf('/*')
+								const end = child.value.indexOf('*/') + 2
+								const blockComment = child.value.substring(
+									start,
+									end,
+								)
+								const lineComments = blockComment
+									.split('\n')
+									.slice(1, -1)
+									.map((str) => `// ${str}`)
+									.join('\n')
+								child.value = child.value.replace(
+									blockComment,
+									lineComments,
+								)
+							}
 							examples.push(child.value)
 						}
+						// TODO: Debug `cavalry` class descriptions
 						if (child.type === 'paragraph') {
 							descriptions.push(toMarkdown(child).trim())
 						}
@@ -76,10 +95,9 @@ export async function parseDocs() {
 						docs_description: descriptions.join('\n\n'),
 						examples,
 					}
-					assert(
-						obj[name].examples.length,
-						`Missing example for ${name}`,
-					)
+					// if (!obj[name].examples.length) {
+					// 	console.log(`Code example missing for ${name}`)
+					// }
 				}
 				return obj
 			}, {})
