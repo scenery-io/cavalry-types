@@ -1,7 +1,7 @@
-import { readFileSync } from 'fs'
-import { readdir } from 'fs/promises'
+import { copyFileSync, existsSync, readFileSync } from 'fs'
+import { mkdir, readdir } from 'fs/promises'
 import groupBy from 'just-group-by'
-import { join } from 'path'
+import { basename, join } from 'path'
 import { readFile } from 'fs/promises'
 import remarkParse from 'remark-parse'
 import directive from 'remark-directive'
@@ -11,6 +11,7 @@ import { __dirname, Namespaces } from './const.js'
 import { assert } from 'console'
 import { cwd } from 'process'
 import { toMarkdown } from 'mdast-util-to-markdown'
+import { removeNullValues } from './utils.js'
 
 export async function parseDefinitions(packageName = 'Cavalry') {
 	// TODO: Support Windows
@@ -22,13 +23,22 @@ export async function parseDefinitions(packageName = 'Cavalry') {
 		'MetaData',
 	)
 	const files = await readdir(path)
+	const metadataPath = join(cwd(), 'src', 'metadata')
+	if (!existsSync(metadataPath)) {
+		await mkdir(metadataPath)
+	}
 	const defs = files.flatMap((file) => {
-		const filePath = join(path, file)
-		const data = readFileSync(filePath, 'utf-8')
+		const srcPath = join(path, file)
+		const destPath = join(metadataPath, file)
+		copyFileSync(srcPath, destPath)
+		console.log(`Parsing ${basename(destPath)}`)
+		const data = readFileSync(destPath, 'utf-8')
 		return JSON.parse(data)
 	})
 	const namespaces = groupBy(defs, ({ namespace }) => namespace)
-	return namespaces
+	// TODO: Fix issues in this layer
+	// return fixIssues(namespaces)
+	return removeNullValues(namespaces)
 }
 
 // TODO: Parse admonitions
