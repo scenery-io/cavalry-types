@@ -9,12 +9,13 @@ import * as prettier from 'prettier'
 import { cwd } from 'process'
 import { mkdirp } from 'mkdirp'
 
-const app = 'Cavalry Beta'
+const app = 'Cavalry 2.4.3'
 const defs = await parseDefinitions(app)
 const docs = await parseDocs()
 
 let merged = {}
 for (const ns in defs) {
+	// TODO: Merge `cavalry` classes properly
 	const order = Object.keys(docs[ns])
 	merged[ns] = defs[ns]
 		.slice()

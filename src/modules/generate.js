@@ -1,7 +1,6 @@
-import { assert } from 'console'
-import { __dirname, Namespaces } from './const.js'
+import { __dirname, Namespaces, color } from './const.js'
 
-// TODO: Read Contents/info.plist > CFBundleVersion
+// TODO: Read Contents/info.plist > CFBundleVersion to add `@since` to jsdoc
 
 export function createTsDefinitions(defs) {
 	let outputs = {}
@@ -12,10 +11,11 @@ export function createTsDefinitions(defs) {
 		const namespace = Namespaces[ns].name
 		let data = [`declare namespace ${namespace} {`]
 		for (const api of defs[ns]) {
-			assert(
-				api.docs_description,
-				`Missing description: ${namespace}.${api.name}`,
-			)
+			if (!api.docs_description) {
+				console.log(
+					`📕 Missing docs ${color(`${namespace}.${api.name}`)}`,
+				)
+			}
 			data.push(formatDocs(api))
 			if (api.type === 'class') {
 				data.push(`class ${api.name} {`)
@@ -24,11 +24,13 @@ export function createTsDefinitions(defs) {
 					data.push(`constructor(${args})`)
 				}
 				api.properties?.forEach((prop) => {
-					data.push(`/** ${getDescription(api)} */`)
-					data.push(`${prop.name}: ${coerceTypes(prop.type)}`)
+					data.push(`/** ${getDescription(prop)} */`)
+					data.push(
+						`${prop.name}: ${coerceTypes(prop.type, api.name)}`,
+					)
 				})
 				api.methods?.forEach((method) => {
-					data.push(`/** ${getDescription(api)} */`)
+					data.push(`/** ${getDescription(method)} */`)
 					data.push(`${formatMethod(method)}`)
 				})
 				data.push(`}`)
@@ -37,7 +39,9 @@ export function createTsDefinitions(defs) {
 				data.push(formatFunction(api))
 			}
 			if (api.type === 'property') {
-				data.push(`const ${api.name}: ${coerceTypes(api.return_type)}`)
+				data.push(
+					`const ${api.name}: ${coerceTypes(api.return_type, api.name)}`,
+				)
 			}
 		}
 		data.push(`}`)
@@ -65,11 +69,28 @@ function fixInvalidValues(value) {
 	// TODO: Follow up on upstream bug report
 	// NOTE: Because some values have invalid/incorrect values
 	// See definitions for `cavalry.translate` and `def.setTransformAtDepthAtIndex`
-	// Doesn't solve the issue, just fixes formatting for now
-	return value.replace(/[{}]/g, '')
+	if (value.includes('Mesh')) {
+		return value.replace('Mesh', 'cavalry.Mesh')
+	}
+	if (value.includes('Matrix')) {
+		return value.replace('Matrix', 'cavalry.Matrix')
+	}
+	if (value === 'string/array') {
+		return 'string | string[]'
+	}
+	if (value.startsWith('{x')) {
+		return value.replace('{x', 'x')
+	}
+	if (value === 'x') {
+		return 'unknown'
+	}
+	if (value.startsWith('number')) {
+		return 'number'
+	}
+	return value
 }
 
-function coerceTypes(type) {
+function coerceTypes(type, name) {
 	if (type === 'None' || type === undefined) {
 		return 'void'
 	}
@@ -77,11 +98,17 @@ function coerceTypes(type) {
 		(type !== null && typeof type === 'object') ||
 		type.toLowerCase() === 'object'
 	) {
-		return 'unknown'
+		console.log(`🔹 Missing types ${color(name)}`)
+		return 'Record<string, any> & { length?: never }'
+		// return 'unknown'
 	}
 	if (type.toLowerCase().startsWith('array')) {
 		const arrayType = type.match(/<.+>/)?.[0]?.replace(/<|>/g, '')
-		return `${coerceTypes(arrayType)}[]`
+		return `${coerceTypes(arrayType, name)}[]`
+	}
+	const arrayType = /\[.+\]/
+	if (arrayType.test(type)) {
+		return `${coerceTypes(type.replace(/\[|\]/g, ''), name)}[]`
 	}
 	if (type === 'int' || type === 'double') {
 		return 'number'
@@ -93,15 +120,34 @@ function coerceTypes(type) {
 }
 
 function formatArgs(api, args) {
-	const params = args?.length && args?.[0] !== null ? args : []
-	const list = params.map(({ name, type, required, default: def }) => {
-		// assert(
-		// 	required === true && def === undefined,
-		// 	`${api.name}: ${name} is missing default value`
-		// )
-		name = fixInvalidValues(name)
-		return `${name}${!required ? '?' : ''}: ${coerceTypes(type)}`
-	})
+	if (!Array.isArray(args)) {
+		return ''
+	}
+	const list = args.reduce(
+		(items, { name, type, required, default: def }) => {
+			// if (required === false && def === undefined) {
+			// 	console.log(`${api.name}: ${name} is missing default value`)
+			// }
+			const invalid = name.startsWith('{x')
+			if (invalid) {
+				// NOTE: Issue in the metadata definitions
+				name = 'x'
+				type = 'number'
+				required = true
+			}
+			if (type === '{x') {
+				type = 'unknown'
+			}
+			items.push(
+				`${name}${!required ? '?' : ''}: ${coerceTypes(type, `${api.name}(${name})`)}`,
+			)
+			if (invalid) {
+				items.push(`y: number`)
+			}
+			return items
+		},
+		[],
+	)
 	return list.join(', ')
 }
 
@@ -111,13 +157,13 @@ function formatFunction(api) {
 }
 
 function formatMethod(api) {
-	const params = formatArgs(api, api.properties)
+	const params = formatArgs(api, api.properties || api.arguments)
 	return formatCall(api, params)
 }
 
 function formatCall(api, params) {
 	let call = []
 	call.push(`${api.name}(${params})`)
-	call.push(`${coerceTypes(api.return_type)}`)
+	call.push(`${coerceTypes(api.return_type, api.name)}`)
 	return call.join(': ')
 }
