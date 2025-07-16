@@ -14,7 +14,9 @@ export function createTsDefinitions(defs) {
 			}
 			data.push(formatDocs(api))
 			if (api.type === 'class') {
-				data.push(`class ${api.name} {`)
+				data.push(
+					`class ${api.name} ${api.extends ? `extends ${api.extends}` : ''} {`.trim(),
+				)
 				if (api.constructors?.arguments?.length) {
 					const args = formatArgs(api.constructors.arguments)
 					data.push(`constructor(${args})`)
@@ -74,18 +76,19 @@ function formatArgs(args) {
 		return ''
 	}
 	const list = args.map(
-		({ name, type, required }) => `${name}${!required ? '?' : ''}: ${type}`,
+		({ name, type, required }) =>
+			`${name}${!required ? '?' : ''}: ${explicitObject(type, name)}`,
 	)
 	return list.join(', ')
 }
 
 function formatFunction(api) {
-	const params = formatArgs(api)
+	const params = formatArgs(api.arguments)
 	return `function ${formatCall(api, params)}`
 }
 
 function formatMethod(api) {
-	const params = formatArgs(api)
+	const params = formatArgs(api.arguments)
 	return formatCall(api, params)
 }
 

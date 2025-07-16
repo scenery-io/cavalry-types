@@ -59,7 +59,7 @@ export function fix(obj) {
 			if (value === 'None' || value === undefined) {
 				replace = 'void'
 			}
-			if (value === 'int' || value === 'double') {
+			if (value === 'int' || value === 'double' || value === 'index') {
 				replace = 'number'
 			}
 			if (value === 'bool') {

@@ -1,17 +1,23 @@
 #!/usr/bin/env node
 import { basename, join, resolve } from 'path'
 import { createTsDefinitions } from './modules/generate.js'
-import { parseDefinitions, parseDocs } from './modules/parse.js'
+import {
+	parseDefinitions,
+	parseDefinitionsFromDocs,
+	parseDocs,
+} from './modules/parse.js'
 import { existsSync, readFileSync } from 'fs'
 import { readdir, writeFile } from 'fs/promises'
 import { __dirname, contexts, Namespaces } from './modules/const.js'
 import * as prettier from 'prettier'
 import { cwd } from 'process'
 import { mkdirp } from 'mkdirp'
+import { fix } from './modules/utils.js'
 
 const app = 'Cavalry Beta'
 const defs = await parseDefinitions(app)
 const docs = await parseDocs()
+const missingDefs = await parseDefinitionsFromDocs()
 
 await writeFile(
 	join(cwd(), `docs.json`),
@@ -46,13 +52,17 @@ extras.forEach((file) => {
 	merged[ns] = data
 })
 
+merged['ui'] = merged['ui'].concat(missingDefs)
+
+const fixed = fix(merged)
+
 await writeFile(
 	join(cwd(), `definitions.json`),
-	JSON.stringify(merged, undefined, 2),
+	JSON.stringify(fixed, undefined, 2),
 	'utf-8',
 )
 
-const ts = createTsDefinitions(merged)
+const ts = createTsDefinitions(fixed)
 for (const ns in ts) {
 	const data = ts[ns]
 	const path = join(cwd(), 'types', 'namespaces')

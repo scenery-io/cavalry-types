@@ -26,30 +26,21 @@ export const Namespaces = {
 		name: 'ui',
 		files: ['script-uis.mdx'],
 	},
-	// TODO: Render namespace
-	// '@JS_RENDER': {
-	// 	name: 'render',
-	// 	files: ['render-scripts.mdx'],
-	// },
+	'@JS_RENDER': {
+		name: 'render',
+		files: ['render-scripts.mdx'],
+	},
 }
 
 export const contexts = [
 	// TODO: Verify available namespaces for each
 	{
 		name: 'script',
-		namespaces: ['console', 'api', 'cavalry', 'ui', 'widgets'],
+		namespaces: ['console', 'api', 'cavalry', 'ui'],
 	},
 	{
 		name: 'plugin',
-		namespaces: [
-			'console',
-			'api',
-			'cavalry',
-			'ui',
-			'widgets',
-			'plugin',
-			'install',
-		],
+		namespaces: ['console', 'api', 'cavalry', 'ui', 'plugin', 'install'],
 	},
 	{
 		name: 'utility',
