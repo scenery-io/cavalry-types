@@ -1,16 +1,12 @@
-import { __dirname, Namespaces, color } from './const.js'
+import { __dirname, color } from './const.js'
 
 // TODO: Read Contents/info.plist > CFBundleVersion to add `@since` to jsdoc
 
 export function createTsDefinitions(defs) {
 	let outputs = {}
-	for (const ns in defs) {
-		if (!ns) {
-			throw new Error('Unknown namespace')
-		}
-		const namespace = Namespaces[ns].name
+	for (const namespace in defs) {
 		let data = [`declare namespace ${namespace} {`]
-		for (const api of defs[ns]) {
+		for (const api of defs[namespace]) {
 			if (!api.docs_description) {
 				console.log(
 					`📕 Missing docs ${color(`${namespace}.${api.name}`)}`,
@@ -26,7 +22,7 @@ export function createTsDefinitions(defs) {
 				api.properties?.forEach((prop) => {
 					data.push(`/** ${getDescription(prop)} */`)
 					data.push(
-						`${prop.name}: ${coerceTypes(prop.type, api.name)}`,
+						`${prop.name}: ${explicitObject(prop.type, api.name)}`,
 					)
 				})
 				api.methods?.forEach((method) => {
@@ -40,7 +36,7 @@ export function createTsDefinitions(defs) {
 			}
 			if (api.type === 'property') {
 				data.push(
-					`const ${api.name}: ${coerceTypes(api.return_type, api.name)}`,
+					`const ${api.name}: ${explicitObject(api.return_type, api.name)}`,
 				)
 			}
 		}
@@ -65,105 +61,37 @@ function formatDocs(api) {
 	return `/**${docs.join('\n\t* ')}\n\t*/`
 }
 
-function fixInvalidValues(value) {
-	// TODO: Follow up on upstream bug report
-	// NOTE: Because some values have invalid/incorrect values
-	// See definitions for `cavalry.translate` and `def.setTransformAtDepthAtIndex`
-	if (value.includes('Mesh')) {
-		return value.replace('Mesh', 'cavalry.Mesh')
-	}
-	if (value.includes('Matrix')) {
-		return value.replace('Matrix', 'cavalry.Matrix')
-	}
-	if (value === 'string/array') {
-		return 'string | string[]'
-	}
-	if (value.startsWith('{x')) {
-		return value.replace('{x', 'x')
-	}
-	if (value === 'x') {
-		return 'unknown'
-	}
-	if (value.startsWith('number')) {
-		return 'number'
-	}
-	return value
-}
-
-function coerceTypes(type, name) {
-	if (type === 'None' || type === undefined) {
-		return 'void'
-	}
-	if (
-		(type !== null && typeof type === 'object') ||
-		type.toLowerCase() === 'object'
-	) {
+function explicitObject(type, name) {
+	if ((type !== null && typeof type === 'object') || type === 'object') {
 		console.log(`🔹 Missing types ${color(name)}`)
 		return 'Record<string, any> & { length?: never }'
-		// return 'unknown'
 	}
-	if (type.toLowerCase().startsWith('array')) {
-		const arrayType = type.match(/<.+>/)?.[0]?.replace(/<|>/g, '')
-		return `${coerceTypes(arrayType, name)}[]`
-	}
-	const arrayType = /\[.+\]/
-	if (arrayType.test(type)) {
-		return `${coerceTypes(type.replace(/\[|\]/g, ''), name)}[]`
-	}
-	if (type === 'int' || type === 'double') {
-		return 'number'
-	}
-	if (type === 'bool') {
-		return 'boolean'
-	}
-	return fixInvalidValues(type)
+	return type
 }
 
-function formatArgs(api, args) {
+function formatArgs(args) {
 	if (!Array.isArray(args)) {
 		return ''
 	}
-	const list = args.reduce(
-		(items, { name, type, required, default: def }) => {
-			// if (required === false && def === undefined) {
-			// 	console.log(`${api.name}: ${name} is missing default value`)
-			// }
-			const invalid = name.startsWith('{x')
-			if (invalid) {
-				// NOTE: Issue in the metadata definitions
-				name = 'x'
-				type = 'number'
-				required = true
-			}
-			if (type === '{x') {
-				type = 'unknown'
-			}
-			items.push(
-				`${name}${!required ? '?' : ''}: ${coerceTypes(type, `${api.name}(${name})`)}`,
-			)
-			if (invalid) {
-				items.push(`y: number`)
-			}
-			return items
-		},
-		[],
+	const list = args.map(
+		({ name, type, required }) => `${name}${!required ? '?' : ''}: ${type}`,
 	)
 	return list.join(', ')
 }
 
 function formatFunction(api) {
-	const params = formatArgs(api, api.arguments)
+	const params = formatArgs(api)
 	return `function ${formatCall(api, params)}`
 }
 
 function formatMethod(api) {
-	const params = formatArgs(api, api.properties || api.arguments)
+	const params = formatArgs(api)
 	return formatCall(api, params)
 }
 
 function formatCall(api, params) {
 	let call = []
 	call.push(`${api.name}(${params})`)
-	call.push(`${coerceTypes(api.return_type, api.name)}`)
+	call.push(`${explicitObject(api.return_type, api.name)}`)
 	return call.join(': ')
 }

@@ -10,7 +10,7 @@ import { unified } from 'unified'
 import { __dirname, Namespaces } from './const.js'
 import { cwd } from 'process'
 import { toMarkdown } from 'mdast-util-to-markdown'
-import { removeNullValues } from './utils.js'
+import { fix } from './utils.js'
 
 export async function parseDefinitions(packageName = 'Cavalry') {
 	// TODO: Support Windows
@@ -35,9 +35,7 @@ export async function parseDefinitions(packageName = 'Cavalry') {
 		return JSON.parse(data)
 	})
 	const namespaces = groupBy(defs, ({ namespace }) => namespace)
-	// TODO: Fix issues in this layer
-	// return fixIssues(namespaces)
-	return removeNullValues(namespaces)
+	return fix(namespaces)
 }
 
 // TODO: Parse admonitions
