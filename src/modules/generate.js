@@ -65,7 +65,7 @@ function formatDocs(api) {
 
 function explicitObject(type, name) {
 	if ((type !== null && typeof type === 'object') || type === 'object') {
-		console.log(`🔹 Missing types ${color(name)}`)
+		console.log(`🔹 Missing type ${color(name)}`)
 		return 'Record<string, any> & { length?: never }'
 	}
 	return type
@@ -75,10 +75,12 @@ function formatArgs(args) {
 	if (!Array.isArray(args)) {
 		return ''
 	}
-	const list = args.map(
-		({ name, type, required }) =>
-			`${name}${!required ? '?' : ''}: ${explicitObject(type, name)}`,
-	)
+	const list = args.map(({ name, type, required }) => {
+		if (required === undefined) {
+			console.log('⏵ Implicit required', color(name))
+		}
+		return `${name}${required === false ? '?' : ''}: ${explicitObject(type, name)}`
+	})
 	return list.join(', ')
 }
 
