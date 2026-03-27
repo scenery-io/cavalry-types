@@ -1,0 +1,69 @@
+{
+	"console": [
+		{
+			"name": "log",
+			"description": "Typically used in testing. Printed in green.",
+			"return_type": "void",
+			"type": "function",
+			"arguments": [
+				{
+					"name": "...data",
+					"type": "any[]",
+					"required": false
+				}
+			]
+		},
+		{
+			"name": "info",
+			"description": "Confirm when something expected has happened. Printed in green.",
+			"return_type": "void",
+			"type": "function",
+			"arguments": [
+				{
+					"name": "...data",
+					"type": "any[]",
+					"required": false
+				}
+			]
+		},
+		{
+			"name": "warn",
+			"description": "Warn a user when they've done something unexpected. Printed in yellow.",
+			"return_type": "void",
+			"type": "function",
+			"arguments": [
+				{
+					"name": "...data",
+					"type": "any[]",
+					"required": false
+				}
+			]
+		},
+		{
+			"name": "error",
+			"description": "Flag when something has gone wrong. Printed in red.",
+			"return_type": "void",
+			"type": "function",
+			"arguments": [
+				{
+					"name": "...data",
+					"type": "any[]",
+					"required": false
+				}
+			]
+		},
+		{
+			"name": "debug",
+			"description": "Print a message to the terminal when Cavalry is launched from the command line.",
+			"return_type": "void",
+			"type": "function",
+			"arguments": [
+				{
+					"name": "...data",
+					"type": "any[]",
+					"required": false
+				}
+			]
+		}
+	]
+}

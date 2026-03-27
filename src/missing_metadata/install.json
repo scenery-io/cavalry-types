@@ -1,0 +1,13 @@
+{
+	"install": [
+		{
+			"name": "fromUpdate",
+			"return_type": "boolean",
+			"description": "`fromUpdate` can be used to create conditionals when updating plugins.",
+			"type": "property",
+			"examples": [
+				"const process = install.fromUpdate ? `updated` : `installed`;\n\nconst label = new ui.Label(`You have ${process} the plugin.`);"
+			]
+		}
+	]
+}
