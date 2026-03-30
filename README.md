@@ -3,9 +3,9 @@
 Typescript definitions for [Cavalry](https://docs.cavalry.scenegroup.co/tech-info/scripting/getting-started/)
 
 > [!NOTE]
-> Current supported API version is [Cavalry 1.5.6](https://docs.cavalry.scenegroup.co/tech-info/release-notes/1-5-6-release-notes)
+> Current supported API version is [Cavalry 2.6.1](https://docs.cavalry.scenegroup.co/tech-info/release-notes/2.6/2-6-1-release-notes/)
 
-These definitions describe the whole Cavalry scripting API. Essentially it gives you all the documentation inside your editor. After [installation](#installation) and following the [usage guidelines](#usage) you can simply start writing your script and get suggestions about available methods and parameters.
+These definitions expose the whole Cavalry scripting API. Essentially it gives you all the documentation inside your editor. After [installation](#installation) and following the [usage guidelines](#usage) you can simply start writing your script to get suggestions about available methods and parameters.
 
 If you're not sure how to start, follow the [usage guidelines](#usage) and press `ctrl-space`, then type `cav` and you'll see the `cavalry` namespace suggested along with its description. Press `enter` and type `.` to see a list of all the available methods.
 
@@ -14,10 +14,7 @@ A few pointers:
 -   Hovering over a namespace, method or parameter will show its documentation along with examples (in most cases).
 -   Red squiggly lines will appear when methods or parameters don't exist or when they're of the wrong type. Hover over them to find out about the problem.
 -   Even though there might be errors and warnings in the code, it will still run (with or without errors). This is because the error checking happens only in your editor.
--   If you're writing in Typescript, the code will not run in Cavalry. You will have to compile the code first.
-
-> [!NOTE]
-> This project is still in progress. There are some descriptions and Typescript features missing, but the API is mostly documented. The definition files were written by hand, so there might be some mistakes. Please report any issues you find.
+-   If you're writing in Typescript, the code will not run in Cavalry. You will have to compile the code first or use [Stallion](https://github.com/scenery-io/stallion) which will strip out the types before sending them to Cavalry.
 
 ## Stallion
 
@@ -70,46 +67,39 @@ Create a [`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig
 
 ## Versioning
 
-The types will always point to the latest API version. Add a version number to the path to target a specific version.
+The latest types are always up-to-date with the latest Cavalry release. To install the types for a previous Cavalry version check [the changelog](/blob/main/CHANGELOG.md) for the version corresponding to the Cavalry version.
 
-#### Javascript
+## Contextual Types
 
-```ts
-/// <reference types="@scenery/cavalry-types/versions/1.5.1" />
-```
+Cavalry has various scripting namespaces that can be used in specific contexts eg. JavaScript Layers, Render Scripts, etc.
 
-#### Typescript
+Every context exposes only those types that are available in that context. The available contexts are:
 
-```json
-{
-	"compilerOptions": {
-		"types": ["@scenery/cavalry-types/versions/1.5.1"]
-	}
-}
-```
+-   `script` is the default context. It's used for Scripts (with or without UI)
+-   `plugin` for Scripts that are part of a Plugin
+-   `render` for Setup, Pre- and Post-Render Scripts
+-   `shape` for JavaScript Shapes
+-   `utility` for JavaScript Utilities
+-   `deformer` for JavaScript Deformers
+-   `emitter` for JavaScript Particle Emitters
+-   `modifier` for JavaScript Particle Modifiers
 
-## Specific Namespaces
+### Usage
 
-Cavalry has namespaces for specific parts of the app, such as [`render`](https://docs.cavalry.scenegroup.co/tech-info/scripting/render-scripts) for render scripts and [`ctx`](https://docs.cavalry.scenegroup.co/tech-info/scripting/context-module) in the [Javascript Utility](https://docs.cavalry.scenegroup.co/nodes/utilities/javascript). Add an additional [Triple-Slash Directive](#triple-slash-directives) to expose the types for it.
+Append the context name to the path in the Triple-Slash Directive.
 
 ```js
-/// <reference types="@scenery/cavalry-types"/>
 /// <reference types="@scenery/cavalry-types/render"/>
 ```
 
-#### For a specific version
+### TypeScript
 
-```js
-/// <reference types="@scenery/cavalry-types/versions/1.5.1"/>
-/// <reference types="@scenery/cavalry-types/versions/1.5.1/render"/>
-```
-
-#### In a [Typescript config](#typescript-config)
+If you're using `tsconfig.json`, append the context name to the path in the `type` array.
 
 ```json
 {
 	"compilerOptions": {
-		"types": ["@scenery/cavalry-types", "@scenery/cavalry-types/render"]
+		"types": ["@scenery/cavalry-types/render"]
 	}
 }
 ```
