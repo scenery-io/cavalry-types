@@ -105,6 +105,11 @@ function parseWeb(tree) {
 				api.name = node.children[0].value.replace(/Class|\s/g, '')
 				api.type = 'class'
 				api.docs_description = descriptions.join('\n\n')
+				api.constructors =
+					// NOTE: Adds missing constructor for `WebClient`
+					node.children[0].value === 'WebClient'
+						? { arguments: [{ name: 'origin', type: 'string' }] }
+						: {}
 				api.examples = examples
 				api.properties = []
 				api.methods = []
@@ -133,14 +138,19 @@ function parseWeb(tree) {
 						examples.push(node.value)
 					}
 				})
-				const value = child.children[0].value
+				const value = toString(child)
 				const name = value.split(/\(|\s/)[0]
 				const type = value.includes('(') ? 'function' : 'property'
+				const return_type =
+					value.match(/→.+#/)?.[0].replace(/→|{#|\s/g, '') ||
+					undefined
+				const args = value.match(/\(.+\)/)?.[0].replace(/[()]/g, '')
 				if (api.type === 'class') {
 					const target =
 						type === 'function' ? api.methods : api.properties
 					target.push({
 						name,
+						arguments: parseArgs(args),
 						docs_description: descriptions.join('\n\n'),
 						examples,
 					})
@@ -148,6 +158,8 @@ function parseWeb(tree) {
 					apis.push({
 						name,
 						type,
+						return_type,
+						arguments: parseArgs(args),
 						docs_description: descriptions.join('\n\n'),
 						examples,
 					})
