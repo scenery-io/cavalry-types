@@ -9,6 +9,10 @@ export function fix(obj) {
 				console.log('⏵ Implicit return_type', color(value.name))
 				value.return_type = 'void'
 			}
+			// NOTE: Fixes `LineEdit.getText` return type
+			if (method && value.name === 'getText') {
+				value.return_type = 'string'
+			}
 			// NOTE: Fix `ctx.positionX` and `ctx.positionY` from docs
 			if (
 				(value.name === 'positionX' || value.name === 'positionY') &&
@@ -41,6 +45,9 @@ export function fix(obj) {
 						},
 					],
 				}
+			}
+			if (value.name === 'onDrop') {
+				value.arguments = [{ name: 'info', type: 'unknown' }]
 			}
 			// NOTE: Removes `namespace` in favor of grouping
 			if (value.namespace) {
