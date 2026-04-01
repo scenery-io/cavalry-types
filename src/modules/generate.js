@@ -72,7 +72,7 @@ function formatDocs(api) {
 function explicitObject(type, name) {
 	if ((type !== null && typeof type === 'object') || type === 'object') {
 		console.log(`🔹 Missing type ${color(name)}`)
-		return 'Record<string, any> & { length?: never }'
+		return 'unknown'
 	}
 	return type
 }
