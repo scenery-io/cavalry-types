@@ -75,8 +75,6 @@ export async function parseDocs() {
 	return apis
 }
 
-parseDocs()
-
 function parseWeb(tree) {
 	const apis = []
 	visit(
@@ -209,11 +207,12 @@ function parseScript(tree) {
 					const return_type =
 						value.match(/→.+#/)?.[0].replace(/→|{#|\s/g, '') ||
 						undefined
+					const args = value.match(/\(.+\)/)?.[0].replace(/[()]/g, '')
 					apis.push({
 						name,
 						type,
 						return_type,
-						arguments: parseArgs(value),
+						arguments: parseArgs(args),
 						docs_description: descriptions.join('\n\n'),
 						examples,
 					})
@@ -238,8 +237,8 @@ function parseScript(tree) {
 					})
 				}
 
-				const classe = getSection(node, index, parent)
-				classe.forEach((child, childIndex) => {
+				const classes = getSection(node, index, parent)
+				classes.forEach((child, childIndex) => {
 					if (!(child.type === 'heading' && child.depth === 3)) {
 						return
 					}
@@ -255,6 +254,7 @@ function parseScript(tree) {
 					)
 					methodSection.forEach((node) => {
 						if (node.type === 'paragraph') {
+							// TODO: Container has list in its description
 							descriptions.push(toMarkdown(node).trim())
 						}
 						if (node.type === 'list') {
@@ -285,48 +285,87 @@ function parseScript(tree) {
 	return apis
 }
 
+function parseItem(str) {
+	const result = {}
+	let nameEndIndex = -1
+	const slashIndex = str.indexOf('//')
+	if (slashIndex !== -1) {
+		result.description = str.slice(slashIndex + 2).trim()
+	}
+	nameEndIndex = slashIndex
+	const arrowIndex = str.indexOf('→')
+	if (arrowIndex !== -1) {
+		const endIndex = slashIndex !== -1 ? slashIndex : undefined
+		result.returnType = str.substring(arrowIndex + 1, endIndex).trim()
+		nameEndIndex = arrowIndex
+	}
+	const preName = nameEndIndex === -1 ? str : str.substring(0, nameEndIndex)
+	const openParenIndex = preName.indexOf('(')
+	const closingParenIndex = preName.indexOf(')')
+	if (openParenIndex !== -1 && closingParenIndex !== -1) {
+		result.args = parseArgs(
+			preName.substring(openParenIndex + 1, closingParenIndex).trim(),
+		)
+	}
+	if (openParenIndex !== -1) {
+		nameEndIndex = openParenIndex
+	}
+	if (nameEndIndex !== -1) {
+		result.name = str.slice(0, nameEndIndex).trim()
+	} else {
+		result.name = str
+	}
+	return result
+}
+
 function parseList(list, className) {
 	const constructors = {}
 	const methods = []
 	for (const item of list.children) {
-		const method = toString(item.children[0])
-		const name = method.replace(/\(.+/, '')
-		if (name.includes(' ')) {
+		if (item.children[0].children[0].type !== 'inlineCode') {
 			continue
 		}
-		const description =
-			toMarkdown(item)
-				.match(/\/\/.+/)?.[0]
-				.replace('//', '')
-				.trim() || ''
-		const args = parseArgs(method)
-		const result =
-			method.match(/→[\sa-z]+/)?.[0]?.replace(/→|\s/g, '') || ''
-		if (name === className && args.length) {
+		const method = toString(item.children[0])
+		if (method.startsWith('{')) {
+			return { constructors: {}, methods: [] }
+		}
+		const { name, args, description, returnType } = parseItem(method)
+		if (name === className) {
+			if (!args.length) {
+				continue
+			}
 			constructors.arguments = args
 		} else {
 			methods.push({
 				name,
 				description,
 				arguments: args,
-				return_type: result.startsWith('{')
-					? 'object'
-					: result || undefined,
+				// TODO: Deal with this downstream
+				return_type: returnType,
 			})
 		}
 	}
 	return { constructors, methods }
 }
 
-function parseArgs(value) {
-	const arg = value.match(/\(.[^\/]+\)/)?.[0]?.replace(/[()]/g, '') || ''
-	if (!arg) {
+function parseArgs(argString) {
+	if (!argString) {
 		return []
 	}
-	if (arg.includes('{')) {
-		return 'object'
+	if (
+		argString.includes('position:{"x":number, "y":number}, button:string')
+	) {
+		return [
+			{ name: 'position', type: '{x:number,y:number}' },
+			{ name: 'button', type: 'string' },
+		]
 	}
-	const args = arg.includes(',') ? arg.split(',').map((a) => a.trim()) : [arg]
+	if (argString.includes('position:{"x":number, "y":number}')) {
+		return [{ name: 'position', type: '{x:number,y:number}' }]
+	}
+	const args = argString.includes(',')
+		? argString.split(',').map((a) => a.trim())
+		: [argString]
 	return args.map((arg) => ({
 		name: arg.split(':')[0],
 		type: arg.split(':')[1],
@@ -437,10 +476,14 @@ function parseMethods(tree) {
 			const section = getSection(node, index, parent)
 			const value = toString(node)
 			const name = value.split(/\(|\s/)[0]
+			const type = value.includes('(') ? 'function' : 'property'
 			section.forEach((child) => {
 				if (name === 'Timer') {
 					if (child.type === 'list') {
 						const methods = parseList(child, 'Timer')
+						const args = value
+							.match(/\(.+\)/)[0]
+							.replace(/[()]/g, '')
 						apis.push({
 							name,
 							type: 'class',
@@ -448,7 +491,7 @@ function parseMethods(tree) {
 							examples,
 							...methods,
 							constructors: {
-								arguments: parseArgs(value),
+								arguments: parseArgs(args),
 							},
 						})
 					}
@@ -478,6 +521,7 @@ function parseMethods(tree) {
 			}
 			apis.push({
 				name,
+				type,
 				docs_description: descriptions.join('\n\n'),
 				examples,
 			})
