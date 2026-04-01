@@ -208,17 +208,25 @@ function parseScript(tree) {
 						value.match(/→.+#/)?.[0].replace(/→|{#|\s/g, '') ||
 						undefined
 					const args = value.match(/\(.+\)/)?.[0].replace(/[()]/g, '')
-					apis.push({
-						name,
-						type,
-						return_type,
-						arguments: parseArgs(args),
-						docs_description: descriptions.join('\n\n'),
-						examples,
-					})
+
+					if (name === 'Callbacks') {
+						const list = apisSection[childIndex + 1]
+						const { methods } = parseList(list)
+						apis.push(
+							...methods.map((method) => ({ ...method, type })),
+						)
+					} else {
+						apis.push({
+							name,
+							type,
+							return_type,
+							arguments: parseArgs(args),
+							docs_description: descriptions.join('\n\n'),
+							examples,
+						})
+					}
 				})
 			}
-
 			if (
 				node.children[0].value.includes('Widgets') ||
 				node.children[0].value.includes('Layouts')

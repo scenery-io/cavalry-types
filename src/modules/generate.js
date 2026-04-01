@@ -37,9 +37,15 @@ export function createTsDefinitions(defs) {
 				data.push(formatFunction(api))
 			}
 			if (api.type === 'property') {
-				data.push(
-					`const ${api.name}: ${explicitObject(api.return_type, api.name)}`,
-				)
+				if (api.name.startsWith('on')) {
+					data.push(
+						`let ${formatCall(api, formatArgs(api.arguments))}`,
+					)
+				} else {
+					data.push(
+						`const ${api.name}: ${explicitObject(api.return_type, api.name)}`,
+					)
+				}
 			}
 		}
 		data.push(`}`)
