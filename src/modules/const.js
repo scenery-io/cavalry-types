@@ -56,11 +56,11 @@ export const contexts = [
 	},
 	{
 		name: 'emitter',
-		namespaces: ['console', 'ctx'],
+		namespaces: ['console', 'ctx', 'cavalry'],
 	},
 	{
 		name: 'modifier',
-		namespaces: ['console', 'ctx'],
+		namespaces: ['console', 'ctx', 'cavalry'],
 	},
 	{
 		name: 'render',
