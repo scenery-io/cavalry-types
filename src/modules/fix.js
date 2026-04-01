@@ -9,6 +9,39 @@ export function fix(obj) {
 				console.log('⏵ Implicit return_type', color(value.name))
 				value.return_type = 'void'
 			}
+			// NOTE: Fix `ctx.positionX` and `ctx.positionY` from docs
+			if (
+				(value.name === 'positionX' || value.name === 'positionY') &&
+				value.type === 'property' &&
+				!value.return_type
+			) {
+				value.return_type = 'number'
+			}
+			if (value.name === 'getAllLayerTypes') {
+				value.arguments = [
+					{ name: 'includeExperimentalTypes', type: 'boolean' },
+				]
+			}
+			if (value.name === 'get' && value.type === 'function') {
+				value.return_type = 'unknown'
+			}
+			if (value.name === 'set' && value.type === 'function') {
+				value.arguments[1].type = 'unknown'
+			}
+			if (value.name === 'dashWidth' || value.name === 'dashGap') {
+				value.required = false
+			}
+			if (value.name === 'Menu') {
+				value.constructors = {
+					arguments: [
+						{
+							name: 'name',
+							type: 'string',
+							required: false,
+						},
+					],
+				}
+			}
 			// NOTE: Removes `namespace` in favor of grouping
 			if (value.namespace) {
 				delete value.namespace
@@ -109,7 +142,7 @@ export function fix(obj) {
 			})
 		}
 		// NOTE: Fixes vector arguments in `def.setTransformAtDepthAtIndex`
-		if (key === 'type' && value?.startsWith?.('{x')) {
+		if (key === 'type' && value === '{x') {
 			const itemPath = path.slice(0, -1)
 			const item = getValue(obj, itemPath)
 			setValue(obj, itemPath, {
