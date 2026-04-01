@@ -49,7 +49,7 @@ export function createTsDefinitions(defs) {
 }
 
 function getDescription(api) {
-	return api.docs_description || api.description || 'TODO: Description'
+	return api.docs_description || api.description || ''
 }
 
 function formatDocs(api) {
@@ -95,6 +95,9 @@ function formatMethod(api) {
 }
 
 function formatCall(api, params) {
+	if (api.name.startsWith('on')) {
+		return `${api.name}: (${params}) => ${explicitObject(api.return_type, api.name)}`
+	}
 	let call = []
 	call.push(`${api.name}(${params})`)
 	call.push(`${explicitObject(api.return_type, api.name)}`)
