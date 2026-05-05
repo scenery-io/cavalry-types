@@ -1,0 +1,25 @@
+{
+	"render": [
+		{
+			"name": "composition",
+			"return_type": "string",
+			"type": "property",
+			"docs_description": "Return the layerId for each Composition in the Render Queue Item. Available as part of a **Pre-Render** and **Post-Render Script**.",
+			"examples": ["console.log(render.composition)"]
+		},
+		{
+			"name": "path",
+			"return_type": "string",
+			"type": "property",
+			"docs_description": "Return the file path of the render – any dynamic tokens/paths are fully resolved. Available as part of a **Post-Render Script**.",
+			"examples": ["console.log(render.path)"]
+		},
+		{
+			"name": "renderQueueItem",
+			"return_type": "string",
+			"type": "property",
+			"docs_description": "Return the renderQueueItemId to make changes to it. Available as part of a **Setup Render Script**.",
+			"examples": ["console.log(render.renderQueueItem)"]
+		}
+	]
+}
