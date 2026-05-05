@@ -67,7 +67,7 @@ Create a [`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig
 
 ## Versioning
 
-The latest types are always up-to-date with the latest Cavalry release. To install the types for a previous Cavalry version check [the changelog](/blob/main/CHANGELOG.md) for the version corresponding to the Cavalry version.
+The latest types are always up-to-date with the latest Cavalry release. To install the types for a previous Cavalry version check [the changelog](./CHANGELOG.md) for the version corresponding to the Cavalry version.
 
 ## Contextual Types
 
