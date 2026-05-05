@@ -71,7 +71,7 @@ The latest types are always up-to-date with the latest Cavalry release. To insta
 
 ## Contextual Types
 
-Cavalry has various scripting namespaces that can be used in specific contexts eg. JavaScript Layers, Render Scripts, etc.
+Cavalry has various [scripting namespaces](https://cavalry.studio/docs/tech-info/scripting/scripting-getting-started/#modules) that can be used in specific contexts eg. JavaScript Layers, Render Scripts, etc.
 
 Every context exposes only those types that are available in that context. The available contexts are:
 
