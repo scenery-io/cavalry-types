@@ -5,9 +5,9 @@ Typescript definitions for [Cavalry](https://cavalry.studio/docs/tech-info/scrip
 > [!NOTE]
 > Current supported API version is [Cavalry 2.7.0](https://cavalry.studio/docs/tech-info/release-notes/2.7/2-7-0-release-notes/)
 
-These definitions expose the whole Cavalry scripting API. Essentially it gives you all the documentation inside your editor. After [installation](#installation) and following the [usage guidelines](#usage) you can simply start writing your script to get suggestions about available methods and parameters.
+These definitions expose the whole Cavalry scripting API. Essentially it gives you all the documentation inside your editor. After [installation](#installation) and following the [usage guidelines](#usage) you can start writing your script to get suggestions about available methods and parameters.
 
-If you're not sure how to start, follow the [usage guidelines](#usage) and press `ctrl-space`, then type `cav` and you'll see the `cavalry` namespace suggested along with its description. Press `enter` and type `.` to see a list of all the available methods.
+If you're not sure how to start, follow the [usage guidelines](#usage) and press `ctrl-space` in VSCode, then type `cav` and you'll see the `cavalry` namespace suggested along with its description. Press `enter` and type `.` to see a list of all the available methods.
 
 A few pointers:
 
@@ -94,7 +94,7 @@ Append the context name to the path in the Triple-Slash Directive.
 
 ### TypeScript
 
-If you're using `tsconfig.json`, append the context name to the path in the `type` array.
+If you're using `tsconfig.json`, append the [context name](#contextual-types) to the path in the `types` array.
 
 ```json
 {
