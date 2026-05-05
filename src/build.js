@@ -7,7 +7,7 @@ import { __dirname, color, contexts } from './modules/const.js'
 import * as prettier from 'prettier'
 import { cwd } from 'process'
 import { mkdirp } from 'mkdirp'
-import { fix } from './modules/fix.js'
+// import { fix } from './modules/fix.js'
 import { parseDocs, parseDefinitions } from './modules/parse.js'
 import groupBy from 'just-group-by'
 
@@ -15,6 +15,18 @@ const app = 'Cavalry'
 const defs = await parseDefinitions(app)
 const docs = await parseDocs()
 const intermediatePath = join(cwd(), 'intermediate')
+
+// await writeFile(
+// 	join(intermediatePath, `defs.json`),
+// 	JSON.stringify(defs, undefined, 2),
+// 	'utf-8',
+// )
+
+// await writeFile(
+// 	join(intermediatePath, `docs.json`),
+// 	JSON.stringify(docs, undefined, 2),
+// 	'utf-8',
+// )
 
 let merged = {}
 
@@ -32,8 +44,7 @@ for (const namespace in defs) {
 			merged[namespace][api] = defapis[api][0]
 			continue
 		}
-		// merged[namespace][api] = Object.assign(defapis[api][0], docapis[api][0])
-		merged[namespace][api] = Object.assign(docapis[api][0], defapis[api][0])
+		// merged[namespace][api] = Object.assign(docapis[api][0], defapis[api][0])
 	}
 	for (const api in docapis) {
 		if (!defapis[api]?.[0]) {
@@ -41,10 +52,17 @@ for (const namespace in defs) {
 			merged[namespace][api] = docapis[api][0]
 			continue
 		}
-		// merged[namespace][api] = Object.assign(defapis[api][0], docapis[api][0])
-		merged[namespace][api] = Object.assign(docapis[api][0], defapis[api][0])
+		merged[namespace][api] = Object.assign(defapis[api][0], docapis[api][0])
 	}
 }
+
+// await writeFile(
+// 	join(intermediatePath, `merged.json`),
+// 	JSON.stringify(merged, undefined, 2),
+// 	'utf-8',
+// )
+
+// throw new Error('')
 
 let final = {}
 for (const namespace in merged) {
@@ -72,21 +90,21 @@ extrasFiles.forEach((file) => {
 
 final = Object.assign({}, final, extras)
 
+// await writeFile(
+// 	join(intermediatePath, `merged.json`),
+// 	JSON.stringify(final, undefined, 2),
+// 	'utf-8',
+// )
+
+// const fixed = fix(final)
+
 await writeFile(
-	join(intermediatePath, `merged.json`),
+	join(intermediatePath, `definitions.json`),
 	JSON.stringify(final, undefined, 2),
 	'utf-8',
 )
 
-const fixed = fix(final)
-
-await writeFile(
-	join(intermediatePath, `definitions.json`),
-	JSON.stringify(fixed, undefined, 2),
-	'utf-8',
-)
-
-const ts = createTsDefinitions(fixed)
+const ts = createTsDefinitions(final)
 for (const ns in ts) {
 	const data = ts[ns]
 	// await writeFile(join(intermediatePath, `${ns}.d.ts`), data, 'utf-8')

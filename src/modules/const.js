@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url'
 export const __filename = fileURLToPath(import.meta.url)
 export const __dirname = dirname(__filename)
 export const color = (text) => `\x1b[32m${text}\x1b[0m`
+export const record = 'Record<string, unknown>'
 
 export const Namespaces = {
 	'@JS_GUI_API': {
@@ -33,14 +34,21 @@ export const Namespaces = {
 }
 
 export const contexts = [
-	// TODO: Verify available namespaces for each
 	{
 		name: 'script',
 		namespaces: ['console', 'api', 'cavalry', 'ui'],
 	},
 	{
 		name: 'plugin',
-		namespaces: ['console', 'api', 'cavalry', 'ui', 'plugin', 'install'],
+		namespaces: [
+			'console',
+			'api',
+			'ctx',
+			'cavalry',
+			'ui',
+			'plugin',
+			'install',
+		],
 	},
 	{
 		name: 'utility',

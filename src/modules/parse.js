@@ -10,6 +10,7 @@ import { findAfter } from 'unist-util-find-after'
 import { toMarkdown } from 'mdast-util-to-markdown'
 import { copyFileSync, existsSync, readFileSync } from 'fs'
 import groupBy from 'just-group-by'
+import { fixDefinitions, fixDocs } from './fix.js'
 
 export async function parseDefinitions(packageName = 'Cavalry') {
 	// TODO: Support Windows
@@ -37,7 +38,7 @@ export async function parseDefinitions(packageName = 'Cavalry') {
 		defs,
 		({ namespace }) => Namespaces[namespace].name,
 	)
-	return namespaces
+	return fixDefinitions(namespaces)
 }
 
 export async function parseDocs() {
@@ -72,7 +73,7 @@ export async function parseDocs() {
 			}
 		}
 	}
-	return apis
+	return fixDocs(apis)
 }
 
 function parseWeb(tree) {
@@ -140,7 +141,7 @@ function parseWeb(tree) {
 				const name = value.split(/\(|\s/)[0]
 				const type = value.includes('(') ? 'function' : 'property'
 				const return_type =
-					value.match(/→.+#/)?.[0].replace(/→|{#|\s/g, '') ||
+					value.match(/→.+#/)?.[0].replace(/→|{\/\*|#|\s/g, '') ||
 					undefined
 				const args = value.match(/\(.+\)/)?.[0].replace(/[()]/g, '')
 				if (api.type === 'class') {
@@ -205,10 +206,9 @@ function parseScript(tree) {
 					const name = value.split(/\(|\s/)[0]
 					const type = value.includes('(') ? 'function' : 'property'
 					const return_type =
-						value.match(/→.+#/)?.[0].replace(/→|{#|\s/g, '') ||
+						value.match(/→.+#/)?.[0].replace(/→|{\/\*|#|\s/g, '') ||
 						undefined
 					const args = value.match(/\(.+\)/)?.[0].replace(/[()]/g, '')
-
 					if (name === 'Callbacks') {
 						const list = apisSection[childIndex + 1]
 						const { methods } = parseList(list)
@@ -262,7 +262,6 @@ function parseScript(tree) {
 					)
 					methodSection.forEach((node) => {
 						if (node.type === 'paragraph') {
-							// TODO: Container has list in its description
 							descriptions.push(toMarkdown(node).trim())
 						}
 						if (node.type === 'list') {
@@ -348,7 +347,6 @@ function parseList(list, className) {
 				name,
 				description,
 				arguments: args,
-				// TODO: Deal with this downstream
 				return_type: returnType,
 			})
 		}
@@ -359,6 +357,9 @@ function parseList(list, className) {
 function parseArgs(argString) {
 	if (!argString) {
 		return []
+	}
+	if (argString.startsWith('{')) {
+		return [{ name: 'object', type: argString }]
 	}
 	if (
 		argString.includes('position:{"x":number, "y":number}, button:string')
@@ -375,8 +376,8 @@ function parseArgs(argString) {
 		? argString.split(',').map((a) => a.trim())
 		: [argString]
 	return args.map((arg) => ({
-		name: arg.split(':')[0],
-		type: arg.split(':')[1],
+		name: arg.split(':')[0]?.trim(),
+		type: arg.split(':')[1]?.trim(),
 	}))
 }
 
@@ -420,6 +421,7 @@ function parseClasses(tree) {
 				api.examples = examples
 				api.properties = []
 				api.methods = []
+				// console.log(api.name)
 			}
 
 			const apisSection = getSection(node, index, parent)
@@ -445,14 +447,24 @@ function parseClasses(tree) {
 						examples.push(node.value)
 					}
 				})
-				const value = child.children[0].value
+				const value = toString(child)
 				const name = value.split(/\(|\s/)[0]
 				const type = value.includes('(') ? 'function' : 'property'
+				const return_type =
+					value.match(/→.+#/)?.[0].replace(/→|{\/\*|#|\s/g, '') ||
+					undefined
+				const args = value.match(/\(.+\)/)?.[0].replace(/[()]/g, '')
+				if (args?.startsWith('{')) {
+					// console.log({ api })
+					console.log({ name, args: parseArgs(args), return_type })
+				}
 				if (api.type === 'class') {
 					const target =
 						type === 'function' ? api.methods : api.properties
 					target.push({
 						name,
+						arguments: parseArgs(args),
+						return_type,
 						docs_description: descriptions.join('\n\n'),
 						examples,
 					})
@@ -460,6 +472,8 @@ function parseClasses(tree) {
 					apis.push({
 						name,
 						type,
+						arguments: parseArgs(args),
+						return_type,
 						docs_description: descriptions.join('\n\n'),
 						examples,
 					})
@@ -485,6 +499,9 @@ function parseMethods(tree) {
 			const value = toString(node)
 			const name = value.split(/\(|\s/)[0]
 			const type = value.includes('(') ? 'function' : 'property'
+			const return_type =
+				value.match(/→.+#/)?.[0].replace(/→|{\/\*|#|\s/g, '') ||
+				undefined
 			section.forEach((child) => {
 				if (name === 'Timer') {
 					if (child.type === 'list') {
@@ -530,6 +547,7 @@ function parseMethods(tree) {
 			apis.push({
 				name,
 				type,
+				return_type,
 				docs_description: descriptions.join('\n\n'),
 				examples,
 			})
