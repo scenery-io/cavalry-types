@@ -17,10 +17,6 @@ keywords:
     ]
 ---
 
-import ProHeader from '@site/src/components/snippets/ProHeader.mdx'
-
-<ProHeader utmContent={frontMatter.id} />
-
 ## Intro
 
 The following methods are only available to the [JavaScript Utility](../../nodes/utilities/javascript-utility.mdx), [JavaScript Shape](../../nodes/shapes/javascript-shape.mdx), [JavaScript Deformer](../../nodes/behaviours/javascript-deformer.mdx), [JavaScript Emitter](../../nodes/utilities/javascript-emitter.mdx) and [JavaScript Modifier](../../nodes/utilities/javascript-modifier.mdx).
@@ -28,31 +24,31 @@ Everything in this module is in the `ctx` namespace and so methods need prefixin
 
 ## Member Functions
 
-#### index → int {#index}
+#### index → int {/* #index */}
 
 The current point index. Available when using a [Duplicator](../../nodes/shapes/duplicator.mdx) (or other Layer that generates indices, such as the [Connect Shape](../../nodes/shapes/connect-shape.mdx) or [Trails](../../nodes/shapes/trails.mdx)).
 
-#### count → int {#count}
+#### count → int {/* #count */}
 
 The number of points in total. Available when using a [Duplicator](../../nodes/shapes/duplicator.mdx) (or other Layer that generates indices, such as the [Connect Shape](../../nodes/shapes/connect-shape.mdx) or [Trails](../../nodes/shapes/trails.mdx)).
 
-#### positionX
+#### positionX → number {/* #positionx */}
 
 The X position of the current point. Available when using a [Duplicator](../../nodes/shapes/duplicator.mdx) (or other Layer that generates indices, such as the [Connect Shape](../../nodes/shapes/connect-shape.mdx) or [Trails](../../nodes/shapes/trails.mdx)).
 
-#### positionY
+#### positionY → number {/* #positiony */}
 
 The Y position of the current point. Available when using a [Duplicator](../../nodes/shapes/duplicator.mdx) (or other Layer that generates indices, such as the [Connect Shape](../../nodes/shapes/connect-shape.mdx) or [Trails](../../nodes/shapes/trails.mdx)).
 
-#### attributeId → string {#attributeid}
+#### attributeId → string {/* #attributeid */}
 
 The Id of the Attribute being calculated.
 
-#### layerId → string {#layerid}
+#### layerId → string {/* #layerid */}
 
 The Id of the Layer being calculated.
 
-#### saveObject(name:string, objectLiteralToSave:object) {#saveobject}
+#### saveObject(name:string, objectLiteralToSave:object) {/* #saveobject */}
 
 Save an object for use later. The normal use case for this feature is when creating solvers – for example, a script that needs to know a previous value.
 
@@ -81,7 +77,7 @@ if (ctx.hasObject('path')) {
 }
 ```
 
-#### loadObject(name:string) → object {#loadobject}
+#### loadObject(name:string) → object {/* #loadobject */}
 
 Load a saved object.
 
@@ -91,7 +87,7 @@ var textObj = ctx.loadObject('test')
 console.log(textObj['someKey'])
 ```
 
-#### hasObject(name:string) → bool {#hasobject}
+#### hasObject(name:string) → bool {/* #hasobject */}
 
 Returns true if an object of `name` has been saved and can be loaded.
 
@@ -102,7 +98,7 @@ if (ctx.hasObject('test')) {
 }
 ```
 
-#### niceName() → string {#nicename}
+#### niceName() → string {/* #nicename */}
 
 Get the nice name of the Layer that requested the JavaScript Utility for a value.
 
@@ -110,7 +106,7 @@ Get the nice name of the Layer that requested the JavaScript Utility for a value
 console.log(ctx.niceName)
 ```
 
-#### transformationMatrix() → matrix {#transformationmatrix}
+#### transformationMatrix() → matrix {/* #transformationmatrix */}
 
 Returns the upstream local 2D transformation matrix, or null if there isn't one.
 
@@ -125,7 +121,7 @@ var tm = ctx.transformationMatrix()
 console.log(tm.position().x)
 ```
 
-#### globalTransformationMatrix() → matrix {#globaltransformationmatrix}
+#### globalTransformationMatrix() → matrix {/* #globaltransformationmatrix */}
 
 Returns the upstream global 2D transformation matrix, or null if there isn't one.
 

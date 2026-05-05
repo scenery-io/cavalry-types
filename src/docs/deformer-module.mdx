@@ -22,10 +22,6 @@ keywords:
     ]
 ---
 
-import ProHeader from '@site/src/components/snippets/ProHeader.mdx'
-
-<ProHeader utmContent={frontMatter.id} />
-
 ## Introduction
 
 The following are **only** available to the [JavaScript Deformer](../../nodes/behaviours/javascript-deformer.mdx).
@@ -37,7 +33,7 @@ Everything in this module is in the `def` namespace and so methods need prefixin
 
 The hierarchy-based methods provide access to the complete mesh tree. This is the preferred approach as it correctly handles nested groups and complex hierarchies.
 
-#### getRootMesh() → cavalry.Mesh {#getrootmesh}
+#### getRootMesh() → cavalry.Mesh {/* #getrootmesh */}
 
 Returns the root [cavalry.Mesh](./cavalry-module.mdx#mesh-class) of the shape being deformed. Use this to access the complete mesh hierarchy for modification.
 
@@ -47,7 +43,7 @@ var root = def.getRootMesh()
 def.setRootMesh(root)
 ```
 
-#### setRootMesh(mesh:cavalry.Mesh) {#setrootmesh}
+#### setRootMesh(mesh:cavalry.Mesh) {/* #setrootmesh */}
 
 Sets the root mesh back after modification. This must be called to apply changes made to the mesh hierarchy.
 
@@ -86,7 +82,7 @@ def.setRootMesh(root)
 
 ### Falloffs
 
-#### getFalloffAtPoint(x:number, y:number) → number {#getfalloffatpoint}
+#### getFalloffAtPoint(x:number, y:number) → number {/* #getfalloffatpoint */}
 
 Returns the combined falloff value (0-1) at the specified position. This includes the deformer's Strength setting and any connected falloff shapes. Coordinates should be in local mesh space.
 
@@ -117,11 +113,11 @@ function deformMesh(mesh) {
 
 ### Bounding Box and Points
 
-#### getBoundingBox() → \{x:number, y:number, width:number, height:number, centre:\{x:number, y:number}, left:number, right:number, top:number, bottom:number} {#getboundingbox}
+#### getBoundingBox() → \{x:number, y:number, width:number, height:number, centre:\{x:number, y:number}, left:number, right:number, top:number, bottom:number} {/* #getboundingbox */}
 
 Return an object containing details about the selection's bounding box.
 
-#### getPoints() → array[points] {#getpoints}
+#### getPoints() → array[points] {/* #getpoints */}
 
 Return an array of positions for each point of a Shape. These can then be looped through these to manipulate them.
 
@@ -131,7 +127,7 @@ var points = def.getPoints()
 console.log(JSON.stringify(points))
 ```
 
-#### setPoints(array[points]) {#setpoints}
+#### setPoints(array[points]) {/* #setpoints */}
 
 Set the position for each point of a Shape.
 
@@ -155,47 +151,47 @@ def.setPoints(points)
 
 The depth-based methods access meshes at specific levels of the hierarchy.
 
-#### meshDepth {#meshdepth}
+#### meshDepth {/* #meshdepth */}
 
 The depth of the mesh tree (the highest number reported in the [Mesh Explorer](../../user-interface/menus/window-menu/mesh-explorer.mdx)). This is a property/variable, not a method.
 
-#### meshCountAtDepth(depth:int) → int {#meshcountatdepth}
+#### meshCountAtDepth(depth:int) → int {/* #meshcountatdepth */}
 
 Return the number of meshes at a given depth.
 
-#### getMeshesAtDepth(depth:int) → [cavalry.Mesh] {#getmeshesatdepth}
+#### getMeshesAtDepth(depth:int) → [cavalry.Mesh] {/* #getmeshesatdepth */}
 
 Return an array of [cavalry.Mesh](./cavalry-module.mdx#mesh-class) objects.
 
-#### setMeshesAtDepth(depth:int, [cavalry.Mesh]) {#setmeshesatdepth}
+#### setMeshesAtDepth(depth:int, [cavalry.Mesh]) {/* #setmeshesatdepth */}
 
 Replace the meshes at the given depth with a [cavalry.Mesh](./cavalry-module.mdx#mesh-class). This will not remove any un-replaced meshes.
 
-#### getMeshAtDepthAtIndex(depth:int, index:int) → cavalry.Mesh {#getmeshatdepthatindex}
+#### getMeshAtDepthAtIndex(depth:int, index:int) → cavalry.Mesh {/* #getmeshatdepthatindex */}
 
 Return a mesh at the given depth and index.
 
-#### setMeshAtDepthAtIndex(depth:int, index:int, mesh:cavalry.Mesh) {#setmeshatdepthatindex}
+#### setMeshAtDepthAtIndex(depth:int, index:int, mesh:cavalry.Mesh) {/* #setmeshatdepthatindex */}
 
 Replace a mesh at the given depth and index.
 
-#### setTransformAtDepthAtIndex(depth:int, index:int, position:object, rotation:double, scale:object) {#settransformatdepthatindex}
+#### setTransformAtDepthAtIndex(depth:int, index:int, position:object, rotation:double, scale:object) {/* #settransformatdepthatindex */}
 
 Set the position of a mesh at the given depth and index. Position and Scale are optional objects with x and y values (e.g. `{"x":20, "y": 5}`).
 
-#### clearTransformAtDepthAtIndex(depth:int, index:int) {#cleartransformatdepthatindex}
+#### clearTransformAtDepthAtIndex(depth:int, index:int) {/* #cleartransformatdepthatindex */}
 
 Reset the transform of the mesh at a given depth and index.
 
-#### centrePivotAtDepthAtIndex(depth:int, index:int) {#centrepivotatdepthatindex}
+#### centrePivotAtDepthAtIndex(depth:int, index:int) {/* #centrepivotatdepthatindex */}
 
 Centres the pivot of the mesh at a given depth and index.
 
-#### setMaterialAtDepthAtIndex(depth:int, index:int, material:cavalry.Material) {#setmaterialatdepthatindex}
+#### setMaterialAtDepthAtIndex(depth:int, index:int, material:cavalry.Material) {/* #setmaterialatdepthatindex */}
 
 Sets the Material object for the mesh at a given depth and index.
 
-#### highestDepthWithPath() → int {#highestdepthwithpath}
+#### highestDepthWithPath() → int {/* #highestdepthwithpath */}
 
 Returns the highest depth within a Mesh that contains a Path.
 

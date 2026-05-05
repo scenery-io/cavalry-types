@@ -20,10 +20,6 @@ keywords:
     ]
 ---
 
-import ProHeader from '@site/src/components/snippets/ProHeader.mdx'
-
-<ProHeader utmContent={frontMatter.id} />
-
 ## Introduction
 
 Cavalry provides a way to interact with API endpoints on the web by creating a `WebClient` object and interacting with its methods to `get`, `post` or `put`. These API calls are blocking meaning they must successfully complete before progressing to the next part of a script.
@@ -54,10 +50,11 @@ if (client.status() == 200) {
 ### Getting and saving an SVG file.
 
 ```js
-var client = new api.WebClient('https://cavalry.scenegroup.co')
-client.get('/images/logo_cavalry-landscape-outline_001.svg')
+// Update Uri and path
+var client = new api.WebClient('https://cavalry.studio')
+client.get('/path/to/logo.svg')
 if (client.status() == 200) {
-	api.writeToFile('/Some/Path/Here/cavLogo.svg', client.body())
+	api.writeToFile('/path/to/cavLogo.svg', client.body())
 }
 ```
 
@@ -69,23 +66,23 @@ When using the WebClient the constructor can only contain the base URL (e.g. htt
 
 :::
 
-#### setBasicAuthentication(username:string, password:string) {#setbasicauthentication}
+#### setBasicAuthentication(username:string, password:string) {/* #setbasicauthentication */}
 
 Sets basic authentication for any subsequent requests.
 
-#### setDigestAuthentication(username:string, password:string) {#setdigestauthentication}
+#### setDigestAuthentication(username:string, password:string) {/* #setdigestauthentication */}
 
 Sets digest authentication for any subsequent requests.
 
-#### setTokenAuthentication(token:string) {#settokenauthentication}
+#### setTokenAuthentication(token:string) {/* #settokenauthentication */}
 
 Sets token based authentication for any subsequent requests.
 
-#### addHeader(key:string, value:string) {#addheader}
+#### addHeader(key:string, value:string) {/* #addheader */}
 
 Adds a header for any following requests. API keys, app keys, content types and so forth can be added in this way.
 
-#### getHeaders() → object {#getheaders}
+#### getHeaders() → object {/* #getheaders */}
 
 ```js
 var client = new api.WebClient('https://www.boredapi.com')
@@ -98,49 +95,49 @@ if (client.status() == 200) {
 }
 ```
 
-#### status() → int {#status}
+#### status() → int {/* #status */}
 
 Returns the status of the request. For example 200 means `OK`.
 
-#### body() → string {#body}
+#### body() → string {/* #body */}
 
 The returned body. This is often in the form of JSON but you can check the `Content-Type` header with `getHeaders()` if you're unsure.
 
-#### get(path:string) {#get}
+#### get(path:string) {/* #get */}
 
 Performs a `get` request. Once done, `status()` and if successful, `body()` should be available.
 
-#### post(path:string, content:string, contentType:string) {#post}
+#### post(path:string, content:string, contentType:string) {/* #post */}
 
 Performs a `post` request. Once done, `status()` and if successful, `body()` should be available.
 
-#### put(path:string, content:string, contentType:string) {#put}
+#### put(path:string, content:string, contentType:string) {/* #put */}
 
 Performs a `put` request. Once done, `status()` and if successful, `body()` should be available.
 
-#### postFromFile(path:string, filePath:string, contentType:string) {#postfromfile}
+#### postFromFile(path:string, filePath:string, contentType:string) {/* #postfromfile */}
 
 A helper method for posting a file directly. This method is needed especially when uploading binary files (like images or movies).
 Performs a `post` request. Once done, `status()` and if successful, `body()` should be available.
 
-#### putFromFile(path:string, filePath:string, contentType:string) {#putfromfile}
+#### putFromFile(path:string, filePath:string, contentType:string) {/* #putfromfile */}
 
 A helper method for posting a file directly. This method is needed especially when uploading binary files (like images or movies).
 Performs a `put` request. Once done, `status()` and if successful, `body()` should be available.
 
-#### writeBodyToBinaryFile(path:string) {#writebodytobinaryfile}
+#### writeBodyToBinaryFile(path:string) {/* #writebodytobinaryfile */}
 
 If `get` has been used to retrieve binary data (i.e an image or a movie), this cannot be passed to the usual `api.writeToFile()` call. You must instead use this function to write the _body_ data to file (which you can then pull into Cavalry as an Asset for example).
 
-#### setProxy(hostAddress:string, port:number) {#setproxy}
+#### setProxy(hostAddress:string, port:number) {/* #setproxy */}
 
 Enter a proxy server's IP and port number.
 
-#### setProxyBasicAuthentication(username:string, password:string) {#setproxybasicauthentication}
+#### setProxyBasicAuthentication(username:string, password:string) {/* #setproxybasicauthentication */}
 
 Enter a username and password to authenticate to a proxy server.
 
-#### setProxyBearerAuthentication(password:string) {#setproxybearerauthentication}
+#### setProxyBearerAuthentication(password:string) {/* #setproxybearerauthentication */}
 
 Enter a password for a proxy server that uses a bearer token.
 
@@ -197,37 +194,37 @@ client.post('/post', 'Cavalry Needs You!', 'text/plain')
 client.post('/post', 'Join the Cavalry!', 'text/plain')
 ```
 
-#### listen(host:string, port:int) {#listen}
+#### listen(host:string, port:int) {/* #listen */}
 
 Start the server listening on the host address (e.g `localhost`) on the specified port number.
 
-#### stop() {#stop}
+#### stop() {/* #stop */}
 
 Stop the server, any polling will also stop.
 
-#### setResultForGet(resultText:string) {#setresultforget}
+#### setResultForGet(resultText:string) {/* #setresultforget */}
 
 Set the result for `/get` requests, only `text/plain` is currently supported.
 
-#### getNextPost() → object {#getnextpost}
+#### getNextPost() → object {/* #getnextpost */}
 
 As many `/post` events may happen before you have a chance to react, Cavalry will queue them for you.
 This function will get the next (the oldest) post and will pop the post from the queue meaning once you get it, you can no longer access it from the server.
 The object will contain a `result` string, and an `headers` array, each header is an object with a `name` and `value`. Please note only non binary data is supported for `/post` events.
 
-#### getNewestPost() → object {#getnewestpost}
+#### getNewestPost() → object {/* #getnewestpost */}
 
 This is just like the above method, only instead of getting the oldest unprocessed `/post`, it will skip to the newest and pop that from the queue.
 
-#### postCount() → int {#postcount}
+#### postCount() → int {/* #postcount */}
 
 Returns the number of unprocessed `/post` events. Process posts using the `getNextPost()` or `getNewestPost()` functions.
 
-#### clearPosts() {#clearposts}
+#### clearPosts() {/* #clearposts */}
 
 Clear all unprocessed `/post` events. Process posts using the `getNextPost()` or `getNewestPost()` functions.
 
-#### addCallbackObject(callbackObj:object) {#addcallbackobject}
+#### addCallbackObject(callbackObj:object) {/* #addcallbackobject */}
 
 Set a Callback object (much like the UI callback object). This is a JavaScript object with an `onPost` function implemented.
 Setting a Callback object will start the server polling for new information, by default we poll the server once every 3 seconds.
@@ -244,10 +241,10 @@ var callbackObj = new Callbacks()
 server.addCallbackObject(callbackObj)
 ```
 
-#### setHighFrequency() {#sethighfrequency}
+#### setHighFrequency() {/* #sethighfrequency */}
 
 Calling this after setting a Callback object will change the polling frequency to once per second.
 
-#### setRealtime() {#setrealtime}
+#### setRealtime() {/* #setrealtime */}
 
 Calling this after setting a Callback object will change the polling frequency to 60 times a second. This is useful for realtime communication with things like midi-controllers.

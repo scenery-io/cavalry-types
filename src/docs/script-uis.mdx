@@ -40,19 +40,13 @@ For Scripts to appear in the [Scripts](../../user-interface/menus/scripts-menu.m
 -   **macOS** - `~/Library/Application Support/Cavalry/Scripts`
 -   **Windows** - `C:\Users\<USERNAME>\AppData\Roaming\Cavalry\Scripts`
 
-:::info Encryption
+:::info[Encryption]
 
 `.jsc` is an encrypted JavaScript format. Scripts can be saved to this format using the `Save Encrypted...` button in the JavaScript Editor. Once in this format, scripts can only be read by Cavalry – an end user will not be able to see the source. Remember to keep a copy of a script in its unencrypted form as this is a one-way operation.
 
 :::
 
-:::info Starter licences
-
-Users with a **Starter** licence can install and use **encrypted** Scripts meaning Scripts downloaded from third-parties who have encrypted their Scripts can also be used in the free version of Cavalry.
-
-:::
-
-:::info Location
+:::info[Location]
 
 **AppData** and **~/Library** are hidden folders. To find them:
 
@@ -89,7 +83,7 @@ var buttonTop = new ui.Button('Top')
 buttonTop.setImage(ui.scriptLocation + '/scriptName_assets/icon.png')
 ```
 
-:::caution Testing Assets
+:::caution[Testing Assets]
 
 Assets can only be referenced via **absolute** file paths when running scripts from the [JavaScript Editor](../../user-interface/menus/window-menu/javascript-editor.mdx), In order to use `ui.scriptLocation`, the script must be saved to the **Scripts** folder and run from the [Scripts](../../user-interface/menus/scripts-menu.mdx) menu.
 
@@ -124,15 +118,15 @@ ui.show()
 
 ## UI Module
 
-#### add(widget:object...) {#add}
+#### add(widget:object...) {/* #add */}
 
 Add a widget to the default layout. Multiple comma separated items can be added at once.
 
-#### show() {#show}
+#### show() {/* #show */}
 
 Show the script window.
 
-#### setTitle(string:title) {#settitle}
+#### setTitle(string:title) {/* #settitle */}
 
 Set the script window title.
 
@@ -141,7 +135,7 @@ ui.setTitle('Print Selection Script')
 ui.show()
 ```
 
-#### setBackgroundColor(color:string) {#setbackgroundcolor}
+#### setBackgroundColor(color:string) {/* #setbackgroundcolor */}
 
 Set the script window's background color.
 
@@ -151,15 +145,15 @@ ui.setBackgroundColor('#7a7a7a')
 ui.show()
 ```
 
-#### addStretch() {#addstretch}
+#### addStretch() {/* #addstretch */}
 
 Add stretch to the default layout. Adding stretch will push widgets to the other side of the layout.
 
-#### addSpacing(spacing:int) {#addspacing}
+#### addSpacing(spacing:int) {/* #addspacing */}
 
 Add some fixed spacing to the default layout.
 
-#### setSpaceBetween(spacing:int) {#setspacebetween}
+#### setSpaceBetween(spacing:int) {/* #setspacebetween */}
 
 Set the amount of spacing automatically added between each item added to the default layout. The default is 3 pixels.
 
@@ -168,7 +162,7 @@ Set the amount of spacing automatically added between each item added to the def
 ui.setSpaceBetween(0)
 ```
 
-#### setMargins(left:int, top:int, right:int, bottom:int) {#setmargins}
+#### setMargins(left:int, top:int, right:int, bottom:int) {/* #setmargins */}
 
 Set the margins of the default layout (how far from the edges the widgets can be). The default value is 3 pixels on all sides.
 
@@ -185,7 +179,7 @@ The path to the folder which contains this script. This is blank for UIs created
 var button = new ui.ImageButton(ui.scriptLocation + '/myScript_assets/icon.png')
 ```
 
-#### addCallbackObject(callback:object) {#addcallbackobject}
+#### addCallbackObject(callback:object) {/* #addcallbackobject */}
 
 Register a callback object with the script. See the details below in the [Application Callbacks](#application-callbacks) section.
 
@@ -204,7 +198,7 @@ var callbackObj = new Callbacks()
 ui.addCallbackObject(callbackObj)
 ```
 
-#### setToolbar() {#settoolbar}
+#### setToolbar() {/* #settoolbar */}
 
 Tells the window that it's a toolbar, it will not include a docking tab.
 
@@ -235,7 +229,7 @@ ui.add(layout)
 ui.show()
 ```
 
-#### setVerticalToolbar() {#setverticaltoolbar}
+#### setVerticalToolbar() {/* #setverticaltoolbar */}
 
 Tells a toolbar window to expect a vertical layout, it will not include a docking tab.
 
@@ -266,7 +260,7 @@ ui.add(layout)
 ui.show()
 ```
 
-#### setMinimumWidth(width:int) {#setminimumwidth}
+#### setMinimumWidth(width:int) {/* #setminimumwidth */}
 
 Set a minimum width for a UI window. ⚠️ Specifying a value could break a layout when docking a window.
 
@@ -275,7 +269,7 @@ ui.setMinimumWidth(200)
 ui.show()
 ```
 
-#### setMinimumHeight(height:int) {#setminimumheight}
+#### setMinimumHeight(height:int) {/* #setminimumheight */}
 
 Set a minimum height for a UI window. ⚠️ Specifying a value could break a layout when docking a window.
 
@@ -284,7 +278,7 @@ ui.setMinimumHeight(200)
 ui.show()
 ```
 
-#### setMaximumWidth(width:int) {#setmaximumwidth}
+#### setMaximumWidth(width:int) {/* #setmaximumwidth */}
 
 Set a maximum width for a UI window. ⚠️ Specifying a value could break a layout when docking a window.
 
@@ -293,7 +287,7 @@ ui.setMaximumWidth(200)
 ui.show()
 ```
 
-#### setMaximumHeight(height:int) {#setmaximumheight}
+#### setMaximumHeight(height:int) {/* #setmaximumheight */}
 
 Set a maximum height for a UI window. ⚠️ Specifying a value could break a layout when docking a window.
 
@@ -302,7 +296,7 @@ ui.setMaximumHeight(200)
 ui.show()
 ```
 
-#### setFixedWidth(width:int) {#setfixedwidth}
+#### setFixedWidth(width:int) {/* #setfixedwidth */}
 
 Set a fixed width for a UI window. ⚠️ Specifying a value could break a layout when docking a window.
 
@@ -311,7 +305,7 @@ ui.setFixedWidth(200)
 ui.show()
 ```
 
-#### setFixedHeight(height:int) {#setfixedheight}
+#### setFixedHeight(height:int) {/* #setfixedheight */}
 
 Set a fixed height for a UI window. ⚠️ Specifying a value could break a layout when docking a window.
 
@@ -320,7 +314,7 @@ ui.setFixedHeight(200)
 ui.show()
 ```
 
-#### setFixedSize(width:int, height:int) {#setfixedsize}
+#### setFixedSize(width:int, height:int) {/* #setfixedsize */}
 
 Set a fixed width and height for a UI window. ⚠️ Specifying a value could break a layout when docking a window.
 
@@ -329,19 +323,19 @@ ui.setFixedSize(400, 200)
 ui.show()
 ```
 
-#### fieldWidth → int {#fieldwidth}
+#### fieldWidth → int {/* #fieldwidth */}
 
 Gets the default width for a numeric field.
 
-#### fieldHeight → int {#fieldheight}
+#### fieldHeight → int {/* #fieldheight */}
 
 Gets the default height for a numeric field.
 
-#### size → \{x:number, y:number} {#size}
+#### size → \{x:number, y:number} {/* #size */}
 
 Returns the size of the window.
 
-#### registerDragDropMimeType(mimeType:string) {#registerdragdropmimetype}
+#### registerDragDropMimeType(mimeType:string) {/* #registerdragdropmimetype */}
 
 UI windows support drag and drop functionality. The [Container](#container) Widget can also be used to create multiple, distinct (noncontiguous) drag and drop areas within the same UI window – meaning the event will only occur within the Container rather than the entire UI window. At least one `MIME type` for the UI window to accept **must** be registered. To register multiple MIME types, add each on a separate line.
 
@@ -403,7 +397,7 @@ ui.onResize = function () {
 ui.show()
 ```
 
-#### runFileScript(filePath:string) {#runfilescript}
+#### runFileScript(filePath:string) {/* #runfilescript */}
 
 Run UI Scripts from within other UI Scripts.
 
@@ -420,7 +414,7 @@ ui.add(button)
 ui.show()
 ```
 
-#### addMenuItem(\{name:string, onMouseRelease:function, enabled:bool, icon:string}) {#addmenuitem}
+#### addMenuItem(\{name:string, onMouseRelease:function, enabled:bool, icon:string}) {/* #addmenuitem */}
 
 Add a new context (right click) menu item to a UI window or Container.
 
@@ -533,7 +527,7 @@ ui.add(container)
 ui.show()
 ```
 
-#### addSubMenu(\{name:string, onMouseRelease:function, enabled:bool, icon:string}) {#addsubmenu}
+#### addSubMenu(\{name:string, onMouseRelease:function, enabled:bool, icon:string}) {/* #addsubmenu */}
 
 Add a new sub menu item to a context menu item. A menu object must be created, populated and then added to the Menu Item via the addSubMenu function with a new [Menu](#menu) class. See example below.
 
@@ -606,7 +600,7 @@ ui.add(container)
 ui.show()
 ```
 
-#### showContextMenuOnRightClick() {#showcontextmenuonrightclick}
+#### showContextMenuOnRightClick() {/* #showcontextmenuonrightclick */}
 
 Automatically show the context menu at the mouse location when right clicking in the window.
 
@@ -624,11 +618,11 @@ ui.addMenuItem({
 ui.show()
 ```
 
-#### showContextMenu() {#showcontextmenu}
+#### showContextMenu() {/* #showcontextmenu */}
 
 Show the context at the mouse location. Use this to show menus on left click.
 
-#### clearContextMenu() {#clearcontextmenu}
+#### clearContextMenu() {/* #clearcontextmenu */}
 
 Clear the context menu. This can be used to update context menu items.
 
@@ -643,7 +637,7 @@ ui.onClose = function () {
 ui.show()
 ```
 
-#### getThemeColor(colorName:string) → string {#getthemecolor}
+#### getThemeColor(colorName:string) → string {/* #getthemecolor */}
 
 Returns a hex string for a color label from the UI theme. Note - this will not provide all the colors in the UI as some UI elements 'anchor' off these colours to create darker/lighter variations as needed.
 
@@ -654,11 +648,11 @@ console.log(ui.getThemeColor('Window'))
 ui.show()
 ```
 
-#### chooseFolderPath(startFilePath:string) → string {#choosefolderpath}
+#### chooseFolderPath(startFilePath:string) → string {/* #choosefolderpath */}
 
 Returns the chosen folder path or empty if the user presses cancel from the dialog box.
 
-#### chooseFileToSave(startFilePath:string, fileFilter:string) → string {#choosefiletosave}
+#### chooseFileToSave(startFilePath:string, fileFilter:string) → string {/* #choosefiletosave */}
 
 Returns the chosen file path to create or empty if the user presses cancel from the dialog box. The file filter string should follow the format "Palettes (_.pal _.ase \*.theme)"
 
@@ -670,15 +664,15 @@ if (!filePath) {
 api.renderPNGFrame(filePath, 100)
 ```
 
-#### chooseFileToOpen(startFilePath:string, fileFilter:string) → string {#choosefiletoopen}
+#### chooseFileToOpen(startFilePath:string, fileFilter:string) → string {/* #choosefiletoopen */}
 
 Return the chosen file path. This is empty if the User presses 'Cancel' from the dialog box. The file filter string should follow the format "Palettes (_.pal _.ase \*.theme)".
 
-#### openSceneDialog() {#openscenedialog}
+#### openSceneDialog() {/* #openscenedialog */}
 
 Open a file browser to open a Cavalry scene (.cv).
 
-#### setCallbacksActive(active:bool) {#setcallbacksactive}
+#### setCallbacksActive(active:bool) {/* #setcallbacksactive */}
 
 This can be used to temporarily disable UI callbacks.
 
@@ -1470,7 +1464,7 @@ This widget can be used for a single line of text entry. Use [MultiLineEdit](#mu
 #### Functions
 
 -   `LineEdit()`
--   `getText()` // get the widget's contents.
+-   `getText() → string` // get the widget's contents.
 -   `setText(text:string)` // populate the widget with a string.
 -   `setTextColor(hex:string)` // set the color of the text.
 -   `setPlaceholder(placeholder:string)` // // set placeholder text to be used as a hint.
@@ -1709,6 +1703,7 @@ ui.show()
 
 This widget can be used to show context menus.
 
+-   `Menu(name:string)` // the name of the menu item when used as a sub-menu
 -   `addMenuItem(object)` // add a menu item
 
 ### Modal
@@ -2300,7 +2295,7 @@ Timers should **not** be used to detect changes to the scene, please use [Applic
 
 :::
 
-:::note Notes
+:::note[Notes]
 
 -   Each script has its own JavaScript sandbox so pollution of the global namespace is not possible.
 -   When testing UI Scripts in the JavaScript Editor only one UI Script window can be loaded at a time.
