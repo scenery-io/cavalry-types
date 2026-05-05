@@ -1,4 +1,5 @@
 ---
+id: cavalry-module
 title: Cavalry Module
 description: Use the Cavalry JavaScript API to access layers and data within a Scene so that it's possible to write scripts that perform custom workflows.
 keywords:
@@ -13,15 +14,17 @@ keywords:
         layerid,
         attrid,
         javascript,
+        deformer,
+        def,
+        mesh,
+        falloff,
     ]
 image: /img/social-cards/cavalry-module.png
 ---
 
-:::info Pro Feature
+import ProHeader from '@site/src/components/snippets/ProHeader.mdx'
 
-Pro features are only available with a **Professional** licence. To upgrade, visit [cavalry.scenegroup.co](https://cavalry.scenegroup.co/pricing?utm_source=docs&utm_medium=page&utm_campaign=pro-feature&utm_content=scripting).
-
-:::
+<ProHeader utmContent={frontMatter.id} />
 
 ## Introduction
 
@@ -31,13 +34,15 @@ Everything in this module is in the `cavalry` namespace and so methods need pref
 
 The examples given are for use in the [JavaScript Editor](../../user-interface/menus/window-menu/javascript-editor.mdx) (less setup required to run examples).
 
+JavaScript Deformers also have access to the [`def` module](./deformer-module.mdx), which provides methods for accessing and modifying the geometry being deformed.
+
 ## Member Functions
 
 ### Path Class
 
 The Cavalry module contains a Path class which can be used to construct paths which can then be drawn on screen. Path itself contains several methods.
 
-Several of these methods use the word 'param' or 'parameter'. This is a number between 0..1 which represents a progression along the curve's control cage from 0 (the beginning) to 1 (the end). The control cage, formed by the curve's control points, outlines the basic shape of the curve. Note that a 'param' value of 0.5 does not necessarily represent a position half way along the curve. This is because the relationship between the param value and the curve's length is not linear due to the influence of the curve's control points and its resulting shape. To convert length values into param values, use [paramAtLength](#paramatlengthlengthnumber-→-number).
+Several of these methods use the word 'param' or 'parameter'. This is a number between 0..1 which represents a progression along the curve's control cage from 0 (the beginning) to 1 (the end). The control cage, formed by the curve's control points, outlines the basic shape of the curve. Note that a 'param' value of 0.5 does not necessarily represent a position half way along the curve. This is because the relationship between the param value and the curve's length is not linear due to the influence of the curve's control points and its resulting shape. To convert length values into param values, use [paramAtLength](#paramatlength).
 
 :::tip Copying Shapes
 
@@ -63,40 +68,44 @@ path.addEllipse(250, -300, 100, 60)
 api.createEditable(path, 'My Path')
 ```
 
-#### moveTo(x:number, y:number)
+#### moveTo(x:number, y:number) {#moveto}
 
 Start a new contour.
 
-#### lineTo(x:number, y:number)
+#### lineTo(x:number, y:number) {#lineto}
 
 Draw a line to x,y.
 
-#### cubicTo(cp1X:number, cp1Y:number, cp2X:number, cp2Y:number, endX:number, endY:number)
+#### cubicTo(cp1X:number, cp1Y:number, cp2X:number, cp2Y:number, endX:number, endY:number) {#cubicto}
 
 Draw a cubic bezier with two control points and an end point.
 
-#### conicTo(cp1X:number, cp1Y:number, andX:number, endY:number, weight:number)
+#### quadTo(cp1X:number, cp1Y:number, endX:number, endY:number) {#quadto}
+
+Add a quadratic bézier curve to the path.
+
+#### arcTo(cp1X:number, cp1Y:number, cp2X:number, cp2Y:number, radius:number) {#arcto}
+
+Draw an arc with two control points and a radius.
+
+#### conicTo(cp1X:number, cp1Y:number, endX:number, endY:number, weight:number) {#conicto}
 
 Adds a conic to the path. Where weight:
 
--   `= 1` - the curve is a quadratic Bézier curve (a conic with a weight of 1 is mathematically equivalent to a quadratic curve).
+-   `= 1` - the curve is a quadratic bézier curve (a conic with a weight of 1 is mathematically equivalent to a quadratic curve).
 -   `< 1` - the curve approximates an ellipse. The smaller the weight, the more the curve leans towards being circular, with smaller weights resulting in sharper curves.
 -   `> 0` - the curve begins to resemble a hyperbola. As the weight increases, the curve opens up more.
 -   `= 0` (or a very low value) - these may produce degenerate cases or curves that don't visually change much from a straight line or a very sharp curve.
 
-#### quadTo(x1:number, y1:number, x2:number, y2:number)
-
-Add a quadratic bézier curve to the path.
-
-#### convertConicsToQuads()
+#### convertConicsToQuads() {#convertconicstoquads}
 
 Convert any conic verbs to quad verbs. This might be useful as not all features in Cavalry support conic verbs.
 
-#### close()
+#### close() {#close}
 
 Close the path.
 
-#### addText(text:string, fontSize:int, positionX:number, positionY:number)
+#### addText(text:string, fontSize:int, positionX:number, positionY:number) {#addtext}
 
 Add text to the path and position it. The text could be added to a separate path and then `.append()` it into this one if needed. The position arguments may be removed as a result of this.
 
@@ -106,47 +115,47 @@ path.addText('hello world', 274, -700, 300)
 api.createEditable(path, 'My Path')
 ```
 
-#### addRect(fromX:number, fromY:number, toX:number, toY:number)
+#### addRect(fromX:number, fromY:number, toX:number, toY:number) {#addrect}
 
 Convenience method for drawing a rectangle.
 
-#### addEllipse(centreX:number, centreY:number, radiusX:number, radiusY:number)
+#### addEllipse(centreX:number, centreY:number, radiusX:number, radiusY:number) {#addellipse}
 
 Convenience method for drawing an ellipse.
 
-#### clear()
+#### clear() {#clear}
 
 Empty the path.
 
-#### isClosed → bool
+#### isClosed → bool {#isclosed}
 
 Returns a boolean signifying if the path is closed.
 
-#### translate(x:number, y:number)
+#### translate(x:number, y:number) {#translate}
 
 Move the path by `x` and `y`.
 
-#### rotate(degrees:number)
+#### rotate(degrees:number) {#rotate}
 
 Rotate the path.
 
-#### scale(x:number, y:number)
+#### scale(x:number, y:number) {#scale}
 
 Scale the path.
 
-#### append(pathToAdd:path)
+#### append(pathToAdd:path) {#append}
 
 Add one path to another.
 
-#### intersect(intersectPath:path)
+#### intersect(intersectPath:path) {#intersect}
 
 Perform a Boolean intersection.
 
-#### unite(unitePath:path)
+#### unite(unitePath:path) {#unite}
 
 Perform a Boolean unite.
 
-#### difference(differencePath:path)
+#### difference(differencePath:path) {#difference}
 
 Perform a Boolean difference.
 
@@ -165,15 +174,15 @@ function boolTest() {
 boolTest()
 ```
 
-#### convertToCurves()
+#### convertToCurves() {#converttocurves}
 
 Resample lines as curves (the algorithm used by the Pencil Tool).
 
-#### convertToLines(linesPerCurve:int)
+#### convertToLines(linesPerCurve:int) {#converttolines}
 
 Convert (vectorise) any curves into a series of lines.
 
-#### toObject() → object
+#### toObject() → object {#toobject}
 
 Converts the Path to an object that can be saved.
 
@@ -189,7 +198,7 @@ path.fromObject(js)
 console.log(path.length)
 ```
 
-#### fromObject(objectToRead:object)
+#### fromObject(objectToRead:object) {#fromobject}
 
 Sets the path from an object.
 
@@ -205,10 +214,6 @@ path.fromObject(js)
 console.log(path.length)
 ```
 
-#### arcTo(x1:number, y1:number, x2:number, y2:number, radius:number)
-
-Draw an arc with two control points and a radius.
-
 #### back → \{x:number, y:number}
 
 Return an object containing x and y keys describing the final point in a path.
@@ -219,30 +224,30 @@ path.addText('Cavalry', 30, 0, 10)
 console.log(JSON.stringify(path.back))
 ```
 
-#### boundingBox() → \{x:number, y:number, width:number, height:number, centre:\{x:number, y:number}, left:number, right:number, top:number, bottom:number}
+#### boundingBox() → \{x:number, y:number, width:number, height:number, centre:\{x:number, y:number}, left:number, right:number, top:number, bottom:number} {#boundingbox}
 
 Return the bounding box of a path.
 
 ```js
 var path = new cavalry.Path()
 path.addText('Some text!', 22, 0, 10)
-let bbox = path.boundingBox()
+var bbox = path.boundingBox()
 console.log(JSON.stringify(bbox))
 ```
 
-#### empty() → bool
+#### empty() → bool {#empty}
 
 Return if a path is empty or not.
 
-#### pointCount() → int
+#### pointCount() → int {#pointcount}
 
 Return the number of points in the path.
 
-#### contains(x:number, y:number) → bool
+#### contains(x:number, y:number) → bool {#contains}
 
 Return if the point specified by x,y is inside the path (only works on a closed path).
 
-#### pathData() → object
+#### pathData() → object {#pathdata}
 
 This returns an array of dictionaries and provides a convenient way to iterate and change an existing path as opposed to creating a new [Path Class](#path-class). Each dictionary contains the verb `type` variable e.g. `moveTo` or `lineTo` along with any 'point' objects relevant to the verb.
 
@@ -254,11 +259,11 @@ The dictionary will contain different objects depending on the verb type:
 -   `cubicTo`: contains `cp1` and `cp2` objects representing the first and second control points (both with x and y variables) along with a `point` object (with x and y variables). This is the end point of the `cubicTo` verb.
 -   `close`: contains no points.
 
-#### setPathData(data:object)
+#### setPathData(data:object) {#setpathdata}
 
-Set the path based on a [pathData](#pathdata--object) object.
+Set the path based on a [pathData](#pathdata) object.
 
-#### offset(distance:number, round:bool)
+#### offset(distance:number, round:bool) {#offset}
 
 Grow or shrink a closed Path. The `round` argument determines whether the joins of the rebuilt Path's line segments are rounded or not.
 
@@ -273,7 +278,7 @@ function getPath() {
 getPath()
 ```
 
-#### trim(start:number, end:number, travel:number, reverse:bool)
+#### trim(start:number, end:number, travel:number, reverse:bool) {#trim}
 
 Reduce the length of a Path by clipping it from its start/end points.
 
@@ -288,14 +293,16 @@ function getPath() {
 getPath()
 ```
 
-#### resample(edgeLength:number)
+#### resample(edgeLength:number) {#resample}
 
 Rebuilds the path by sampling points based on a desired 'edgeLength'.
 
 ```js
-// 1. Create a Text Shape.
-// 2. Click the + button on the Text Shape's 'Deformers' attribute and choose 'JavaScript Deformer'.
-// 3. Paste the below into the JavaScript expression.
+/*
+1. Create a Text Shape.
+2. Click the + button on the Text Shape's 'Deformers' attribute and choose 'JavaScript Deformer'.
+3. Paste the below into the JavaScript expression.
+*/
 
 var depth = 3
 var frequency = 5
@@ -322,18 +329,20 @@ for (var mesh of meshes) {
 def.setMeshesAtDepth(depth, meshes)
 ```
 
-#### lineIntersections(cavalry.Line) → array[object]
+#### lineIntersections(cavalry.Line) → array[object] {#lineintersections}
 
 Returns an array of points at which the path and line intersect.
 
 ```js
-// 1. Create 2 Nulls, an Ellipse and a JavaScript Shape.
-// 2. Right click the JavaScript Shape's n0 attribute and choose 'Delete Selected Attribute'.
-// 3. Use the + button to add 2 x Double2 and 1 x Layer attributes.
-// 4. Connect each of the Null's positions to the Double2 attributes.
-// 5. Connect the Ellipse to the Layer attribute.
-// 6. Copy and paste the below into the JavaScript Shape's Expression.
-// 7. Move the Nulls outside the Ellipse.
+/*
+1. Create 2 Nulls, an Ellipse and a JavaScript Shape.
+2. Right click the JavaScript Shape's n0 attribute and choose 'Delete Selected Attribute'.
+3. Use the + button to add 2 x Double2 and 1 x Layer attributes.
+4. Connect each of the Null's positions to the Double2 attributes.
+5. Connect the Ellipse to the Layer attribute.
+6. Copy and paste the below into the JavaScript Shape's Expression.
+7. Move the Nulls outside the Ellipse.
+*/
 
 function getPath() {
 	var intersectionPath = n2.path
@@ -352,16 +361,18 @@ function getPath() {
 getPath()
 ```
 
-#### pathIntersections(cavalry.Path) → array[object]
+#### pathIntersections(cavalry.Path) → array[object] {#pathintersections}
 
 Returns an array of points at which this path and the given path intersect.
 
 ```js
-// 1. Create a Star, an Ellipse and a JavaScript Shape.
-// 2. Use the + button under the JavaScript Shape's 'Javascript' tab to add 2 x Layer attributes.
-// 3. Connect the Star and Ellipse to the new Layer attribute.
-// 4. Copy and paste the below into the JavaScript Shape's Expression.
-// 5. Increase the Star's Radius.
+/*
+1. Create a Star, an Ellipse and a JavaScript Shape.
+2. Use the + button under the JavaScript Shape's 'Javascript' tab to add 2 x Layer attributes.
+3. Connect the Star and Ellipse to the new Layer attribute.
+4. Copy and paste the below into the JavaScript Shape's Expression.
+5. Increase the Star's Radius.
+*/
 
 function getPath() {
 	var pathA = n1.path
@@ -379,7 +390,7 @@ function getPath() {
 getPath()
 ```
 
-#### relax(iterations:int, radius:number, relaxationStrength:number)
+#### relax(iterations:int, radius:number, relaxationStrength:number) {#relax}
 
 Relax the points in the path away from each other.
 
@@ -387,7 +398,7 @@ Relax the points in the path away from each other.
 // See 'Create > Demo Scenes > JavaScript > Differential Line Growth'.
 ```
 
-#### smooth(iterations:int, smoothStrength:number)
+#### smooth(iterations:int, smoothStrength:number) {#smooth}
 
 Smooths the points by averaging their positions.
 
@@ -395,43 +406,43 @@ Smooths the points by averaging their positions.
 // See 'Create > Demo Scenes > JavaScript > Differential Line Growth'.
 ```
 
-#### scatter(numberOfPoints:int, seed:int, sequence:int, relaxIterations:int, relaxDistance:number) → array[object]
+#### scatter(numberOfPoints:int, seed:int, sequence:int, relaxIterations:int, relaxDistance:number) → array[object] {#scatter}
 
 Scatter points inside the path via dart throwing. Points are relaxed by default.
 
-#### length() → number
+#### length() → number {#length}
 
 Return the length of the path.
 
-#### pointAtParam(param:number) → \{x:number, y:number}
+#### pointAtParam(param:number) → \{x:number, y:number} {#pointatparam}
 
 Return the position of a point at a given parameter along the path.
 
-#### tangentAtParam(param:number) → \{x:number, y:number}
+#### tangentAtParam(param:number) → \{x:number, y:number} {#tangentatparam}
 
 Return a point object with x,y variables that corresponds to a tangent a given parameter along the path.
 
-#### normalAtParam(param:number) → \{x:number, y:number}
+#### normalAtParam(param:number) → \{x:number, y:number} {#normalatparam}
 
 Calculate the normal vector at the given parameter along the path.
 
-#### angleAtParam(param:number) → number
+#### angleAtParam(param:number) → number {#angleatparam}
 
 Return an angle in degrees representing the tangent a given parameter along the path.
 
-#### paramAtLength(length:number) → number
+#### paramAtLength(length:number) → number {#paramatlength}
 
 Given a length, return the corresponding parameter value for that length value.
 
-#### findClosestPoint(x:number, y:number) → \{position:\{x:number, y:number},tangent:\{x:number,y:number},normal:\{x:number,y:number}}
+#### findClosestPoint(x:number, y:number) → \{position:\{x:number, y:number},tangent:\{x:number,y:number},normal:\{x:number,y:number}} {#findclosestpoint}
 
 Find the closest point on a path to the given x,y values and return an object with position, normal and tangent variables, each of which has x,y variables.
 
-#### mergeOverlaps()
+#### mergeOverlaps() {#mergeoverlaps}
 
 Converts the path into a set of non-overlapping contours that describe the same area as the original path.
 
-#### reverse()
+#### reverse() {#reverse}
 
 Reverses the Path direction.
 
@@ -447,7 +458,7 @@ path.reverse()
 console.log(path.isClockwise())
 ```
 
-#### isClockwise() → bool
+#### isClockwise() → bool {#isclockwise}
 
 Returns true if the path is clockwise.
 
@@ -461,6 +472,21 @@ path.close()
 console.log(path.isClockwise())
 path.reverse()
 console.log(path.isClockwise())
+```
+
+#### applyMatrix(matrix:object) {#applymatrix}
+
+Multiply the path point positions by a matrix.
+
+```js
+var mat = new cavalry.Matrix()
+mat.setRotation(90)
+
+var path = new cavalry.Path()
+path.addText('hello world', 72, 0, 0)
+
+path.applyMatrix(mat)
+api.createEditable(path, 'My Path')
 ```
 
 ### Line Class
@@ -479,55 +505,55 @@ console.log(JSON.stringify(line.closestPointTo({ x: 100, y: 50 })))
 
 For examples see the **Closest Point**, **Intersections** and **Spikes** Demo Scenes via the `Create > Demo Scenes > JavaScript` menu.
 
-#### length() → number
+#### length() → number {#length}
 
 Gets the length of the line.
 
-#### angle() → number
+#### angle() → number {#angle}
 
 Returns the angle of the line in degrees.
 
-#### setLength(length:number)
+#### setLength(length:number) {#setlength}
 
 Sets the length of the line.
 
-#### setAngle(angle:number)
+#### setAngle(angle:number) {#setangle}
 
 Sets the angle of the line in radians.
 
-#### start() → {x:number,y:number}
+#### start() → \{x:number,y:number} {#start}
 
 Retrieves the start point of the line.
 
-#### end() → {x:number,y:number}
+#### end() → \{x:number,y:number} {#end}
 
 Retrieves the end point of the line.
 
-#### delta() → {x:number,y:number}
+#### delta() → \{x:number,y:number} {#delta}
 
 Calculates the delta (difference in coordinates) between the start and end points of the line.
 
-#### pointAt(param:number) → {x:number,y:number}
+#### pointAt(param:number) → \{x:number,y:number} {#pointat}
 
 Calculates the point at a given parameter along the line.
 
-#### normalAt(param:number) → {x:number,y:number}
+#### normalAt(param:number) → \{x:number,y:number} {#normalat}
 
 Calculates the normal vector at a given parameter along the line.
 
-#### translate({x:number,y:number})
+#### translate(\{x:number,y:number}) {#translate}
 
 Translates the line by a given point vector.
 
-#### distance({x:number,y:number}) → number
+#### distance(\{x:number,y:number}) → number {#distance}
 
 Calculates the shortest distance from the line to a given point.
 
-#### closestPointTo ({x:number,y:number}) → {x:number,y:number}
+#### closestPointTo (\{x:number,y:number}) → \{x:number,y:number} {#closestpointto}
 
 Calculates the closest point on the line to a given point.
 
-#### lineIntersection(cavalry.Line) → {x:number,y:number}
+#### lineIntersection(cavalry.Line) → \{x:number,y:number} {#lineintersection}
 
 Returns the point at which two lines intersect, or null if there's no intersection.
 
@@ -537,61 +563,61 @@ Represents a collection of Points. These objects can be used as Distributions on
 
 See `Create > Demo Scenes > JavaScript > Spirograph Distribution` or `Create > Demo Scenes > JavaScript > Circle Packing with Gradient Descent` for examples.
 
-#### appendPoint(point:Point)
+#### appendPoint(point:Point) {#appendpoint}
 
 Append a Point to the cloud.
 
-#### appendRotation(rotation:number)
+#### appendRotation(rotation:number) {#appendrotation}
 
 Append a rotation in degrees to the cloud. Make sure there's a corresponding point.
 
-#### appendSize(point:Point)
+#### appendSize(point:Point) {#appendsize}
 
 Append a size to the cloud. Make sure there's a corresponding point.
 
 ### Point Class
 
-Represents a simple point for use in a [Point Cloud](#pointcloud-class).
+Represents a simple point for use in a [Point Cloud](#point-cloud-class).
 
 See `Create > Demo Scenes > JavaScript > Spirograph Distribution` or `Create > Demo Scenes > JavaScript > Circle Packing with Gradient Descent` for examples.
 
 ### Mesh Class
 
-The Mesh class is a container which can be used to construct multiple Paths and include [materials](#material-class). If unique Materials for each Path are not required, use [path.append()](#appendpathtoaddpath) to add Paths together.
+The Mesh class is a container which can be used to construct multiple Paths and include [materials](#material-class). If unique Materials for each Path are not required, use [path.append()](#append) to add Paths together.
 
-#### addPath(path:Path, material:Material)
+#### addPath(path:Path, material?:Material) {#addpath}
 
-Add a Path and Material to a Mesh.
+Add a Path to a Mesh with an optional Material. If no material is provided, the path inherits its appearance from the parent mesh or the shape's Fill/Stroke settings.
 
-#### count() → int
+#### count() → int {#count}
 
 Returns the number of paths in a Mesh.
 
-#### empty() → bool
+#### empty() → bool {#empty}
 
 Returns whether or not the Mesh is empty.
 
-#### clear()
+#### clear() {#clear}
 
 Erases all Paths on the Mesh.
 
-#### getBoundingBox() → \{x:number, y:number, width:number, height:number, centre:\{x:number, y:number}, left:number, right:number, top:number, bottom:number}
+#### getBoundingBox() → \{x:number, y:number, width:number, height:number, centre:\{x:number, y:number}, left:number, right:number, top:number, bottom:number} {#getboundingbox}
 
 Returns a standard bounding box object.
 
-#### getPathDataAtIndex(index: int) → array[object]
+#### getPathDataAtIndex(index: int) → array[object] {#getpathdataatindex}
 
-Returns a [pathData](#pathdata--object) array, which includes verbs and points. This data is designed for point level modification.
+Returns a [pathData](#pathdata) array, which includes verbs and points. This data is designed for point level modification.
 
-#### setPathAtIndex(index: int, path:Path object)
+#### setPathAtIndex(index: int, path:Path object) {#setpathatindex}
 
 Overwrite a path at a given index with a different Path object.
 
-#### setPathDataAtIndex(index: int, pathData:object)
+#### setPathDataAtIndex(index: int, pathData:object) {#setpathdataatindex}
 
-Sets the [pathData](#pathdata--object) at a given depth and index.
+Sets the [pathData](#pathdata) at a given depth and index.
 
-#### setMaterialAtIndex(index: int, material: Material object)
+#### setMaterialAtIndex(index: int, material: Material object) {#setmaterialatindex}
 
 Overwrites the material at a given index with a different Material object.
 
@@ -615,7 +641,7 @@ function getMesh() {
 getMesh()
 ```
 
-#### getPathAtIndex(index:int) → Path object
+#### getPathAtIndex(index:int) → Path object {#getpathatindex}
 
 Retrieves the Path object at the specified index. Useful for adding to a path.
 
@@ -623,68 +649,77 @@ Retrieves the Path object at the specified index. Useful for adding to a path.
 // Open 'Create > Demo Scenes > JavaScript > Spikes'.
 ```
 
-#### addChildMesh(mesh:Mesh)
+#### addChildMesh(mesh:Mesh) {#addchildmesh}
 
 Adds a child-mesh to this Mesh.
 
-#### clearChildMeshes()
+#### clearChildMeshes() {#clearchildmeshes}
 
 Deletes all the child-meshes on this Mesh.
 
-#### childMeshCount() → int
+#### childMeshCount() → int {#childmeshcount}
 
 Returns the number of child-meshes.
 
-#### getChildMeshAtIndex(index:int) → Mesh
+#### getChildMeshAtIndex(index:int) → Mesh {#getchildmeshatindex}
 
 Returns the child-mesh at the given index.
 
+#### setChildMeshAtIndex(index:int, mesh:Mesh) {#setchildmeshatindex}
+
+Sets the child-mesh at the given index. Used when modifying mesh hierarchies, such as in JavaScript Deformers.
+
+#### getFlattenedPath() → Path {#getflattenedpath}
+
+Returns a Path representing the combined geometry of this mesh and all child meshes.
+
 ### Material Class
 
-Add materials (Fill and Stroke) to a [Mesh](#mesh-class).
+Add material (Fill and Stroke) properties to a [Mesh](#mesh-class).
 
-#### fill(true:bool)
+#### fill
 
-Enable Fill (defaults to true).
+Enable Fill. `bool = true`.
 
-#### stroke(true:bool)
+#### stroke
 
-Enable Stroke (defaults to false).
+Enable Stroke. `bool = false`.
 
-#### fillColor(hex:string)
+#### fillColor
 
-Set the Fill's hex color.
+Set the Fill's color. `hex`
 
-#### strokeColor(hex:string)
+#### strokeColor
 
-Set the Stroke's hex color.
+Set the Stroke's color. `hex`
 
-#### strokeWidth(width:number)
+#### strokeWidth
 
-Set the Stroke's width.
+Set the Stroke's width. `number`
 
-#### trim(enable:bool)
+#### trim
 
-Enable trim.
+Enable trim. `bool`
 
-#### trimStart(startPoint:number)
+#### trimStart
 
-Set the start point of the trim (0..1).
+Set the start point of the trim (0..1). `number`
 
-#### trimEnd(endPoint:number)
+#### trimEnd
 
-Set the end point of the trim (0..1).
+Set the end point of the trim (0..1). `number`
 
-#### trimTravel(travel:number)
+#### trimTravel
 
-Move the trim along the path. 1.0 is a complete cycle of a closed path.
+Move the trim along the path. 1.0 is a complete cycle of a closed path. `number`
 
-#### trimReversed(reverse:bool)
+#### trimReversed
 
-Reverses the path direction for the trim effect.
+Reverses the path direction for the trim effect. `bool`
 
 ```js
-// Example using the n0 Attribute to control the trim.
+// Example using the n0 Attribute to control the trim of a JavaScript Shape.
+// Uncheck the JavaScript Shape's Fill (under the Fill tab).
 function getMesh() {
 	var path = new cavalry.Path()
 	path.addEllipse(0, 0, 100, 200)
@@ -713,67 +748,67 @@ getMesh()
 
 Represent a 2D transformation matrix.
 
-#### setPosition(x:number, y:number)
+#### setPosition(x:number, y:number) {#setposition}
 
 Sets the position (translation) of the matrix.
 
-#### setRotation(angle:number)
+#### setRotation(angle:number) {#setrotation}
 
 Sets the rotation of the matrix in degrees.
 
-#### setScale(x:number, y:number)
+#### setScale(x:number, y:number) {#setscale}
 
 Sets the scale factors of the matrix.
 
-#### setSkew(x:number, y:number)
+#### setSkew(x:number, y:number) {#setskew}
 
 Sets the skew factors of the matrix.
 
-#### skew() -> {x:number, y:number}
+#### skew() -> \{x:number, y:number} {#skew}
 
 Return the skew.
 
-#### scale → object
+#### scale() → object {#scale}
 
 Gets the scale factors of the matrix.
 
-#### position → \{x:number, y:number}
+#### position() → \{x:number, y:number} {#position}
 
 Gets the position (translation) of the matrix.
 
-#### rotation → number
+#### rotation() → number {#rotation}
 
 Gets the rotation of the matrix in degrees.
 
-#### multiply(matrix:matrix) → matrix
+#### multiply(matrix:matrix) → matrix {#multiply}
 
 Returns a new matrix that is the result of multiplying this matrix with another matrix.
 
-#### inverted → matrix
+#### inverted() → matrix {#inverted}
 
 Returns a new matrix that is the inverse of this matrix.
 
-#### invert
+#### invert() {#invert}
 
 Inverts this matrix in place.
 
-#### isFinite → bool
+#### isFinite() → bool {#isfinite}
 
 Checks if all elements of the matrix are finite.
 
-#### isIdentity → bool
+#### isIdentity() → bool {#isidentity}
 
 Checks if the matrix is an identity matrix.
 
-#### mapRect(rect:object) → \{x:number, y:number, width:number, height:number, centre:\{x:number, y:number}, left:number, right:number, top:number, bottom:number}
+#### mapRect(rect:object) → \{x:number, y:number, width:number, height:number, centre:\{x:number, y:number}, left:number, right:number, top:number, bottom:number} {#maprect}
 
 Maps a rectangle `{x:number, y:number, width:number, height:number}` using this matrix and returns the resulting rectangle.
 
-#### mapPoint(point:object) → \{x:number, y:number}
+#### mapPoint(point:object) → \{x:number, y:number} {#mappoint}
 
 Maps a point using this matrix and returns the resulting point.
 
-#### mapPoints(points:array[object]) → array[object]
+#### mapPoints(points:array\[object]) → array\[object] {#mappoints}
 
 Maps an array of points using this matrix and returns the resulting array of points.
 
@@ -781,12 +816,12 @@ Maps an array of points using this matrix and returns the resulting array of poi
 var mat = new cavalry.Matrix()
 mat.setRotation(180)
 mat.setScale(2, 2)
-let pt = { x: 50, y: 0 }
-let finalPt = mat.mapPoint(pt)
+var pt = { x: 50, y: 0 }
+var finalPt = mat.mapPoint(pt)
 console.log(JSON.stringify(finalPt))
 ```
 
-#### setFromArray([number])
+#### setFromArray([number]) {#setfromarray}
 
 Set the 3x3 matrix from an array of 9 numbers.
 
@@ -794,24 +829,24 @@ Example usage:
 
 ```js
 // Get the global position of a Shape
-let shapeId = api.primitive('circle', 'Circle')
+var shapeId = api.primitive('circle', 'Circle')
 api.set(shapeId, { position: [500, 500] })
 
-let groupId = api.create('group')
+var groupId = api.create('group')
 api.parent(shapeId, groupId)
 api.set(groupId, { rotation: 45 })
 
-let matArray = api.get(shapeId, 'globalTransform')
-let matrix = new cavalry.Matrix()
+var matArray = api.get(shapeId, 'globalTransform')
+var matrix = new cavalry.Matrix()
 matrix.setFromArray(matArray)
 console.log(JSON.stringify(matrix.position()))
 ```
 
 ### Math
 
-#### random(min:number, max:number, seed:int) → number
+#### random(min:number, max:number, seed:int, sequence:int) → number {#random}
 
-Returns a random number
+Returns a random number. The sequence argument is optional.
 
 ```js
 for (var i = 1; i < 10; i += 1) {
@@ -819,7 +854,7 @@ for (var i = 1; i < 10; i += 1) {
 }
 ```
 
-#### uniform(min:number, max:number, seed:int) → number
+#### uniform(min:number, max:number, seed:int) → number {#uniform}
 
 Returns random numbers with a uniform distribution.
 
@@ -829,7 +864,7 @@ for (var i = 1; i < 10; i += 1) {
 }
 ```
 
-#### noise1d(x:number, seed:int, frequency:number) → number
+#### noise1d(x:number, seed:int, frequency:number) → number {#noise1d}
 
 Returns 1d Improved Perlin noise.
 
@@ -839,7 +874,7 @@ for (var i = 1; i < 10; i += 1) {
 }
 ```
 
-#### noise2d(x:number, y:number, seed:int, frequency:number) → number
+#### noise2d(x:number, y:number, seed:int, frequency:number) → number {#noise2d}
 
 Returns 2d Improved Perlin noise.
 
@@ -849,7 +884,7 @@ for (var i = 1; i < 10; i += 1) {
 }
 ```
 
-#### noise3d(x:number, y:number, z.number, seed:int, frequency:number) → number
+#### noise3d(x:number, y:number, z.number, seed:int, frequency:number) → number {#noise3d}
 
 Returns 3d Improved Perlin noise.
 
@@ -859,7 +894,7 @@ for (var i = 1; i < 10; i += 1) {
 }
 ```
 
-#### dist(x1:number, y1:number, x2:number, y2:number) → number
+#### dist(x1:number, y1:number, x2:number, y2:number) → number {#dist}
 
 Get the distance between two points.
 
@@ -868,7 +903,7 @@ var d = cavalry.dist(0, 0, 100, 100)
 console.log(d)
 ```
 
-#### map(value:number, inMin:number, inMax:number, outMin:number, outMax:number) → number
+#### map(value:number, inMin:number, inMax:number, outMin:number, outMax:number) → number {#map}
 
 Remap a value into a new range.
 
@@ -877,7 +912,7 @@ Remap a value into a new range.
 console.log(cavalry.map(30, 0, 60, 100, 300))
 ```
 
-#### norm(value:number, min:number, max:number) → number
+#### norm(value:number, min:number, max:number) → number {#norm}
 
 Normalise a value between 0..1.
 
@@ -886,7 +921,7 @@ Normalise a value between 0..1.
 console.log(cavalry.norm(55, 0, 100))
 ```
 
-#### clamp(value:number, min:number, max:number) → number
+#### clamp(value:number, min:number, max:number) → number {#clamp}
 
 Clamp a value min and max.
 
@@ -895,11 +930,11 @@ Clamp a value min and max.
 console.log(cavalry.clamp(150, 0, 100))
 ```
 
-#### lerp(min:number, max:number, t:number) → number
+#### lerp(min:number, max:number, t:number) → number {#lerp}
 
 Interpolate between a minimum and maximum value. The value returned is the value at `t` (between 0 and 1).
 
-#### angleFromVector(x:number, y:number) → number
+#### angleFromVector(x:number, y:number) → number {#anglefromvector}
 
 Convert a vector into an angle (radians).
 
@@ -910,7 +945,7 @@ var vec = cavalry.vectorFromAngle(ang)
 console.log(vec['x'] + ' ' + vec['y'])
 ```
 
-#### vectorFromAngle(angle:number) → \{x:number, y:number}
+#### vectorFromAngle(angle:number) → \{x:number, y:number} {#vectorfromangle}
 
 Convert an angle (radians) into a vector (x, y) with values between 0..1.
 
@@ -921,7 +956,7 @@ var vec = cavalry.vectorFromAngle(ang)
 console.log(vec['x'] + ' ' + vec['y'])
 ```
 
-#### radiansToDegrees(radians:number) → number
+#### radiansToDegrees(radians:number) → number {#radianstodegrees}
 
 Convert a value from radians to degrees.
 
@@ -929,7 +964,7 @@ Convert a value from radians to degrees.
 console.log(cavalry.radiansToDegrees(2))
 ```
 
-#### degreesToRadians(degrees:number) → number
+#### degreesToRadians(degrees:number) → number {#degreestoradians}
 
 Convert a value from degrees to radians.
 
@@ -939,9 +974,9 @@ console.log(cavalry.degreesToRadians(90))
 
 ### Color
 
-#### rgbToHsv(r:number, g:number, b:number, scaled=true) → \{h:number, s:number, v:number}
+#### rgbToHsv(r:number, g:number, b:number, normalised=true) → \{h:number, s:number, v:number} {#rgbtohsv}
 
-Convert an RGB color to HSV. If the scaled argument is set to `true` (default) then RGB values should be in the range 0..1. If set to `false` then RGB values should be in the 0..255 range.
+Convert an RGB color to HSV. If the optional normalised argument is set to `false` then RGB values should be within a range of 0..255 otherwise they should be within a range of 0..1.
 
 ```js
 var unscaled = cavalry.rgbToHsv(255, 0, 255, false)
@@ -954,50 +989,61 @@ console.log(
 )
 ```
 
-#### rgbToHex(r:number, g:number, b:number, scaled=true) → string
+#### rgbToHex(r:number, g:number, b:number, normalised=true) → string {#rgbtohex}
 
-Convert an RGB color to a Hex string. If the scaled argument is set to `true` (default) then RGB values should be in the range 0..1. If set to `false` then RGB values should be in the 0..255 range.
+Converts normalised RGB color values to their hex color string representation. Set the optional normalised argument to `false` to enter RGB values within a range of 0..255.
 
 ```js
-const label1 = new ui.Label('Unscaled')
-label1.setTextColor('#' + cavalry.rgbToHex(255, 0, 255, false))
+var label1 = new ui.Label('Unscaled')
+label1.setTextColor(cavalry.rgbToHex(255, 0, 255, false))
 ui.add(label1)
 
-const label2 = new ui.Label('Scaled')
-label2.setTextColor('#' + cavalry.rgbToHex(1, 0, 1, true))
+var label2 = new ui.Label('Scaled')
+label2.setTextColor(cavalry.rgbToHex(1, 0, 1, true))
 ui.add(label2)
 
 ui.show()
 ```
 
-#### hsvToRgba(h:number, s:number, v:number, scaled=false) → \{r:int, g:int, b:int, a:int}
+#### rgbaToHex(r:number, g:number, b:number, a:number, normalised=true) → string {#rgbatohex}
 
-Convert an HSV color value to its RGBA representation, optionally scaled to the range of 0..1.
+Converts normalised RGBA color values to their hex color string representation. Set the optional normalised argument to `false` to enter RGBA values within a range of 0..255.
+
+```js
+var hexColor = cavalry.rgbaToHex(255, 36, 224, 50, false)
+console.log(hexColor)
+var shapeId = api.primitive('rectangle', 'My Rect')
+api.set(shapeId, { 'material.materialColor': hexColor })
+```
+
+#### hsvToRgba(h:number, s:number, v:number, normalised=false) → \{r:int, g:int, b:int, a:int} {#hsvtorgba}
+
+Convert an HSV color value to its RGBA representation, optionally normalised to the range of 0..1. Values should be in the ranges H `0..360`, S `0..1`, V `0..1`.
 
 ```js
 var result = cavalry.hsvToRgba(180, 1, 0.5)
 console.log(JSON.stringify(result))
 ```
 
-#### hsvToHex(h:number, s:number, v:number) → string
+#### hsvToHex(h:number, s:number, v:number) → string {#hsvtohex}
 
-Convert a HSV color to a Hex string.
+Convert a HSV color to a Hex string. Values should be in the ranges H `0..360`, S `0..1`, V `0..1`.
 
 ```js
-var result = cavalry.rgbToHex(79, 253, 122)
+var result = cavalry.hsvToHex(108, 0.85, 1.0)
 console.log(result)
 ```
 
-#### hexToRgba(hex:string, scaled=false) → \{r:int, g:int, b:int, a:int}
+#### hexToRgba(hex:string, normalised=false) → \{r:int, g:int, b:int, a:int} {#hextorgba}
 
-Converts a hex color value (e.g `#ffffff`) to its RGBA representation, optionally scaled to the range of 0..1.
+Converts a hex color value (e.g `#4ffd7a`) to its RGBA representation, optionally normalised to the range of 0..1. The hex string can optionally include alpha (e.g `#4ffd7a7f`)
 
 ```js
-var result = cavalry.hexToRgba('#fc5900')
+var result = cavalry.hexToRgba('#4ffd7a7f')
 console.log(JSON.stringify(result))
 ```
 
-#### hexToHsv(hexValue:string) → \{h:number, s:number, v:number}
+#### hexToHsv(hexValue:string) → \{h:number, s:number, v:number} {#hextohsv}
 
 Convert a Hex value (e.g `#ffffff`) color to HSV.
 
@@ -1006,9 +1052,17 @@ var result = cavalry.hexToHsv('#ff9801')
 console.log(JSON.stringify(result))
 ```
 
+#### nameThatColor(hexValue:string) → string {#namethatcolor}
+
+Returns a W3C color name that's the closest match to the specified hex color.
+
+```js
+console.log(cavalry.nameThatColor('#ff9801'))
+```
+
 ### Text
 
-#### fontExists(fontFamily:string, fontStyle:string) → bool
+#### fontExists(fontFamily:string, fontStyle:string) → bool {#fontexists}
 
 Returns true if a font is available to Cavalry.
 
@@ -1016,7 +1070,7 @@ Returns true if a font is available to Cavalry.
 console.log(cavalry.fontExists('Lato', 'Regular')) // prints `true`
 ```
 
-#### getFontFamilies() → [string]
+#### getFontFamilies() → [string] {#getfontfamilies}
 
 Returns a list of all the font families available to Cavalry.
 
@@ -1024,7 +1078,7 @@ Returns a list of all the font families available to Cavalry.
 console.log(cavalry.getFontFamilies())
 ```
 
-#### getFontStyles(string:fontFamily) → [string]
+#### getFontStyles(string:fontFamily) → [string] {#getfontstyles}
 
 Returns a list of all the available styles for the given font family.
 
@@ -1032,7 +1086,7 @@ Returns a list of all the available styles for the given font family.
 console.log(cavalry.getFontStyles('Lato'))
 ```
 
-#### measureText(string:string, fontFamily:string, fontStyle:string, fontSize:int) → \{width:number, height:number, x:number, y:number, centreX:number, centreY:number}
+#### measureText(string:string, fontFamily:string, fontStyle:string, fontSize:int) → \{width:number, height:number, x:number, y:number, centreX:number, centreY:number} {#measuretext}
 
 Returns an object representing the bounding box of some text without the need to actually create a text shape.
 
@@ -1044,16 +1098,11 @@ Returns an object representing the bounding box of some text without the need to
 -   **centreY** - The average of the top and bottom edges
 
 ```js
-const measure = cavalry.measureText(
-	'Some text to measure',
-	'Lato',
-	'Regular',
-	72,
-)
+var measure = cavalry.measureText('Some text to measure', 'Lato', 'Regular', 72)
 console.log(JSON.stringify(measure))
 ```
 
-#### fontMetrics(fontFamily:string, fontStyle:string, fontSize:int) → \{top:number, ascent:number, descent:number, bottom:number, leading:int, averageCharacterWidth:number, maxCharacterWidth:number, xMin:number, xMax:number, xHeight:number, capHeight:number}
+#### fontMetrics(fontFamily:string, fontStyle:string, fontSize:int) → \{top:number, ascent:number, descent:number, bottom:number, leading:int, averageCharacterWidth:number, maxCharacterWidth:number, xMin:number, xMax:number, xHeight:number, capHeight:number} {#fontmetrics}
 
 Returns an object containing information about the given font. The resulting metrics are scaled by the font size.
 
@@ -1070,13 +1119,13 @@ Returns an object containing information about the given font. The resulting met
 -   **capHeight** - height of an upper-case letter, zero if unknown, typically negative
 
 ```js
-const metrics = cavalry.fontMetrics('Lato', 'Regular', 72)
+var metrics = cavalry.fontMetrics('Lato', 'Regular', 72)
 console.log(JSON.stringify(metrics))
 ```
 
 ### Utilities
 
-#### versionLessThan(version:string) → bool
+#### versionLessThan(version:string) → bool {#versionlessthan}
 
 This will return `true` if the version of Cavalry in use is less than the specified version. This is useful to add support for features in scripts that depend on the version of Cavalry.
 
@@ -1091,33 +1140,6 @@ Cavalry uses [Semantic Versioning](https://semver.org/) for version numbers.
 
 `MAJOR.MINOR.PATCH` (e.g. 1.5.0) is used for official releases.
 
-`MAJOR.MINOR.PATCH.PRE-RELEASE-TYPE.NUMBER` (e.g. 1.6.0-beta.1) is used for pre-release builds.
+`MAJOR.MINOR.PATCH.PRE-RELEASE-TYPE.NUMBER` (e.g. 2.0.0-beta.1) is used for pre-release builds.
 
 :::
-
-#### transformationMatrix() → matrix
-
-Returns the upstream local 2D transformation matrix, or null if there isn't one.
-
-```js
-// 1. Create a Shape.
-// 2. On the Shape's Deformers attribute, click the + button and choose JavaScript Deformer.
-// 3. Copy the below in the JavaScript Deformer's Expression.
-
-var tm = ctx.transformationMatrix()
-console.log(tm.position().x)
-```
-
-#### globalTransformMatrix() → matrix
-
-Returns the upstream global 2D transformation matrix, or null if there isn't one.
-
-```js
-// 1. Create a Shape.
-// 2. On the Shape's Deformers attribute, click the + button and choose JavaScript Deformer.
-// 3. Copy the below into the JavaScript Deformer's Expression.
-// 4. Group the Shape.
-
-var tm = ctx.globalTransformationMatrix()
-console.log(tm.position().x)
-```

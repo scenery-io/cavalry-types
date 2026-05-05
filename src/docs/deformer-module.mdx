@@ -1,14 +1,30 @@
 ---
+id: deformer-module
 title: Deformer Module
 description: Use the Deformer JavaScript API to write scripts that perform custom workflows using the JavaScript Deformer.
-keywords: [api, scripts, data, scripting, expression, code, id, layerid, attrid, javascript]
+keywords:
+    [
+        api,
+        scripts,
+        data,
+        scripting,
+        expression,
+        code,
+        id,
+        layerid,
+        attrid,
+        javascript,
+        deformer,
+        def,
+        mesh,
+        falloff,
+        hierarchy,
+    ]
 ---
 
-:::info Pro Feature
+import ProHeader from '@site/src/components/snippets/ProHeader.mdx'
 
-Pro features are only available with a **Professional** licence. To upgrade, visit [cavalry.scenegroup.co](https://cavalry.scenegroup.co/pricing?utm_source=docs&utm_medium=page&utm_campaign=pro-feature&utm_content=scripting).
-
-:::
+<ProHeader utmContent={frontMatter.id} />
 
 ## Introduction
 
@@ -17,68 +33,170 @@ Everything in this module is in the `def` namespace and so methods need prefixin
 
 ## Member Functions
 
-#### getBoundingBox() → \{x:number, y:number, width:number, height:number, centre:\{x:number, y:number}, left:number, right:number, top:number, bottom:number}
+### Hierarchy-Based Access
+
+The hierarchy-based methods provide access to the complete mesh tree. This is the preferred approach as it correctly handles nested groups and complex hierarchies.
+
+#### getRootMesh() → cavalry.Mesh {#getrootmesh}
+
+Returns the root [cavalry.Mesh](./cavalry-module.mdx#mesh-class) of the shape being deformed. Use this to access the complete mesh hierarchy for modification.
+
+```js
+var root = def.getRootMesh()
+// Traverse and modify the mesh hierarchy
+def.setRootMesh(root)
+```
+
+#### setRootMesh(mesh:cavalry.Mesh) {#setrootmesh}
+
+Sets the root mesh back after modification. This must be called to apply changes made to the mesh hierarchy.
+
+```js
+// Helper function to recursively visit all meshes
+function visitAllMeshes(mesh, func) {
+	for (var i = 0; i < mesh.childMeshCount(); i++) {
+		var child = mesh.getChildMeshAtIndex(i)
+		visitAllMeshes(child, func)
+		mesh.setChildMeshAtIndex(i, child)
+	}
+	func(mesh)
+}
+
+function deformMesh(mesh) {
+	var pathCount = mesh.count()
+	for (var p = 0; p < pathCount; p++) {
+		var path = mesh.getPathAtIndex(p)
+		var pd = path.pathData()
+
+		for (var idx = 0; idx < pd.length; idx++) {
+			// Move each point along its normal
+			pd[idx].point.x += pd[idx].normal.x * amount
+			pd[idx].point.y += pd[idx].normal.y * amount
+		}
+
+		path.setPathData(pd)
+		mesh.setPathAtIndex(p, path)
+	}
+}
+
+var root = def.getRootMesh()
+visitAllMeshes(root, deformMesh)
+def.setRootMesh(root)
+```
+
+### Falloffs
+
+#### getFalloffAtPoint(x:number, y:number) → number {#getfalloffatpoint}
+
+Returns the combined falloff value (0-1) at the specified position. This includes the deformer's Strength setting and any connected falloff shapes. Coordinates should be in local mesh space.
+
+```js
+function deformMesh(mesh) {
+	var pathCount = mesh.count()
+	for (var p = 0; p < pathCount; p++) {
+		var path = mesh.getPathAtIndex(p)
+		var pd = path.pathData()
+
+		for (var idx = 0; idx < pd.length; idx++) {
+			var pt = pd[idx].point
+			var normal = pd[idx].normal
+
+			// Get falloff at this point (includes Strength)
+			var falloff = def.getFalloffAtPoint(pt.x, pt.y)
+			if (falloff <= 0) continue
+
+			pd[idx].point.x += normal.x * amount * falloff
+			pd[idx].point.y += normal.y * amount * falloff
+		}
+
+		path.setPathData(pd)
+		mesh.setPathAtIndex(p, path)
+	}
+}
+```
+
+### Bounding Box and Points
+
+#### getBoundingBox() → \{x:number, y:number, width:number, height:number, centre:\{x:number, y:number}, left:number, right:number, top:number, bottom:number} {#getboundingbox}
+
 Return an object containing details about the selection's bounding box.
 
-#### getPoints() → array[points]
+#### getPoints() → array[points] {#getpoints}
+
 Return an array of positions for each point of a Shape. These can then be looped through these to manipulate them.
 
 ```js
 // Connect the Deformer to a Shape's Deformers attribute and hit 'Return'.
-var points = def.getPoints();
-console.log(JSON.stringify(points));
+var points = def.getPoints()
+console.log(JSON.stringify(points))
 ```
 
-#### setPoints(array[points])
+#### setPoints(array[points]) {#setpoints}
+
 Set the position for each point of a Shape.
 
 ```js
 // A simple sine wave deformer
-var points = def.getPoints();
-var bbox = def.getBoundingBox();
-var maxX = bbox.x+bbox.width;
-var frequency = 10;
-var amplitude = 50;
+var points = def.getPoints()
+var bbox = def.getBoundingBox()
+var maxX = bbox.x + bbox.width
+var frequency = 10
+var amplitude = 50
 
 for (let pt of points) {
-    let normX = cavalry.norm(pt.x, bbox.x, maxX);
-    pt.y += Math.sin((normX+n0*.1)*frequency)*amplitude;
+	let normX = cavalry.norm(pt.x, bbox.x, maxX)
+	pt.y += Math.sin((normX + n0 * 0.1) * frequency) * amplitude
 }
 
-def.setPoints(points);
+def.setPoints(points)
 ```
 
-#### meshDepth
+### Depth-Based Access
+
+The depth-based methods access meshes at specific levels of the hierarchy.
+
+#### meshDepth {#meshdepth}
+
 The depth of the mesh tree (the highest number reported in the [Mesh Explorer](../../user-interface/menus/window-menu/mesh-explorer.mdx)). This is a property/variable, not a method.
 
-#### meshCountAtDepth(depth:int) → int
+#### meshCountAtDepth(depth:int) → int {#meshcountatdepth}
+
 Return the number of meshes at a given depth.
 
-#### getMeshesAtDepth(depth:int) → [cavalry.Mesh]
+#### getMeshesAtDepth(depth:int) → [cavalry.Mesh] {#getmeshesatdepth}
+
 Return an array of [cavalry.Mesh](./cavalry-module.mdx#mesh-class) objects.
 
-#### setMeshesAtDepth(depth:int, [cavalry.Mesh])
+#### setMeshesAtDepth(depth:int, [cavalry.Mesh]) {#setmeshesatdepth}
+
 Replace the meshes at the given depth with a [cavalry.Mesh](./cavalry-module.mdx#mesh-class). This will not remove any un-replaced meshes.
 
-#### getMeshAtDepthAtIndex(depth:int, index:int) → cavalry.Mesh
+#### getMeshAtDepthAtIndex(depth:int, index:int) → cavalry.Mesh {#getmeshatdepthatindex}
+
 Return a mesh at the given depth and index.
 
-#### setMeshAtDepthAtIndex(depth:int, index:int, mesh:cavalry.Mesh)
+#### setMeshAtDepthAtIndex(depth:int, index:int, mesh:cavalry.Mesh) {#setmeshatdepthatindex}
+
 Replace a mesh at the given depth and index.
 
-#### setTransformAtDepthAtIndex(depth:int, index:int, position:object, rotation:double, scale:object)
+#### setTransformAtDepthAtIndex(depth:int, index:int, position:object, rotation:double, scale:object) {#settransformatdepthatindex}
+
 Set the position of a mesh at the given depth and index. Position and Scale are optional objects with x and y values (e.g. `{"x":20, "y": 5}`).
 
-#### clearTransformAtDepthAtIndex(depth:int, index:int)
+#### clearTransformAtDepthAtIndex(depth:int, index:int) {#cleartransformatdepthatindex}
+
 Reset the transform of the mesh at a given depth and index.
 
-#### centrePivotAtDepthAtIndex(depth:int, index:int)
+#### centrePivotAtDepthAtIndex(depth:int, index:int) {#centrepivotatdepthatindex}
+
 Centres the pivot of the mesh at a given depth and index.
 
-#### setMaterialAtDepthAtIndex(depth:int, index:int, material:cavalry.Material)
+#### setMaterialAtDepthAtIndex(depth:int, index:int, material:cavalry.Material) {#setmaterialatdepthatindex}
+
 Sets the Material object for the mesh at a given depth and index.
 
-#### highestDepthWithPath() → int
+#### highestDepthWithPath() → int {#highestdepthwithpath}
+
 Returns the highest depth within a Mesh that contains a Path.
 
 ## Examples
@@ -87,107 +205,69 @@ Returns the highest depth within a Mesh that contains a Path.
 
 1. Create a [Text Shape](../../nodes/shapes/text-shape.mdx).
 2. In the [Attribute Editor](../../user-interface/menus/window-menu/attribute-editor/intro.mdx), click the `+` button on the Text Shape's **Deformers** attribute and choose [JavaScript Deformer](../../nodes/behaviours/javascript-deformer.mdx).
-3. Create a [Star Shape](../../nodes/shapes/basic-shape/star.mdx).
-4. Connect <Connect>starShape.id javaScriptDeformer.array.1</Connect> - this is the new `n1` array Id created in step 4.
-5. Replace the JavaScript Deformer's **Expression** with:
-   ```js
-    var meshes = def.getMeshesAtDepth(3);
-    var replaceIndex = n0;
-    if (meshes.length > replaceIndex) {   
-        let currentMesh = def.getMeshAtDepthAtIndex(3, replaceIndex);
-        let bbox = currentMesh.getBoundingBox();
-        let path = n1.path;
-        def.setMeshAtDepthAtIndex(3,replaceIndex, path);
-        def.setTransformAtDepthAtIndex(3,replaceIndex, bbox.centre);
+3. Click the `+` button at the bottom of the JavaScript Deformer's UI and choose 'Add Layer'.
+4. Create a [Star Shape](../../nodes/shapes/basic-shape/star.mdx).
+5. Set the Star's **Radius** to `30`.
+6. Connect <Connect>starShape.id javaScriptDeformer.array.1</Connect> - this is the new `n1` array Id created in step 3.
+7. Replace the JavaScript Deformer's **Expression** with:
+    ```js
+    var meshes = def.getMeshesAtDepth(3)
+    var replaceIndex = n0
+    if (meshes.length > replaceIndex) {
+    	let currentMesh = def.getMeshAtDepthAtIndex(3, replaceIndex)
+    	let bbox = currentMesh.getBoundingBox()
+    	let path = n1.path
+    	def.setMeshAtDepthAtIndex(3, replaceIndex, path)
+    	def.setTransformAtDepthAtIndex(3, replaceIndex, bbox.centre)
     }
     ```
-6. Change the JavaScript Deformer's `n0` value.
+8. Change the JavaScript Deformer's `n0` value.
 
 ### Replace a child-mesh with a custom Path.
 
 1. Create a [Text Shape](../../nodes/shapes/text-shape.mdx).
 2. In the [Attribute Editor](../../user-interface/menus/window-menu/attribute-editor/intro.mdx), click the `+` button on the Text Shape's **Deformers** attribute and choose [JavaScript Deformer](../../nodes/behaviours/javascript-deformer.mdx).
 3. Replace the JavaScript Deformer's **Expression** with:
-   ```js
-    var meshes = def.getMeshesAtDepth(3);
-    var replaceIndex = n0;
+    ```js
+    var meshes = def.getMeshesAtDepth(3)
+    var replaceIndex = n0
     if (meshes.length > replaceIndex) {
-        var path = new cavalry.Path()
-        var newMesh = new cavalry.Mesh();
-        var material = new cavalry.Material();
-        material.fillColor = "#ff24e0";
-        material.stroke = true;
-        material.strokeColor = "#000000";
-        material.strokeWidth = 2;
-        let bbox = meshes[replaceIndex].getBoundingBox();
-        path.addEllipse(bbox.centre.x,bbox.centre.y,30,80);
-        newMesh.addPath(path, material);
-        def.setMeshAtDepthAtIndex(3,replaceIndex,newMesh);
+    	var path = new cavalry.Path()
+    	var newMesh = new cavalry.Mesh()
+    	var material = new cavalry.Material()
+    	material.fillColor = '#ff24e0'
+    	material.stroke = true
+    	material.strokeColor = '#000000'
+    	material.strokeWidth = 2
+    	let bbox = meshes[replaceIndex].getBoundingBox()
+    	path.addEllipse(bbox.centre.x, bbox.centre.y, 30, 80)
+    	newMesh.addPath(path, material)
+    	def.setMeshAtDepthAtIndex(3, replaceIndex, newMesh)
     }
     ```
 4. Change the JavaScript Deformer's `n0` value.
 
-
-
-### Modify a child-esh at a depth and index.
+### Modify a child-mesh at a depth and index.
 
 1. Create a [Text Shape](../../nodes/shapes/text-shape.mdx).
 2. In the [Attribute Editor](../../user-interface/menus/window-menu/attribute-editor/intro.mdx), click the `+` button on the Text Shape's **Deformers** attribute and choose [JavaScript Deformer](../../nodes/behaviours/javascript-deformer.mdx).
 3. Click the `+` button at the bottom of the **JavaScript Deformer** and choose 'Add Int'.
 4. Replace the JavaScript Deformer's **Expression** with:
-   ```js
-    var meshes = def.getMeshesAtDepth(3);
-    var replaceIndex = n1;
-    if (meshes.length > 3) {    
-        var material = new cavalry.Material();
-        material.fillColor = "#ff24e0";
-        material.stroke = true;
-        material.strokeColor = "#000000";
-        material.strokeWidth = 5;
-        def.setMaterialAtDepthAtIndex(3,replaceIndex,material);
-        def.centrePivotAtDepthAtIndex(3,replaceIndex)
-        def.setTransformAtDepthAtIndex(3,replaceIndex, {}, n0, {"x": 0.8, "y": 0.8});
+    ```js
+    var meshes = def.getMeshesAtDepth(3)
+    var replaceIndex = n1
+    if (meshes.length > 3) {
+    	var material = new cavalry.Material()
+    	material.fillColor = '#ff24e0'
+    	material.stroke = true
+    	material.strokeColor = '#000000'
+    	material.strokeWidth = 2
+    	def.setMaterialAtDepthAtIndex(3, replaceIndex, material)
+    	def.centrePivotAtDepthAtIndex(3, replaceIndex)
+    	def.setTransformAtDepthAtIndex(3, replaceIndex, {}, n0, {
+    		x: 0.8,
+    		y: 0.8,
+    	})
     }
     ```
 5. Change the JavaScript Deformer's `n0` and `n1` values.
-
-
-### Deform a Mesh structure based on the overall bounding box.
-
-1. Create a [Text Shape](../../nodes/shapes/text-shape.mdx).
-2. In the [Attribute Editor](../../user-interface/menus/window-menu/attribute-editor/intro.mdx), click the `+` button on the Text Shape's **Deformers** attribute and choose [JavaScript Deformer](../../nodes/behaviours/javascript-deformer.mdx).
-3. Replace the JavaScript Deformer's **Expression** with:
-   ```js
-    var frequency = 4;
-    var amplitude = 30;
-    var meshes = def.getMeshesAtDepth(3);
-    var bbox = def.getBoundingBox();
-    for (var thisMesh of meshes) {
-        let [minX, maxX] = [bbox.x, bbox.x+bbox.width];
-        for (let i = 0; i < thisMesh.count(); i++) {
-            var pathData = thisMesh.getPathDataAtIndex(i);
-            for (var verb of pathData) {
-                if (verb.type != "close") {
-                    // Set 'xpos' in the range 0 to 1
-                    let xpos = cavalry.norm(verb.point.x, minX, maxX);
-                    // 'displacement' ranges from 'amplitude' to 0
-                    let displacement = amplitude * (1 - xpos);
-                    // Control the start of the sine wave with 'n0'
-                    let t = (n0 * 0.1 + xpos * 2 * Math.PI);
-                    let adjustment = Math.sin(t * frequency) * displacement;
-                    verb.point.y += adjustment;
-                    if (verb.type == "cubicTo") {
-                        verb.cp1.y += adjustment;
-                        verb.cp2.y += adjustment;
-                    }
-                }
-            }
-        thisMesh.setPathDataAtIndex(i, pathData);
-        }
-    }
-    def.setMeshesAtDepth(3, meshes);
-    ```
-4. Change the JavaScript Deformer's `n0` value.
-
-
-

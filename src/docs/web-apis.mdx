@@ -1,14 +1,28 @@
 ---
+id: web-apis
 title: Web APIs
 description: Interact with API endpoints on the web
-keywords: [api, scripts, data, scripting, expression, code, id, layerid, attrid, web, internet, database, crm]
+keywords:
+    [
+        api,
+        scripts,
+        data,
+        scripting,
+        expression,
+        code,
+        id,
+        layerid,
+        attrid,
+        web,
+        internet,
+        database,
+        crm,
+    ]
 ---
 
-:::info Pro Feature
+import ProHeader from '@site/src/components/snippets/ProHeader.mdx'
 
-Pro features are only available with a **Professional** licence. To upgrade, visit [cavalry.scenegroup.co](https://cavalry.scenegroup.co/pricing?utm_source=docs&utm_medium=page&utm_campaign=pro-feature&utm_content=scripting).
-
-:::
+<ProHeader utmContent={frontMatter.id} />
 
 ## Introduction
 
@@ -24,26 +38,26 @@ Try these examples to get to know the Web API.
 
 ```js
 // Make a new WebClient
-var client = new api.WebClient("https://www.boredapi.com");
+var client = new api.WebClient('https://www.boredapi.com')
 // Send the Get Request (this returns a random activity to do if you're bored).
-client.get("/api/activity");
+client.get('/api/activity')
 // Check it succeeded
 if (client.status() == 200) {
-    let obj = JSON.parse(client.body());
-    // Safety check, and print the activity
-    if ('activity' in obj) {
-        console.log("Random activity: "+obj.activity);
-    }
+	let obj = JSON.parse(client.body())
+	// Safety check, and print the activity
+	if ('activity' in obj) {
+		console.log('Random activity: ' + obj.activity)
+	}
 }
 ```
 
 ### Getting and saving an SVG file.
 
 ```js
-var client = new api.WebClient("https://cavalry.scenegroup.co");
-client.get("/images/logo_cavalry-landscape-outline_001.svg");
+var client = new api.WebClient('https://cavalry.scenegroup.co')
+client.get('/images/logo_cavalry-landscape-outline_001.svg')
 if (client.status() == 200) {
-    api.writeToFile("/Some/Path/Here/cavLogo.svg", client.body());
+	api.writeToFile('/Some/Path/Here/cavLogo.svg', client.body())
 }
 ```
 
@@ -55,154 +69,185 @@ When using the WebClient the constructor can only contain the base URL (e.g. htt
 
 :::
 
-#### setBasicAuthentication(username:string, password:string)
+#### setBasicAuthentication(username:string, password:string) {#setbasicauthentication}
+
 Sets basic authentication for any subsequent requests.
 
-#### setDigestAuthentication(username:string, password:string)
+#### setDigestAuthentication(username:string, password:string) {#setdigestauthentication}
+
 Sets digest authentication for any subsequent requests.
 
-#### setTokenAuthentication(token:string)
+#### setTokenAuthentication(token:string) {#settokenauthentication}
+
 Sets token based authentication for any subsequent requests.
 
-#### addHeader(key:string, value:string)
+#### addHeader(key:string, value:string) {#addheader}
+
 Adds a header for any following requests. API keys, app keys, content types and so forth can be added in this way.
 
-#### getHeaders() → object
+#### getHeaders() → object {#getheaders}
+
 ```js
-var client = new api.WebClient("https://www.boredapi.com");
-client.get("/api/activity");
+var client = new api.WebClient('https://www.boredapi.com')
+client.get('/api/activity')
 if (client.status() == 200) {
-    let headers = client.getHeaders();
-    for (const [key, value] of Object.entries(headers)) {
-      console.log(`${key}: ${value}`);
-    }
+	let headers = client.getHeaders()
+	for (const [key, value] of Object.entries(headers)) {
+		console.log(`${key}: ${value}`)
+	}
 }
 ```
-#### status() → int
+
+#### status() → int {#status}
+
 Returns the status of the request. For example 200 means `OK`.
 
-#### body() → string
+#### body() → string {#body}
+
 The returned body. This is often in the form of JSON but you can check the `Content-Type` header with `getHeaders()` if you're unsure.
 
-#### get(path:string)
+#### get(path:string) {#get}
+
 Performs a `get` request. Once done, `status()` and if successful, `body()` should be available.
 
-#### post(path:string, content:string, contentType:string)
+#### post(path:string, content:string, contentType:string) {#post}
+
 Performs a `post` request. Once done, `status()` and if successful, `body()` should be available.
 
-#### put(path:string, content:string, contentType:string)
+#### put(path:string, content:string, contentType:string) {#put}
+
 Performs a `put` request. Once done, `status()` and if successful, `body()` should be available.
 
-#### postFromFile(path:string, filePath:string, contentType:string)
+#### postFromFile(path:string, filePath:string, contentType:string) {#postfromfile}
+
 A helper method for posting a file directly. This method is needed especially when uploading binary files (like images or movies).
 Performs a `post` request. Once done, `status()` and if successful, `body()` should be available.
 
-#### putFromFile(path:string, filePath:string, contentType:string)
+#### putFromFile(path:string, filePath:string, contentType:string) {#putfromfile}
+
 A helper method for posting a file directly. This method is needed especially when uploading binary files (like images or movies).
 Performs a `put` request. Once done, `status()` and if successful, `body()` should be available.
 
-#### writeBodyToBinaryFile(path:string)
-If `get` has been used to retrieve binary data (i.e an image or a movie), this cannot be passed to the usual `api.writeToFile()` call. You must instead use this function to write the *body* data to file (which you can then pull into Cavalry as an Asset for example).
+#### writeBodyToBinaryFile(path:string) {#writebodytobinaryfile}
 
-#### setProxy(hostAddress:string, port:number)
+If `get` has been used to retrieve binary data (i.e an image or a movie), this cannot be passed to the usual `api.writeToFile()` call. You must instead use this function to write the _body_ data to file (which you can then pull into Cavalry as an Asset for example).
+
+#### setProxy(hostAddress:string, port:number) {#setproxy}
+
 Enter a proxy server's IP and port number.
 
-#### setProxyBasicAuthentication(username:string, password:string)
+#### setProxyBasicAuthentication(username:string, password:string) {#setproxybasicauthentication}
+
 Enter a username and password to authenticate to a proxy server.
 
-#### setProxyBearerAuthentication(password:string)
+#### setProxyBearerAuthentication(password:string) {#setproxybearerauthentication}
+
 Enter a password for a proxy server that uses a bearer token.
 
 ## WebServer
 
 A complete example of a UI script which implements a Cavalry Server. Please save this into the Cavalry Scripts folder `Help > Scripts` and then load it via the `Window > Scripts` menu.
-```js
-var server = new api.WebServer();
 
-var button = new ui.Button("Start Server");
+```js
+var server = new api.WebServer()
+
+var button = new ui.Button('Start Server')
 
 button.onClick = function () {
-    if (!server.isRunning()) {
-        server.listen("localhost", 1234);
-        button.setText("Stop Server");
-    } else {
-        server.stop();
-        button.setText("Start Server");
-    }
+	if (!server.isRunning()) {
+		server.listen('localhost', 1234)
+		button.setText('Stop Server')
+	} else {
+		server.stop()
+		button.setText('Start Server')
+	}
 }
 
-function Callbacks() { 
-    this.onPost = function () {
-        console.log("Queue length: "+server.postCount());
-        processButton.setEnabled(true);
-    }
+function Callbacks() {
+	this.onPost = function () {
+		console.log('Queue length: ' + server.postCount())
+		processButton.setEnabled(true)
+	}
 }
 
-var processButton = new ui.Button("Process Posts");
-processButton.setEnabled(false);
+var processButton = new ui.Button('Process Posts')
+processButton.setEnabled(false)
 
 processButton.onClick = function () {
-    while(server.postCount()) {
-        let obj = server.getNextPost();
-        console.log("Process: "+obj.result);
-    }
-    processButton.setEnabled(false);
+	while (server.postCount()) {
+		let obj = server.getNextPost()
+		console.log('Process: ' + obj.result)
+	}
+	processButton.setEnabled(false)
 }
 
-var callbackObj = new Callbacks();
-server.addCallbackObject(callbackObj);
+var callbackObj = new Callbacks()
+server.addCallbackObject(callbackObj)
 
-ui.add(button);
-ui.add(processButton);
-ui.show();
+ui.add(button)
+ui.add(processButton)
+ui.show()
 ```
+
 Once this script is running, run this in the JavaScript Editor, the `/post` text should print to the console.
+
 ```js
-var client = new api.WebClient("http://localhost:1234");
-client.post("/post", "Cavalry Needs You!", "text/plain");
-client.post("/post", "Join the Cavalry!", "text/plain");
+var client = new api.WebClient('http://localhost:1234')
+client.post('/post', 'Cavalry Needs You!', 'text/plain')
+client.post('/post', 'Join the Cavalry!', 'text/plain')
 ```
 
-#### listen(host:string, port:int)
+#### listen(host:string, port:int) {#listen}
+
 Start the server listening on the host address (e.g `localhost`) on the specified port number.
 
-#### stop()
+#### stop() {#stop}
+
 Stop the server, any polling will also stop.
 
-#### setResultForGet(resultText:string)
+#### setResultForGet(resultText:string) {#setresultforget}
+
 Set the result for `/get` requests, only `text/plain` is currently supported.
 
-#### getNextPost() → object
+#### getNextPost() → object {#getnextpost}
+
 As many `/post` events may happen before you have a chance to react, Cavalry will queue them for you.
 This function will get the next (the oldest) post and will pop the post from the queue meaning once you get it, you can no longer access it from the server.
 The object will contain a `result` string, and an `headers` array, each header is an object with a `name` and `value`. Please note only non binary data is supported for `/post` events.
 
-#### getNewestPost() → object
+#### getNewestPost() → object {#getnewestpost}
+
 This is just like the above method, only instead of getting the oldest unprocessed `/post`, it will skip to the newest and pop that from the queue.
 
-#### postCount() → int
+#### postCount() → int {#postcount}
+
 Returns the number of unprocessed `/post` events. Process posts using the `getNextPost()` or `getNewestPost()` functions.
 
-#### clearPosts()
+#### clearPosts() {#clearposts}
+
 Clear all unprocessed `/post` events. Process posts using the `getNextPost()` or `getNewestPost()` functions.
 
-#### addCallbackObject(callbackObj:object)
+#### addCallbackObject(callbackObj:object) {#addcallbackobject}
+
 Set a Callback object (much like the UI callback object). This is a JavaScript object with an `onPost` function implemented.
 Setting a Callback object will start the server polling for new information, by default we poll the server once every 3 seconds.
+
 ```js
-var server = new api.WebServer();
-function Callbacks() { 
-    this.onPost = function () {
-        console.log("Check result: "+server.getResult());
-    }
+var server = new api.WebServer()
+function Callbacks() {
+	this.onPost = function () {
+		console.log('Check result: ' + server.getNewestPost().result)
+	}
 }
 
-var callbackObj = new Callbacks();
-server.addCallbackObject(callbackObj);
+var callbackObj = new Callbacks()
+server.addCallbackObject(callbackObj)
 ```
 
-#### setHighFrequency()
+#### setHighFrequency() {#sethighfrequency}
+
 Calling this after setting a Callback object will change the polling frequency to once per second.
 
-#### setRealtime()
+#### setRealtime() {#setrealtime}
+
 Calling this after setting a Callback object will change the polling frequency to 60 times a second. This is useful for realtime communication with things like midi-controllers.

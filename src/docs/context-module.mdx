@@ -1,14 +1,25 @@
 ---
+id: context-module
 title: Context Module
 description: Use the Context JavaScript API to access layers and data within a Scene so that it's possible to write scripts that perform custom workflows.
-keywords: [api, scripts, data, scripting, expression, code, id, layerid, attrid, javascript]
+keywords:
+    [
+        api,
+        scripts,
+        data,
+        scripting,
+        expression,
+        code,
+        id,
+        layerid,
+        attrid,
+        javascript,
+    ]
 ---
 
-:::info Pro Feature
+import ProHeader from '@site/src/components/snippets/ProHeader.mdx'
 
-Pro features are only available with a **Professional** licence. To upgrade, visit [cavalry.scenegroup.co](https://cavalry.scenegroup.co/pricing?utm_source=docs&utm_medium=page&utm_campaign=pro-feature&utm_content=scripting).
-
-:::
+<ProHeader utmContent={frontMatter.id} />
 
 ## Intro
 
@@ -17,19 +28,32 @@ Everything in this module is in the `ctx` namespace and so methods need prefixin
 
 ## Member Functions
 
-#### index
+#### index → int {#index}
+
 The current point index. Available when using a [Duplicator](../../nodes/shapes/duplicator.mdx) (or other Layer that generates indices, such as the [Connect Shape](../../nodes/shapes/connect-shape.mdx) or [Trails](../../nodes/shapes/trails.mdx)).
 
-#### count
+#### count → int {#count}
+
 The number of points in total. Available when using a [Duplicator](../../nodes/shapes/duplicator.mdx) (or other Layer that generates indices, such as the [Connect Shape](../../nodes/shapes/connect-shape.mdx) or [Trails](../../nodes/shapes/trails.mdx)).
 
-#### positionX 
+#### positionX
+
 The X position of the current point. Available when using a [Duplicator](../../nodes/shapes/duplicator.mdx) (or other Layer that generates indices, such as the [Connect Shape](../../nodes/shapes/connect-shape.mdx) or [Trails](../../nodes/shapes/trails.mdx)).
 
 #### positionY
+
 The Y position of the current point. Available when using a [Duplicator](../../nodes/shapes/duplicator.mdx) (or other Layer that generates indices, such as the [Connect Shape](../../nodes/shapes/connect-shape.mdx) or [Trails](../../nodes/shapes/trails.mdx)).
 
-#### saveObject(name:string, objectLiteralToSave:object)
+#### attributeId → string {#attributeid}
+
+The Id of the Attribute being calculated.
+
+#### layerId → string {#layerid}
+
+The Id of the Layer being calculated.
+
+#### saveObject(name:string, objectLiteralToSave:object) {#saveobject}
+
 Save an object for use later. The normal use case for this feature is when creating solvers – for example, a script that needs to know a previous value.
 
 The value to be saved needs to be an object.
@@ -38,46 +62,81 @@ If writing a Path for use later, please use the `path.toObject()`/ `path.fromObj
 
 ```js
 // Simple example
-ctx.saveObject("test", {"someKey": 10});
+ctx.saveObject('test', { someKey: 10 })
 
 // A path example
 // Create a path
-var path = new cavalry.Path();
-path.moveTo(0.,0.);
-path.lineTo(0.,-100.);
-path.lineTo(300.,-100.);
+var path = new cavalry.Path()
+path.moveTo(0, 0)
+path.lineTo(0, -100)
+path.lineTo(300, -100)
 // Save it
-ctx.saveObject("path", path.toObject());
+ctx.saveObject('path', path.toObject())
 // Safety check that there is a saved value
-if (ctx.hasObject("path")) {
-    // Load the object
-    let previous = ctx.loadObject("path");
-    // set the path from the object
-    path.fromObject(previous);
+if (ctx.hasObject('path')) {
+	// Load the object
+	let previous = ctx.loadObject('path')
+	// set the path from the object
+	path.fromObject(previous)
 }
 ```
 
-#### loadObject(name:string) → object
+#### loadObject(name:string) → object {#loadobject}
+
 Load a saved object.
+
 ```js
-ctx.saveObject("test", {"someKey": 10});
-var textObj = ctx.loadObject("test");
-console.log(textObj["someKey"])
+ctx.saveObject('test', { someKey: 10 })
+var textObj = ctx.loadObject('test')
+console.log(textObj['someKey'])
 ```
 
-#### hasObject(name:string) → bool
+#### hasObject(name:string) → bool {#hasobject}
+
 Returns true if an object of `name` has been saved and can be loaded.
 
 ```js
-ctx.saveObject("test", {"someKey": 10});
-if (ctx.hasObject("test")) {
-    /// do something
+ctx.saveObject('test', { someKey: 10 })
+if (ctx.hasObject('test')) {
+	/// do something
 }
 ```
 
-#### niceName() → string
+#### niceName() → string {#nicename}
+
 Get the nice name of the Layer that requested the JavaScript Utility for a value.
 
 ```js
-console.log(ctx.niceName);
+console.log(ctx.niceName)
+```
+
+#### transformationMatrix() → matrix {#transformationmatrix}
+
+Returns the upstream local 2D transformation matrix, or null if there isn't one.
+
+```js
+/*
+1. Create a Shape.
+2. On the Shape's Deformers attribute, click the + button and choose JavaScript Deformer.
+3. Copy the below in the JavaScript Deformer's Expression.
+*/
+
+var tm = ctx.transformationMatrix()
+console.log(tm.position().x)
+```
+
+#### globalTransformationMatrix() → matrix {#globaltransformationmatrix}
+
+Returns the upstream global 2D transformation matrix, or null if there isn't one.
+
+```js
+/*
+1. Create a Shape.
+2. On the Shape's Deformers attribute, click the + button and choose JavaScript Deformer.
+3. Copy the below into the JavaScript Deformer's Expression.
+4. Group the Shape.
+*/
+
+var tm = ctx.globalTransformationMatrix()
+console.log(tm.position().x)
 ```
