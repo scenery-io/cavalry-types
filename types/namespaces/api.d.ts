@@ -2,11 +2,11 @@ declare namespace api {
   /**
    * Retrieves the preference value for a specified key.
    */
-  function getPreference(key: string): Record<string, unknown>;
+  function getPreference(key: string): unknown;
   /**
    * Sets a preference value for a specified key.
    */
-  function setPreference(key: string, object: Record<string, unknown>): void;
+  function setPreference(key: string, object: unknown): void;
   /**
    * Move the playhead to a specific frame.
    * @example
@@ -194,10 +194,7 @@ Direction returns:
    * path.close()
    * api.createEditable(path, 'My Path')
    */
-  function createEditable(
-    object: Record<string, unknown>,
-    name: string,
-  ): string;
+  function createEditable(object: unknown, name: string): string;
   /**
    * Create a Layer of any type. The optional `name` argument can be used to specify the name of the Layer in the Scene Window. The optional `allowDefaultPreset` argument can be used to apply a [Preset](../../user-interface/menus/window-menu../../../general/presets.mdx) which is 'Set as Default Settings' in the Presets Manager.
    * @example
@@ -467,7 +464,7 @@ Direction returns:
    * var keyIds = api.getInOutKeyframeIds(layer1)
    * console.log(JSON.stringify(keyIds))
    */
-  function getInOutKeyframeIds(layerId: string): Record<string, unknown>;
+  function getInOutKeyframeIds(layerId: string): unknown;
   /**
    * Return the active Camera's Layer Id. A Camera is considered 'active' when its visibility is on at the current frame. Where more than one Camera is visible on the same frame, the Camera highest in the hierarchy is considered the active one.
    * @example
@@ -627,7 +624,7 @@ Direction returns:
    * 	console.log(layerId + '.' + attr)
    * }
    */
-  function getSelectedAttributes(): Record<string, unknown>;
+  function getSelectedAttributes(): unknown;
   /**
    * Set values for a Layer's attributes.
    * @example
@@ -647,7 +644,7 @@ Direction returns:
    * // Collapse the hierarchy of a layer
    * api.set('basicShape#1', { hierarchy: false })
    */
-  function set(layerId: string, dictionary: Record<string, unknown>): void;
+  function set(layerId: string, dictionary: unknown): void;
   /**
    * Get the values for a Layer's attributes.
    * @example
@@ -692,10 +689,7 @@ The returned object contains keys for:
 	* var definition = api.getAttributeDefinition(shapeId, 'motionBlur')
 	* console.log(definition.type)
 	*/
-  function getAttributeDefinition(
-    layerId: string,
-    attrId: string,
-  ): Record<string, unknown>;
+  function getAttributeDefinition(layerId: string, attrId: string): unknown;
   /**
    * Some Layers in Cavalry contain Generators, these are discrete feature blocks that are used to extend the functionality of Layers. For example the Basic Shape Layer has a Generator to determine the shape it creates (e.g Ellipse, Rectangle...). Generators can be set with this function.
    * @example
@@ -876,7 +870,7 @@ The returned object contains keys for:
    * 	console.log(key + ': ' + value)
    * }
    */
-  function getSelectedKeyframes(): Record<string, unknown>;
+  function getSelectedKeyframes(): unknown;
   /**
    * Set keyframes for Layers and return the keyframeId.
    * @example
@@ -899,7 +893,7 @@ The returned object contains keys for:
   function keyframe(
     layerId: string,
     frame: number,
-    dictionary: Record<string, unknown>,
+    dictionary: unknown,
   ): string;
   /**
    * Remove a Layer's keyframes.
@@ -947,10 +941,7 @@ Example of setting all keyframes to step interpolation.
 	* 	api.modifyKeyframe(ellipseId, { 'position.x': { frame: frame, type: 2 } })
 	* }
 	*/
-  function modifyKeyframe(
-    layerId: string,
-    dictionary: Record<string, unknown>,
-  ): void;
+  function modifyKeyframe(layerId: string, dictionary: unknown): void;
   /**
 	* Modify the keyframe tangents.
 The supplied object must include a `frame` key.
@@ -1018,10 +1009,7 @@ Example breaking tangents and weighting the outHandles.
 	* 	})
 	* }
 	*/
-  function modifyKeyframeTangent(
-    layerId: string,
-    dictionary: Record<string, unknown>,
-  ): void;
+  function modifyKeyframeTangent(layerId: string, dictionary: unknown): void;
   /**
    * Set speed and influence values on a Layer's keyframes.
    * @example
@@ -1042,19 +1030,13 @@ Example breaking tangents and weighting the outHandles.
    * 	},
    * })
    */
-  function setKeyframeVelocity(
-    layerId: string,
-    dictionary: Record<string, unknown>,
-  ): void;
+  function setKeyframeVelocity(layerId: string, dictionary: unknown): void;
   /**
    * Reset all four speed/influence fields on a keyframe.
    * @example
    * api.clearKeyframeVelocity('basicShape#1', { 'position.x': { frame: 30 } })
    */
-  function clearKeyframeVelocity(
-    layerId: string,
-    dictionary: Record<string, unknown>,
-  ): void;
+  function clearKeyframeVelocity(layerId: string, dictionary: unknown): void;
   /**
    * Get all keyframeIds for a particular layerId's attribute. This can be used in combination with [setUserData](#setuserdata).
    * @example
@@ -1434,7 +1416,7 @@ The preset index can be:
    * api.addPreCompOverride(layerId, 'position')
    * console.log(JSON.stringify(api.listPreCompOverrides('compositionReference#1')))
    */
-  function listPreCompOverrides(layerId: string): Record<string, unknown>;
+  function listPreCompOverrides(layerId: string): unknown;
   /**
    * Create evenly distributed Color Stops for a gradient attribute from an array of hex color strings.
    * @example
@@ -1540,7 +1522,7 @@ keys: "hardMin", "hardMax", "softMin", "softMax", "step"
   function getEffectiveAttributeDefinition(
     layerId: string,
     attrId: string,
-  ): Record<string, unknown>;
+  ): unknown;
   /**
    * Centre the Pivot of the specified Layer. If Centroid is true the Pivot will be moved to the centre of mass.
    */
@@ -1636,10 +1618,7 @@ The `inHandle` and `outHandle` objects are optional (when they are missing a lin
 	* }
 	* api.setEditablePath(editableId, true, path)
 	*/
-  function getEditablePath(
-    layerId: string,
-    worldSpace: boolean,
-  ): Record<string, unknown>;
+  function getEditablePath(layerId: string, worldSpace: boolean): unknown;
   /**
 	* This will set the Editable Path on an Editable Shape (Primitives are not supported). See [getEditablePath](#geteditablepath) for details on the Editable Path schema. The `worldSpace` argument will determine if path point coordinates are set in **local** space – unaware of the Editable Shape's position, rotation and scale – or **world** space where those transformations are applied. If the Editable Path is accessed in world space, it should also be set in world space.
 
@@ -1668,7 +1647,7 @@ This example will flatten the selected bezier points to 0 on the Y axis.
   function setEditablePath(
     layerId: string,
     worldSpace: boolean,
-    pathObject: Record<string, unknown>,
+    pathObject: unknown,
   ): void;
   /**
    * This will make the selected point the first point in an Editable Path. This is like running the command in the Shape menu.
@@ -1689,7 +1668,7 @@ This example will flatten the selected bezier points to 0 on the Y axis.
    * api.setPointPosition({ y: -50 }, false, true)
    */
   function setPointPosition(
-    xAndOrYObject: Record<string, unknown>,
+    xAndOrYObject: unknown,
     localSpace: boolean,
     handles: boolean,
   ): void;
@@ -1881,7 +1860,7 @@ It's also possible to use `jsonFromAsset` to query a .csv asset. CSV Assets will
 	* var text = csv['Text'].rows[0]
 	* console.log(text)
 	*/
-  function jsonFromAsset(assetId: string): Record<string, unknown>;
+  function jsonFromAsset(assetId: string): unknown;
   /**
    * Given a Text Asset, get the raw string that Asset represents.
    */
@@ -2552,7 +2531,7 @@ Please note, only files encoded using `encodeBinary` will be properly decoded.
    * console.log(result.error)
    * console.log(result.output)
    */
-  function runProcess(cmd: string, argArray: string[]): Record<string, unknown>;
+  function runProcess(cmd: string, argArray: string[]): unknown;
   /**
    * This runs a system process in a separate thread. GUI scripts that try to run this function will trigger a warning asking for users to trust the script. This is a non-blocking action.
    * @example
@@ -2632,10 +2611,7 @@ The first argument is an array of strings `[string]` containing the Layers to be
    * var hello = { first: 'Hello, ', second: 'World', third: '!' }
    * api.setPreferenceObject('testKey', hello)
    */
-  function setPreferenceObject(
-    key: string,
-    object: Record<string, unknown>,
-  ): void;
+  function setPreferenceObject(key: string, object: unknown): void;
   /**
    * Query to see if preference exists.
    * @example
@@ -2652,7 +2628,7 @@ The first argument is an array of strings `[string]` containing the Layers to be
    * var myPrefs = api.getPreferenceObject('testKey')
    * console.log(myPrefs.first + myPrefs.second + myPrefs.third)
    */
-  function getPreferenceObject(key: string): Record<string, unknown>;
+  function getPreferenceObject(key: string): unknown;
   /**
    * Save arbitrary data to a Layer. This could be a string, or an object.
    * @example
@@ -2671,11 +2647,7 @@ The first argument is an array of strings `[string]` containing the Layers to be
    * var data = api.getUserDataKey(primId2, 'test')
    * console.log(data.model)
    */
-  function setUserData(
-    layerId: string,
-    key: string,
-    value: Record<string, unknown>,
-  ): void;
+  function setUserData(layerId: string, key: string, value: unknown): void;
   /**
    * Checks if a specific `key` exists within the user data of a specified Layer.
    * @example
@@ -2691,10 +2663,7 @@ The first argument is an array of strings `[string]` containing the Layers to be
    * api.setUserData(primId, 'test', 'Hello, World!')
    * console.log(api.getUserDataKey(primId, 'test'))
    */
-  function getUserDataKey(
-    layerId: string,
-    key: string,
-  ): Record<string, unknown>;
+  function getUserDataKey(layerId: string, key: string): unknown;
   /**
    * Return a UUIDv4 string.
    */
@@ -2727,7 +2696,7 @@ See the example for how to get a UUID from a Layer.
    * var timer = new api.Timer(callbackObj)
    */
   class Timer {
-    constructor(callback: Record<string, unknown>);
+    constructor(callback: unknown);
     /** start the timer. */
     start(): void;
     /** stop the timer. */
@@ -2768,9 +2737,7 @@ See the example for how to get a UUID from a Layer.
    * // data.type - the internal Layer type.
    * // data.name - the English name of the Layer.
    */
-  function getAllLayerTypes(
-    includeExperimentalTypes: boolean,
-  ): Record<string, unknown>;
+  function getAllLayerTypes(includeExperimentalTypes: boolean): unknown;
   /**
    * Return the SuperTypes of a Layer.
    * @example
@@ -2794,16 +2761,13 @@ See the example for how to get a UUID from a Layer.
    * api.setCavalryPreference('showGrid', true)
    * api.setCavalryPreference('gridColor', '#4df24c3d')
    */
-  function setCavalryPreference(
-    key: string,
-    value: Record<string, unknown>,
-  ): void;
+  function setCavalryPreference(key: string, value: unknown): void;
   /**
    * Get a Cavalry preference's setting or null if there is no preference with the given key or the preference type is unsupported. Open Preferences.json via 'Help > Show Preferences Folder' for all available preference keys.
    * @example
    * console.log(api.getCavalryPreference('fontSize'))
    */
-  function getCavalryPreference(key: string): Record<string, unknown>;
+  function getCavalryPreference(key: string): unknown;
   /**
    * Saves the contents of the viewport to a PNG.
    */
@@ -2935,7 +2899,7 @@ The object will contain a `result` string, and an `headers` array, each header i
     clearPosts(): void;
     /** Set a Callback object (much like the UI callback object). This is a JavaScript object with an `onPost` function implemented.
 Setting a Callback object will start the server polling for new information, by default we poll the server once every 3 seconds. */
-    addCallbackObject(callbackObj: Record<string, unknown>): void;
+    addCallbackObject(callbackObj: unknown): void;
     /** Calling this after setting a Callback object will change the polling frequency to once per second. */
     setHighFrequency(): void;
     /** Calling this after setting a Callback object will change the polling frequency to 60 times a second. This is useful for realtime communication with things like midi-controllers. */

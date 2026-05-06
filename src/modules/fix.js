@@ -1,4 +1,4 @@
-import { color, record } from './const.js'
+import { color } from './const.js'
 
 export function fixDefinitions(obj) {
 	return deepTraverse(obj, (key, value, path) => {
@@ -70,16 +70,14 @@ export function fixDefinitions(obj) {
 				replace = `${replace.replace(/\[|\]/g, '')}[]`
 			}
 			if (value?.toLowerCase?.().includes('object')) {
-				// replace = replace.toLowerCase()
-				replace = record
+				replace = 'unknown'
 			}
 		}
 		// NOTE: Fixes vector arguments eg. in `cavalry.translate`
 		if (key === 'name' && value?.startsWith?.('{x')) {
 			setValue(obj, path.slice(0, -1), {
 				name: 'vector',
-				// type: 'object',
-				type: record,
+				type: 'unknown',
 				required: true,
 			})
 		}
@@ -89,8 +87,7 @@ export function fixDefinitions(obj) {
 			const item = getValue(obj, itemPath)
 			setValue(obj, itemPath, {
 				name: item.name,
-				// type: 'object',
-				type: record,
+				type: 'unknown',
 				required: false,
 			})
 		}
@@ -109,10 +106,8 @@ export function fixDocs(obj) {
 			}
 			if (value.name === 'size') {
 				console.log('value.name', value.name)
-				// value.return_type = 'object'
-				value.return_type = record
+				value.return_type = 'unknown'
 				value.type = 'function'
-				// console.log(value)
 			}
 			// NOTE: Fixes `LineEdit.getText` return type
 			if (method && value.name === 'getText') {
@@ -190,8 +185,7 @@ export function fixDocs(obj) {
 						return { name: 'array', type: 'number[]', ...keys }
 					}
 					if (name === 'object') {
-						// return { name, type: 'object', ...keys }
-						return { name, type: record, ...keys }
+						return { name, type: 'unknown', ...keys }
 					}
 					if (name.startsWith('transparent=')) {
 						return {
@@ -248,20 +242,17 @@ export function fixDocs(obj) {
 				replace = 'string | string[]'
 			}
 			if (value === 'value:object') {
-				// replace = 'object'
-				replace = record
+				replace = 'unknown'
 			}
 			if (value === 'array[object]' || value === '[object]') {
-				// replace = 'object[]'
-				replace = `${record}[]`
+				replace = 'unknown[]'
 			}
 			if (value?.includes(':int')) {
 				replace = value.replaceAll(':int', ':number')
 			}
 			// NOTE: Only lowercase `object`s
 			if (value?.toLowerCase?.().includes('object')) {
-				// replace = replace.toLowerCase()
-				replace = record
+				replace = 'unknown'
 			}
 			if (value === 'Pathobject') {
 				replace = 'cavalry.Path'
@@ -271,8 +262,7 @@ export function fixDocs(obj) {
 		if (key === 'name' && value?.startsWith?.('{x')) {
 			setValue(obj, path.slice(0, -1), {
 				name: 'vector',
-				// type: 'object',
-				type: record,
+				type: 'unknown',
 				required: true,
 			})
 		}
@@ -282,8 +272,7 @@ export function fixDocs(obj) {
 			const item = getValue(obj, itemPath)
 			setValue(obj, itemPath, {
 				name: item.name,
-				// type: 'object',
-				type: record,
+				type: 'unknown',
 				required: false,
 			})
 		}

@@ -9,7 +9,7 @@
           "required": true
         }
       ],
-      "return_type": "Record<string, unknown>",
+      "return_type": "unknown",
       "description": "Retrieves the preference value for a specified key.",
       "type": "function"
     },
@@ -23,7 +23,7 @@
         },
         {
           "name": "object",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         }
       ],
@@ -357,7 +357,7 @@
       "arguments": [
         {
           "name": "object",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         },
         {
@@ -942,7 +942,7 @@
           "required": true
         }
       ],
-      "return_type": "Record<string, unknown>",
+      "return_type": "unknown",
       "description": "Returns an array of objects containing the keyframe ids for all in and out points on this layer.",
       "type": "function",
       "docs_description": "Returns an array of objects containing the keyframe ids of all the in and out points for a Layer.",
@@ -1196,7 +1196,7 @@
     {
       "name": "getSelectedAttributes",
       "arguments": null,
-      "return_type": "Record<string, unknown>",
+      "return_type": "unknown",
       "description": "Returns the selected attributes.",
       "type": "function",
       "docs_description": "This will return an array containing the paths of the selected attributes.",
@@ -1214,7 +1214,7 @@
         },
         {
           "name": "dictionary",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         }
       ],
@@ -1264,7 +1264,7 @@
           "required": true
         }
       ],
-      "return_type": "Record<string, unknown>",
+      "return_type": "unknown",
       "description": "Returns an object containing detailed information about an Attribute.",
       "type": "function",
       "docs_description": "Returns an object containing detailed information about an Attribute.\n\nThe returned object contains keys for:\n\n* `attrId` // the attribute's Id\n* `type` // e.g double, string, int2\n* `prefix` // the prefix used in the UI\n* `placeholder` // a string attribute's placeholder (e.g. A Stroke's Dash Pattern contains `Dash, Gap (e.g. “4, 2“)`)\n* `isAttrReadOnly` // true if the attribute is read only\n* `allowsAspectRatioLocking` // the attribute's proportions can be constrained\n* `numericInfo` // an object where any of the child keys can be null\n  * `hardMin` // the minimum value allowed\n  * `hardMax` // the maximum value allowed\n  * `softMin` // the minimum value that can be set by scrubbing in the UI\n  * `softMax` // the maximum value that can be set by scrubbing in the UI\n  * `step` // the increment values increase/decrease when scrubbing\n  * `isBound` // this checks if hardMin and hardMax exist. i.e. the attributeis a slider\n* `multiline` // true if the attribute is a multi-line string\n* `enumValues` // the valid indices for dropdown attributes\n* `children` // child attribute definitions (for example position attributes have three children, x, y and z).\n* `isArray` // true if the attribute is an array\n* `isCompound` // true if the attribute is a compound (for example a point within a Graph attribute)\n* `isDynamic` // true if this attribute is a dynamic attributes (for example the array that contains uniforms in a JavaScript Layer)\n* `default` // return the default value for the attribute. Note that lists/compound attributes do not have defaults.",
@@ -1591,7 +1591,7 @@
     {
       "name": "getSelectedKeyframes",
       "arguments": null,
-      "return_type": "Record<string, unknown>",
+      "return_type": "unknown",
       "description": "Gets the selected keyframes. Returns a dictionary of attribute ids and frame numbers.",
       "type": "function",
       "docs_description": "This returns the selected keyframes as an enumerable string-keyed object. Each string is an attribute path, and each key is an array of frame numbers on which a keyframe resides.",
@@ -1614,7 +1614,7 @@
         },
         {
           "name": "dictionary",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         }
       ],
@@ -1664,7 +1664,7 @@
         },
         {
           "name": "dictionary",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         }
       ],
@@ -1687,7 +1687,7 @@
         },
         {
           "name": "dictionary",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         }
       ],
@@ -1710,7 +1710,7 @@
         },
         {
           "name": "dictionary",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         }
       ],
@@ -1732,7 +1732,7 @@
         },
         {
           "name": "dictionary",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         }
       ],
@@ -2536,7 +2536,7 @@
           "required": true
         }
       ],
-      "return_type": "Record<string, unknown>",
+      "return_type": "unknown",
       "description": "Lists pre-composition overrides for a specified layer.",
       "type": "function",
       "docs_description": "Return a list of `key:value` pairs where the `key` is the Attribute being overridden and the `value` is the attribute stored on the Pre-Comp.",
@@ -2741,7 +2741,7 @@
           "required": true
         }
       ],
-      "return_type": "Record<string, unknown>",
+      "return_type": "unknown",
       "description": "Get the attribute definition including any overrides",
       "type": "function",
       "docs_description": "Get the attribute definition including any overrides which can be set via Edit Limits... in the UI.",
@@ -2886,7 +2886,7 @@
           "required": true
         }
       ],
-      "return_type": "Record<string, unknown>",
+      "return_type": "unknown",
       "description": "Retrieves the editable path of a specified layer, with an option to return point coordinates in world space.",
       "type": "function",
       "docs_description": "This function returns an `Editable Path` object which can be edited and then set back to any `Editable Shape` Layer.\n\n`Editable Paths` and ordinary Paths (like the one in the [Cavalry Module](cavalry-module.mdx)) are distinct. The `worldSpace` argument can be used to determine if path point coordinates are returned in **local** – unaware of the Editable Shape's position, rotation and scale – or **world** space where those transformations are applied. An `Editable Path`'s points have **in handles** and **out handles** just like the points that are edited in the Viewport. They also have weight and angle locking settings. Ordinary Paths are constructed using `moveTo`, `lineTo` and `cubicTo`. In an `Editable Path`, an extra point can be added to the Contour's `points` array.\n\nThe schema is as follows:\n\nThe `inHandle` and `outHandle` objects are optional (when they are missing a linear point will be created). Values marked `bool` need to be `true` or `false`.",
@@ -2910,7 +2910,7 @@
         },
         {
           "name": "pathObject",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         }
       ],
@@ -2969,7 +2969,7 @@
       "arguments": [
         {
           "name": "xAndOrYObject",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         },
         {
@@ -3365,7 +3365,7 @@
           "required": true
         }
       ],
-      "return_type": "Record<string, unknown>",
+      "return_type": "unknown",
       "description": "Converts the content of a specified asset to JSON format.",
       "type": "function",
       "docs_description": "Given a Text Asset (which is a .json file) or a Spreadsheet Asset, get the JSON object that Asset represents.\n\nFor the following example, first select a Text Asset (a JSON file imported into Cavalry).\n\nIt's also possible to use `jsonFromAsset` to query a .csv asset. CSV Assets will contain three members. `rows` will provide access to the row data. `min` will provide access to the minimum value of the column (if there is one), and `max` will give the maximum value.",
@@ -4556,7 +4556,7 @@
           "required": true
         }
       ],
-      "return_type": "Record<string, unknown>",
+      "return_type": "unknown",
       "description": "Runs a system process with specified command and arguments, returns output and error.",
       "type": "function",
       "docs_description": "This runs a system process and waits for the result which is returned as an object. GUI scripts that try to run this function will trigger a warning asking for users to trust the script. This is a blocking action, the UI will freeze until the process completes. For non blocking processes see `runDetachedProcess` below.",
@@ -4715,7 +4715,7 @@
         },
         {
           "name": "object",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         }
       ],
@@ -4753,7 +4753,7 @@
           "required": true
         }
       ],
-      "return_type": "Record<string, unknown>",
+      "return_type": "unknown",
       "description": "Retrieves the preference value for a specified key.",
       "type": "function",
       "docs_description": "Return any existing preferences.",
@@ -4776,7 +4776,7 @@
         },
         {
           "name": "value",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         }
       ],
@@ -4824,7 +4824,7 @@
           "required": true
         }
       ],
-      "return_type": "Record<string, unknown>",
+      "return_type": "unknown",
       "description": "Retrieves the value of a specified key from the user data of a specified layer.",
       "type": "function",
       "docs_description": "Return any existing user data for the given `key`.",
@@ -4869,7 +4869,7 @@
         "arguments": [
           {
             "name": "callback",
-            "type": "Record<string, unknown>"
+            "type": "unknown"
           }
         ]
       },
@@ -4966,7 +4966,7 @@
           "type": "boolean"
         }
       ],
-      "return_type": "Record<string, unknown>",
+      "return_type": "unknown",
       "description": "Provides a list of all layer types used in the current scene.",
       "type": "function",
       "docs_description": "Return all the user facing types and names of Layers in Cavalry.",
@@ -5027,7 +5027,7 @@
         },
         {
           "name": "value",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         }
       ],
@@ -5050,7 +5050,7 @@
       ],
       "description": "Get a Cavalry preference. Returns null if there is no preference with the given key, or the preference type is unsupported.",
       "type": "function",
-      "return_type": "Record<string, unknown>",
+      "return_type": "unknown",
       "docs_description": "Get a Cavalry preference's setting or null if there is no preference with the given key or the preference type is unsupported. Open Preferences.json via 'Help > Show Preferences Folder' for all available preference keys.",
       "examples": [
         "console.log(api.getCavalryPreference('fontSize'))"
@@ -5455,7 +5455,7 @@
           "arguments": [
             {
               "name": "callbackObj",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "docs_description": "Set a Callback object (much like the UI callback object). This is a JavaScript object with an `onPost` function implemented.\nSetting a Callback object will start the server polling for new information, by default we poll the server once every 3 seconds.",
@@ -5538,7 +5538,7 @@
         },
         {
           "name": "object",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         }
       ],
@@ -5559,7 +5559,7 @@
           "required": true
         }
       ],
-      "return_type": "Record<string, unknown>",
+      "return_type": "unknown",
       "description": "Loads an object which has been previously saved.",
       "type": "function",
       "docs_description": "Load a saved object.",
@@ -5693,7 +5693,7 @@
       "arguments": [
         {
           "name": "points",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         }
       ],
@@ -5798,7 +5798,7 @@
         },
         {
           "name": "mesh",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         }
       ],
@@ -5823,7 +5823,7 @@
         },
         {
           "name": "position",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": false
         },
         {
@@ -5833,7 +5833,7 @@
         },
         {
           "name": "scale",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": false
         }
       ],
@@ -5898,7 +5898,7 @@
         },
         {
           "name": "material",
-          "type": "Record<string, unknown>",
+          "type": "unknown",
           "required": true
         }
       ],
@@ -6306,7 +6306,7 @@
         {
           "name": "toObject",
           "arguments": [],
-          "return_type": "Record<string, unknown>",
+          "return_type": "unknown",
           "docs_description": "Converts the Path to an object that can be saved.",
           "examples": [
             "var path = new cavalry.Path()\npath.moveTo(0, 0)\npath.lineTo(0, -100)\npath.lineTo(300, -100)\n// Convert to an Object\nvar js = path.toObject()\n// Convert from a saved object\npath.fromObject(js)\nconsole.log(path.length)"
@@ -6317,7 +6317,7 @@
           "arguments": [
             {
               "name": "objectToRead",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "void",
@@ -6368,7 +6368,7 @@
         {
           "name": "pathData",
           "arguments": [],
-          "return_type": "Record<string, unknown>",
+          "return_type": "unknown",
           "docs_description": "This returns an array of dictionaries and provides a convenient way to iterate and change an existing path as opposed to creating a new [Path Class](#path-class). Each dictionary contains the verb `type` variable e.g. `moveTo` or `lineTo` along with any 'point' objects relevant to the verb.\n\nThe dictionary will contain different objects depending on the verb type:\n\n* `moveTo`: contains a `point` object (with x and y variables).\n* `lineTo`: contains a `point` object (with x and y variables).\n* `quadTo`: contains a `cp1` object representing the control point (with x and y variables) along with a `point` object (with x and y variables). This is the end point of the `quadTo` verb.\n* `cubicTo`: contains `cp1` and `cp2` objects representing the first and second control points (both with x and y variables) along with a `point` object (with x and y variables). This is the end point of the `cubicTo` verb.\n* `close`: contains no points.",
           "examples": []
         },
@@ -6377,7 +6377,7 @@
           "arguments": [
             {
               "name": "data",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "void",
@@ -6450,7 +6450,7 @@
               "type": "cavalry.Line"
             }
           ],
-          "return_type": "Record<string, unknown>",
+          "return_type": "unknown",
           "docs_description": "Returns an array of points at which the path and line intersect.",
           "examples": [
             "// 1. Create 2 Nulls, an Ellipse and a JavaScript Shape.\n// 2. Right click the JavaScript Shape's n0 attribute and choose 'Delete Selected Attribute'.\n// 3. Use the + button to add 2 x Double2 and 1 x Layer attributes.\n// 4. Connect each of the Null's positions to the Double2 attributes.\n// 5. Connect the Ellipse to the Layer attribute.\n// 6. Copy and paste the below into the JavaScript Shape's Expression.\n// 7. Move the Nulls outside the Ellipse.\n\nfunction getPath() {\n\tvar intersectionPath = n2.path\n\n\tvar path = new cavalry.Path()\n\tvar line = new cavalry.Line(n0.x, n0.y, n1.x, n1.y)\n\n\tvar intersections = intersectionPath.lineIntersections(line)\n\n\tfor (let pt of intersections) {\n\t\tpath.addEllipse(pt.x, pt.y, 20, 20)\n\t}\n\treturn path\n}\n\ngetPath()"
@@ -6464,7 +6464,7 @@
               "type": "cavalry.Path"
             }
           ],
-          "return_type": "Record<string, unknown>",
+          "return_type": "unknown",
           "docs_description": "Returns an array of points at which this path and the given path intersect.",
           "examples": [
             "// 1. Create a Star, an Ellipse and a JavaScript Shape.\n// 2. Use the + button under the JavaScript Shape's 'Javascript' tab to add 2 x Layer attributes.\n// 3. Connect the Star and Ellipse to the new Layer attribute.\n// 4. Copy and paste the below into the JavaScript Shape's Expression.\n// 5. Increase the Star's Radius.\n\nfunction getPath() {\n\tvar pathA = n1.path\n\tvar pathB = n2.path\n\n\tvar intersections = pathA.pathIntersections(pathB)\n\n\tvar path = new cavalry.Path()\n\tfor (let pt of intersections) {\n\t\tpath.addEllipse(pt.x, pt.y, 20, 20)\n\t}\n\treturn path\n}\n\ngetPath()"
@@ -6534,7 +6534,7 @@
               "type": "number"
             }
           ],
-          "return_type": "Record<string, unknown>",
+          "return_type": "unknown",
           "docs_description": "Scatter points inside the path via dart throwing. Points are relaxed by default.",
           "examples": []
         },
@@ -6651,7 +6651,7 @@
           "arguments": [
             {
               "name": "matrix",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "void",
@@ -6781,7 +6781,7 @@
           "arguments": [
             {
               "name": "object",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "void",
@@ -6793,7 +6793,7 @@
           "arguments": [
             {
               "name": "object",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "number",
@@ -6805,7 +6805,7 @@
           "arguments": [
             {
               "name": "object",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "{x:number,y:number}",
@@ -6944,7 +6944,7 @@
               "type": "number"
             }
           ],
-          "return_type": "Record<string, unknown>",
+          "return_type": "unknown",
           "docs_description": "Returns a [pathData](#pathdata) array, which includes verbs and points. This data is designed for point level modification.",
           "examples": []
         },
@@ -6957,7 +6957,7 @@
             },
             {
               "name": "path",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "void",
@@ -6973,7 +6973,7 @@
             },
             {
               "name": "pathData",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "void",
@@ -6989,7 +6989,7 @@
             },
             {
               "name": "material",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "void",
@@ -7235,7 +7235,7 @@
         {
           "name": "scale",
           "arguments": [],
-          "return_type": "Record<string, unknown>",
+          "return_type": "unknown",
           "docs_description": "Gets the scale factors of the matrix.",
           "examples": []
         },
@@ -7298,7 +7298,7 @@
           "arguments": [
             {
               "name": "rect",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "{x:number,y:number,width:number,height:number,centre:{x:number,y:number},left:number,right:number,top:number,bottom:number}",
@@ -7310,7 +7310,7 @@
           "arguments": [
             {
               "name": "point",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "{x:number,y:number}",
@@ -7322,10 +7322,10 @@
           "arguments": [
             {
               "name": "points",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
-          "return_type": "Record<string, unknown>",
+          "return_type": "unknown",
           "docs_description": "Maps an array of points using this matrix and returns the resulting array of points.",
           "examples": [
             "var mat = new cavalry.Matrix()\nmat.setRotation(180)\nmat.setScale(2, 2)\nvar pt = { x: 50, y: 0 }\nvar finalPt = mat.mapPoint(pt)\nconsole.log(JSON.stringify(finalPt))"
@@ -8134,7 +8134,7 @@
       "arguments": [
         {
           "name": "callback",
-          "type": "Record<string, unknown>"
+          "type": "unknown"
         }
       ],
       "description": "Sets the callback object for the window. This can be used to trigger methods when certain app events happen.",
@@ -8304,7 +8304,7 @@
     {
       "name": "size",
       "arguments": [],
-      "return_type": "Record<string, unknown>",
+      "return_type": "unknown",
       "description": "Returns the size of the window.",
       "type": "function",
       "docs_description": "Returns the size of the window.",
@@ -8381,7 +8381,7 @@
       "arguments": [
         {
           "name": "object",
-          "type": "Record<string, unknown>"
+          "type": "unknown"
         }
       ],
       "description": "Adds a menu item to the context menu.",
@@ -8398,7 +8398,7 @@
       "arguments": [
         {
           "name": "object",
-          "type": "Record<string, unknown>"
+          "type": "unknown"
         }
       ],
       "description": "Adds a submenu to the context menu.",
@@ -9045,7 +9045,7 @@
           "arguments": [
             {
               "name": "layout",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "void"
@@ -9248,11 +9248,11 @@
           "arguments": [
             {
               "name": "pathObject",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             },
             {
               "name": "paintInfo",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "void"
@@ -9973,7 +9973,7 @@
           "arguments": [
             {
               "name": "model",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "void"
@@ -9984,7 +9984,7 @@
           "arguments": [
             {
               "name": "rowData",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "void"
@@ -9995,7 +9995,7 @@
           "arguments": [
             {
               "name": "rowData",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "void"
@@ -10004,7 +10004,7 @@
           "name": "getModel",
           "description": "get the current list data",
           "arguments": [],
-          "return_type": "Record<string, unknown>"
+          "return_type": "unknown"
         },
         {
           "name": "getSelection",
@@ -10101,7 +10101,7 @@
           "arguments": [
             {
               "name": "object",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "void"
@@ -10621,7 +10621,7 @@
           "arguments": [
             {
               "name": "layout",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "void"
@@ -10672,7 +10672,7 @@
           "arguments": [
             {
               "name": "layout",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "void"
@@ -10747,7 +10747,7 @@
             },
             {
               "name": "layout",
-              "type": "Record<string, unknown>"
+              "type": "unknown"
             }
           ],
           "return_type": "void"

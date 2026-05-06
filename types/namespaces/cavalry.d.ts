@@ -90,9 +90,9 @@ The below example can be set on the JavaScript Shape. */
     /** Convert (vectorise) any curves into a series of lines. */
     convertToLines(linesPerCurve: number): void;
     /** Converts the Path to an object that can be saved. */
-    toObject(): Record<string, unknown>;
+    toObject(): unknown;
     /** Sets the path from an object. */
-    fromObject(objectToRead: Record<string, unknown>): void;
+    fromObject(objectToRead: unknown): void;
     /** Return the bounding box of a path. */
     boundingBox(): {
       x: number;
@@ -120,9 +120,9 @@ The dictionary will contain different objects depending on the verb type:
 * `quadTo`: contains a `cp1` object representing the control point (with x and y variables) along with a `point` object (with x and y variables). This is the end point of the `quadTo` verb.
 * `cubicTo`: contains `cp1` and `cp2` objects representing the first and second control points (both with x and y variables) along with a `point` object (with x and y variables). This is the end point of the `cubicTo` verb.
 * `close`: contains no points. */
-    pathData(): Record<string, unknown>;
+    pathData(): unknown;
     /** Set the path based on a [pathData](#pathdata) object. */
-    setPathData(data: Record<string, unknown>): void;
+    setPathData(data: unknown): void;
     /** Grow or shrink a closed Path. The `round` argument determines whether the joins of the rebuilt Path's line segments are rounded or not. */
     offset(distance: number, round: boolean): void;
     /** Reduce the length of a Path by clipping it from its start/end points. */
@@ -130,9 +130,9 @@ The dictionary will contain different objects depending on the verb type:
     /** Rebuilds the path by sampling points based on a desired 'edgeLength'. */
     resample(edgeLength: number): void;
     /** Returns an array of points at which the path and line intersect. */
-    lineIntersections(line: cavalry.Line): Record<string, unknown>;
+    lineIntersections(line: cavalry.Line): unknown;
     /** Returns an array of points at which this path and the given path intersect. */
-    pathIntersections(path: cavalry.Path): Record<string, unknown>;
+    pathIntersections(path: cavalry.Path): unknown;
     /** Relax the points in the path away from each other. */
     relax(iterations: number, radius: number, relaxationStrength: number): void;
     /** Smooths the points by averaging their positions. */
@@ -144,7 +144,7 @@ The dictionary will contain different objects depending on the verb type:
       sequence: number,
       relaxIterations: number,
       relaxDistance: number,
-    ): Record<string, unknown>;
+    ): unknown;
     /** Return the length of the path. */
     length(): number;
     /** Return the position of a point at a given parameter along the path. */
@@ -173,7 +173,7 @@ The dictionary will contain different objects depending on the verb type:
     /** Returns true if the path is clockwise. */
     isClockwise(): boolean;
     /** Multiply the path point positions by a matrix. */
-    applyMatrix(matrix: Record<string, unknown>): void;
+    applyMatrix(matrix: unknown): void;
   }
   /**
 	* Represent a line defined by two points with various geometric operations.
@@ -207,11 +207,11 @@ For examples see the **Closest Point**, **Intersections** and **Spikes** Demo Sc
     /** Calculates the normal vector at a given parameter along the line. */
     normalAt(param: number): { x: number; y: number };
     /** Translates the line by a given point vector. */
-    translate(object: Record<string, unknown>): void;
+    translate(object: unknown): void;
     /** Calculates the shortest distance from the line to a given point. */
-    distance(object: Record<string, unknown>): number;
+    distance(object: unknown): number;
     /** Calculates the closest point on the line to a given point. */
-    closestPointTo(object: Record<string, unknown>): { x: number; y: number };
+    closestPointTo(object: unknown): { x: number; y: number };
     /** Returns the point at which two lines intersect, or null if there's no intersection. */
     lineIntersection(line: cavalry.Line): { x: number; y: number };
   }
@@ -259,13 +259,13 @@ See `Create > Demo Scenes > JavaScript > Spirograph Distribution` or `Create > D
       bottom: number;
     };
     /** Returns a [pathData](#pathdata) array, which includes verbs and points. This data is designed for point level modification. */
-    getPathDataAtIndex(index: number): Record<string, unknown>;
+    getPathDataAtIndex(index: number): unknown;
     /** Overwrite a path at a given index with a different Path object. */
-    setPathAtIndex(index: number, path: Record<string, unknown>): void;
+    setPathAtIndex(index: number, path: unknown): void;
     /** Sets the [pathData](#pathdata) at a given depth and index. */
-    setPathDataAtIndex(index: number, pathData: Record<string, unknown>): void;
+    setPathDataAtIndex(index: number, pathData: unknown): void;
     /** Overwrites the material at a given index with a different Material object. */
-    setMaterialAtIndex(index: number, material: Record<string, unknown>): void;
+    setMaterialAtIndex(index: number, material: unknown): void;
     /** Retrieves the Path object at the specified index. Useful for adding to a path. */
     getPathAtIndex(index: number): cavalry.Path;
     /** Adds a child-mesh to this Mesh. */
@@ -321,7 +321,7 @@ See `Create > Demo Scenes > JavaScript > Spirograph Distribution` or `Create > D
     /** Return the skew. */
     skew(): void;
     /** Gets the scale factors of the matrix. */
-    scale(): Record<string, unknown>;
+    scale(): unknown;
     /** Gets the position (translation) of the matrix. */
     position(): { x: number; y: number };
     /** Gets the rotation of the matrix in degrees. */
@@ -337,7 +337,7 @@ See `Create > Demo Scenes > JavaScript > Spirograph Distribution` or `Create > D
     /** Checks if the matrix is an identity matrix. */
     isIdentity(): boolean;
     /** Maps a rectangle `{x:number, y:number, width:number, height:number}` using this matrix and returns the resulting rectangle. */
-    mapRect(rect: Record<string, unknown>): {
+    mapRect(rect: unknown): {
       x: number;
       y: number;
       width: number;
@@ -349,9 +349,9 @@ See `Create > Demo Scenes > JavaScript > Spirograph Distribution` or `Create > D
       bottom: number;
     };
     /** Maps a point using this matrix and returns the resulting point. */
-    mapPoint(point: Record<string, unknown>): { x: number; y: number };
+    mapPoint(point: unknown): { x: number; y: number };
     /** Maps an array of points using this matrix and returns the resulting array of points. */
-    mapPoints(points: Record<string, unknown>): Record<string, unknown>;
+    mapPoints(points: unknown): unknown;
     /** Set the 3x3 matrix from an array of 9 numbers.
 
 Example usage: */

@@ -108,7 +108,7 @@ declare namespace def {
    *
    * def.setPoints(points)
    */
-  function setPoints(points: Record<string, unknown>): void;
+  function setPoints(points: unknown): void;
   /**
    * The depth of the mesh tree (the highest number reported in the [Mesh Explorer](../../user-interface/menus/window-menu/mesh-explorer.mdx)). This is a property/variable, not a method.
    */
@@ -135,7 +135,7 @@ declare namespace def {
   function setMeshAtDepthAtIndex(
     depth: number,
     index: number,
-    mesh: Record<string, unknown>,
+    mesh: unknown,
   ): void;
   /**
    * Set the position of a mesh at the given depth and index. Position and Scale are optional objects with x and y values (e.g. `{"x":20, "y": 5}`).
@@ -143,9 +143,9 @@ declare namespace def {
   function setTransformAtDepthAtIndex(
     depth: number,
     index: number,
-    position?: Record<string, unknown>,
+    position?: unknown,
     rotation?: number,
-    scale?: Record<string, unknown>,
+    scale?: unknown,
   ): void;
   /**
    * Reset the transform of the mesh at a given depth and index.
@@ -161,7 +161,7 @@ declare namespace def {
   function setMaterialAtDepthAtIndex(
     depth: number,
     index: number,
-    material: Record<string, unknown>,
+    material: unknown,
   ): void;
   /**
    * Returns the highest depth within a Mesh that contains a Path.

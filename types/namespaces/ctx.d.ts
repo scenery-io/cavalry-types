@@ -49,7 +49,7 @@ If writing a Path for use later, please use the `path.toObject()`/ `path.fromObj
 	* 	path.fromObject(previous)
 	* }
 	*/
-  function saveObject(name: string, object: Record<string, unknown>): void;
+  function saveObject(name: string, object: unknown): void;
   /**
    * Load a saved object.
    * @example
@@ -57,7 +57,7 @@ If writing a Path for use later, please use the `path.toObject()`/ `path.fromObj
    * var textObj = ctx.loadObject('test')
    * console.log(textObj['someKey'])
    */
-  function loadObject(name: string): Record<string, unknown>;
+  function loadObject(name: string): unknown;
   /**
    * Returns true if an object of `name` has been saved and can be loaded.
    * @example

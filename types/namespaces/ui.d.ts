@@ -71,7 +71,7 @@ declare namespace ui {
    * // Add a callback object (you can have several if you're that way inclined)
    * ui.addCallbackObject(callbackObj)
    */
-  function addCallbackObject(callback: Record<string, unknown>): void;
+  function addCallbackObject(callback: unknown): void;
   /**
    * Tells the window that it's a toolbar, it will not include a docking tab.
    * @example
@@ -190,7 +190,7 @@ declare namespace ui {
   /**
    * Returns the size of the window.
    */
-  function size(): Record<string, unknown>;
+  function size(): unknown;
   /**
 	* UI windows support drag and drop functionality. The [Container](#container) Widget can also be used to create multiple, distinct (noncontiguous) drag and drop areas within the same UI window – meaning the event will only occur within the Container rather than the entire UI window. At least one `MIME type` for the UI window to accept **must** be registered. To register multiple MIME types, add each on a separate line.
 
@@ -346,7 +346,7 @@ The object contains the following properties:
 	* ui.add(container)
 	* ui.show()
 	*/
-  function addMenuItem(object: Record<string, unknown>): void;
+  function addMenuItem(object: unknown): void;
   /**
 	* Add a new sub menu item to a context menu item. A menu object must be created, populated and then added to the Menu Item via the addSubMenu function with a new [Menu](#menu) class. See example below.
 
@@ -417,7 +417,7 @@ See [addMenuItem](#addmenuitem) for object property descriptions.
 	* ui.add(container)
 	* ui.show()
 	*/
-  function addSubMenu(object: Record<string, unknown>): void;
+  function addSubMenu(object: unknown): void;
   /**
    * Automatically show the context menu at the mouse location when right clicking in the window.
    * @example
@@ -895,7 +895,7 @@ This example demos a simple Color Palette generator script.
       btmLeft: number,
     ): void;
     /** set a layout for the container. */
-    setLayout(layout: Record<string, unknown>): void;
+    setLayout(layout: unknown): void;
     /** if set to true, mouseMoveEvents will fire even when the mouse isn't pressed. */
     useHoverEvents(use: boolean): void;
     /** dashWidth and dashGap are optional. The color argument is a hex colour string. A border can be removed by calling setBorder(). */
@@ -1065,10 +1065,7 @@ The paint object has keys for `color`, `stroke` (to determine if the paint is a 
 	*/
   class Draw extends Widget {
     /** adds a path to be drawn. */
-    addPath(
-      pathObject: Record<string, unknown>,
-      paintInfo: Record<string, unknown>,
-    ): void;
+    addPath(pathObject: unknown, paintInfo: unknown): void;
     /** erase all paths from the draw store. */
     clearPaths(): void;
     /** ask for an update, use this if you update the paths once the UI has been created. */
@@ -1501,13 +1498,13 @@ The `onContextMenuRequest` callback should return an array of menu item objects:
     /** set placeholder text shown when the list is empty */
     setPlaceholder(text: string): void;
     /** set the list data (array of row objects) */
-    setModel(model: Record<string, unknown>): void;
+    setModel(model: unknown): void;
     /** update a single row by its uuid */
-    updateRow(rowData: Record<string, unknown>): void;
+    updateRow(rowData: unknown): void;
     /** add a new row to the list */
-    addRow(rowData: Record<string, unknown>): void;
+    addRow(rowData: unknown): void;
     /** get the current list data */
-    getModel(): Record<string, unknown>;
+    getModel(): unknown;
     /** get an array of selected row uuids */
     getSelection(): string[];
     /** programmatically set the search filter text */
@@ -1539,7 +1536,7 @@ The `onContextMenuRequest` callback should return an array of menu item objects:
   class Menu extends Widget {
     constructor(name?: string);
     /** add a menu item */
-    addMenuItem(object: Record<string, unknown>): void;
+    addMenuItem(object: unknown): void;
   }
   /**
    * This widget can be used to show modal windows where an action requires confirmation or further input. Note that order the options appear in is dependent on the OS.
@@ -1805,7 +1802,7 @@ The `onContextMenuRequest` callback should return an array of menu item objects:
    */
   class PageView {
     /** add a layout, this is the content of the page */
-    add(layout: Record<string, unknown>): void;
+    add(layout: unknown): void;
     /** set the current page index */
     setPage(index: number): void;
     /** get the current page index */
@@ -1837,7 +1834,7 @@ The `onContextMenuRequest` callback should return an array of menu item objects:
    */
   class ScrollView {
     /** set the contents of the ScrollView. */
-    setLayout(layout: Record<string, unknown>): void;
+    setLayout(layout: unknown): void;
     /** set a fixed size for the ScrollView. */
     setSize(width: number, height: number): void;
     /** set a fixed width for the ScrollView. */
@@ -1876,7 +1873,7 @@ The `onContextMenuRequest` callback should return an array of menu item objects:
    */
   class TabView {
     /** name the tab, and set the contents of the tab - which should be a layout */
-    add(name: string, layout: Record<string, unknown>): void;
+    add(name: string, layout: unknown): void;
     /** set the current tab index */
     setTab(index: number): void;
     /** get the current tab index */
