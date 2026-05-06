@@ -1,0 +1,74 @@
+---
+id: render-scripts
+title: Render Scripts
+description: Use JavaScript to perform actions before and after a render.
+keywords: [api, scripts, data, scripting, expression, code, render, automation]
+---
+
+## Introduction
+
+Cavalry can execute scripts:
+
+-   To setup a **Render Queue Item**.
+-   Before every render performed by a **Render Queue Item**.
+-   After every render performed by a **Render Queue Item**.
+
+The following APIs are all in the `render` namespace. They are **ONLY** available in a Render Queue Item. Scripts can be added to the corresponding editor on the Render Queue Item's **Scripts** tab in the [Render Manager](../../user-interface/menus/window-menu/render-manager/intro.mdx).
+
+:::info[Dynamic Rendering]
+When using [Dynamic Rendering](../../user-interface/menus/window-menu/render-manager/dynamic-rendering.mdx), the **Dynamic Index** can be accessed using the [api.getDynamicIndex()](./api-module.mdx#getdynamicindex) member.
+:::
+
+Any JavaScript execution will block further rendering until the script finishes running. This is by design so that any processes like downloading/replacing Assets or altering the Scene in some way can complete before starting the next render.
+
+:::info[Image Sequences]
+
+Scripts are executed before and after the entire sequence is rendered and not before and after each individual image.
+
+:::
+
+## Types
+
+### Setup Render Script
+
+Add a script that runs before any render setup begins and so can be used to affect the **Render Queue Item** itself.
+
+### Pre-Render Script
+
+Add a script that can be used to manipulate and prepare the scene for rendering.
+
+### Post-Render Script
+
+Add a script that runs once a **Render Queue Item** has completed.
+
+:::info
+
+Scripts can include using the JavaScript API to perform tasks such as modify attributes, to pull new information from the web, or the replacement and reloading of Assets.
+
+:::
+
+## Member Functions
+
+#### composition → string {/* #composition */}
+
+Return the layerId for each Composition in the Render Queue Item. Available as part of a **Pre-Render** and **Post-Render Script**.
+
+```js
+console.log(render.composition)
+```
+
+#### path → string {/* #path */}
+
+Return the file path of the render – any dynamic tokens/paths are fully resolved. Available as part of a **Post-Render Script**.
+
+```js
+console.log(render.path)
+```
+
+#### renderQueueItem → string {/* #renderqueueitem */}
+
+Return the renderQueueItemId to make changes to it. Available as part of a **Setup Render Script**.
+
+```js
+console.log(render.renderQueueItem)
+```

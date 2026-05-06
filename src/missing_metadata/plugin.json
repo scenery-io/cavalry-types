@@ -1,0 +1,16 @@
+{
+	"plugin": [
+		{
+			"name": "layerId",
+			"return_type": "string",
+			"description": "The Layer ID of the plugin.",
+			"type": "property"
+		},
+		{
+			"name": "saveData",
+			"return_type": "object",
+			"description": "`saveData` is a copy of the data found in the .cv file for this Layer which can be used to access attribute data.",
+			"type": "property"
+		}
+	]
+}

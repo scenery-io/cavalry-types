@@ -1,0 +1,10 @@
+{
+	"include": ["**/*.js"],
+	"compilerOptions": {
+		"noEmit": true,
+		"allowJs": true,
+		"checkJs": true,
+		"module": "NodeNext",
+		"esModuleInterop": true
+	}
+}

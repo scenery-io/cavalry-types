@@ -1,0 +1,13 @@
+{
+	"include": ["test"],
+	"exclude": ["node_modules"],
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
+		"strict": true,
+		"noEmit": true,
+		"moduleResolution": "NodeNext",
+		"moduleDetection": "auto",
+		"module": "NodeNext"
+	}
+}
