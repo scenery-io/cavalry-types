@@ -1,6 +1,19 @@
 {
   "api": [
     {
+      "name": "getAssetURI",
+      "arguments": [
+        {
+          "name": "assetId",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "return_type": "string",
+      "description": "Returns the URI of an asset. For file based assets this is the absolute file path.",
+      "type": "function"
+    },
+    {
       "name": "getPreference",
       "arguments": [
         {
@@ -28,6 +41,59 @@
         }
       ],
       "description": "Sets a preference value for a specified key.",
+      "type": "function",
+      "return_type": "void"
+    },
+    {
+      "name": "scrollToAttribute",
+      "arguments": [
+        {
+          "name": "layerId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "attrId",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "description": "Loads the given layer in the Attribute Editor and scrolls to the specified attribute row.",
+      "type": "function",
+      "return_type": "void"
+    },
+    {
+      "name": "getCanvaPreflightResults",
+      "arguments": null,
+      "return_type": "string",
+      "description": "Runs the Canva pre-flight checks and returns the results as a JSON string.",
+      "type": "function"
+    },
+    {
+      "name": "runCanvaPreflightModal",
+      "arguments": null,
+      "return_type": "boolean",
+      "description": "Runs the Canva pre-flight checks and returns true if no blocking issues were found.",
+      "type": "function"
+    },
+    {
+      "name": "discardCanvaExportAttempt",
+      "arguments": null,
+      "description": "Abandons the export attempt begun by runCanvaPreflightModal when the user backs out before exportArchive runs.",
+      "type": "function",
+      "return_type": "void"
+    },
+    {
+      "name": "recoverySessionDirectory",
+      "arguments": null,
+      "return_type": "string",
+      "description": "Returns this session's crash-recovery directory. For testing.",
+      "type": "function"
+    },
+    {
+      "name": "resetWorkspace",
+      "arguments": null,
+      "description": "Resets the workspace to the default layout.",
       "type": "function",
       "return_type": "void"
     },
@@ -275,15 +341,6 @@
       "docs_description": "Get the Ids of all the Ruler Guides in the given Composition.\n\nDirection returns:\n\n* 0 for Horizontal Guides.\n* 1 for Vertical Guides.",
       "examples": [
         "api.addGuide(api.getActiveComp(), true, -100)\napi.addGuide(api.getActiveComp(), false, 100)\nconsole.log(JSON.stringify(api.getGuideInfo(api.getActiveComp())))"
-      ]
-    },
-    {
-      "name": "getControlCentreAttributes",
-      "type": "function",
-      "return_type": "string[]",
-      "docs_description": "Get a list of all the Attributes that have been added to the Control Centre.",
-      "examples": [
-        "console.log(api.getControlCentreAttributes(api.getActiveComp()))"
       ]
     },
     {
@@ -1870,6 +1927,33 @@
       ]
     },
     {
+      "name": "getMagicEasing",
+      "arguments": [
+        {
+          "name": "layerId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "attrId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "frame",
+          "type": "number",
+          "required": true
+        }
+      ],
+      "return_type": "{easingName:string,expression:string}",
+      "description": "Returns the Magic Easing name set on an Attribute's keyframe (and its custom expression, if the easing is \"Custom\") — or null if the Attribute isn't keyframed or has no keyframe on that frame.",
+      "type": "function",
+      "docs_description": "Return the Magic Easing name set on an Attribute's keyframe (and its custom expression, if the easing is \"Custom\") — or null if the Attribute isn't keyframed or has no keyframe on that frame.",
+      "examples": [
+        "var shapeId = api.create('basicShape')\napi.keyframe(shapeId, 0, { 'position.x': 0 })\napi.keyframe(shapeId, 24, { 'position.x': 200 })\napi.magicEasing(shapeId, 'position.x', 0, 'SlowOut')\nvar magic = api.getMagicEasing(shapeId, 'position.x', 0)\nconsole.log(JSON.stringify(magic))"
+      ]
+    },
+    {
       "name": "getKeyframeTimes",
       "arguments": [
         {
@@ -2484,6 +2568,32 @@
       ]
     },
     {
+      "name": "controlCentreSetLayout",
+      "arguments": [
+        {
+          "name": "layoutJson",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "description": "Replaces the scene-wide Control Centre layout with the supplied JSON-encoded items array.",
+      "type": "function",
+      "return_type": "void",
+      "docs_description": "Replace the Control Centre layout coded items array. Each item is either `{\"kind\": \"attr\", \"path\": \"<nodeId>.<attrId>\"}` or `{\"kind\": \"group\", \"id\": \".psed\": false, \"attrs\": [\"<nodeId>.<attrId>\", ...]}`.",
+      "examples": [
+        "var starId = api.primitive('star', 'Star')\nvar layout = [\n\t{ kind: 'attr', path: starId + '.position' },\n\t{\n\t\tkind: 'group',\n\t\tid: 'g1',\n\t\tname: 'Points',\n\t\tattrs: [starId + '.generator.radius'],\n\t},\n]\napi.controlCentreSetLayout(JSON.stringify(layout))"
+      ]
+    },
+    {
+      "name": "getControlCentreAttributes",
+      "type": "function",
+      "return_type": "string[]",
+      "docs_description": "Get a list of all the Attributes that have been added to the Control Centre.",
+      "examples": [
+        "console.log(api.getControlCentreAttributes(api.getComps()))"
+      ]
+    },
+    {
       "name": "addPreCompOverride",
       "arguments": [
         {
@@ -2550,8 +2660,17 @@
         {
           "name": "layerId",
           "type": "string",
-          "required": false,
-          "default": "string"
+          "required": true
+        },
+        {
+          "name": "attrId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "hexColors",
+          "type": "string[]",
+          "required": true
         }
       ],
       "description": "Sets the colours on a gradient attribute from an array of hex color strings.",
@@ -2568,8 +2687,17 @@
         {
           "name": "layerId",
           "type": "string",
-          "required": false,
-          "default": "string"
+          "required": true
+        },
+        {
+          "name": "attrId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "interpolation",
+          "type": "number",
+          "required": true
         }
       ],
       "description": "Sets the interpolation for every stop on a gradient: Linear = 0, Step = 1, Smooth = 2, Crush = 3, Smooth Blend = 4, Contrast = 5.",
@@ -2578,6 +2706,38 @@
       "docs_description": "Set the interpolation for every Color Stop on a gradient attribute: Linear = 0, Step = 1, Smooth = 2, Crush = 3, Smooth Blend = 4, Contrast = 5.",
       "examples": [
         "var gradientId = api.create('gradientShader', 'Gradient Shader')\napi.setGradientFromColors(gradientId, 'generator.gradient', [\n\t'#ffffff',\n\t'#4ffd7a',\n\t'#ffff00',\n\t'#ff24e0',\n])\napi.setGradientInterpolation(gradientId, 'generator.gradient', 1)"
+      ]
+    },
+    {
+      "name": "setGradientFromPalette",
+      "arguments": [
+        {
+          "name": "layerId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "attrId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "scope",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "return_type": "boolean",
+      "description": "Sets a gradient attribute's stops to the swatches of a named palette (library or project). Mirrors the Color Window's \"Set Gradient From Palette\" action. Returns true on success.",
+      "type": "function",
+      "docs_description": "Set a gradient attribute's stops from a saved Palette's swatches. This mirrors the Color Window's *Set Gradient From Palette* action. `name` is the Palette's display name (the same value returned by [listPalettes](#listpalettes)). `scope` can be `\"library\"` or `\"project\"`; if omitted, both tiers are searched (library first).",
+      "examples": [
+        "api.createPalette('Sunset', 'project', ['#ff7700', '#ff3366', '#330066'])\nvar gradientId = api.create('gradientShader', 'Gradient Shader')\napi.setGradientFromPalette(gradientId, 'generator.gradient', 'Sunset')"
       ]
     },
     {
@@ -3067,6 +3227,33 @@
       "examples": []
     },
     {
+      "name": "snapshotLayer",
+      "arguments": [
+        {
+          "name": "layerId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "maxSize",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "debugWritePath",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "return_type": "unknown",
+      "description": "Render a single drawable layer and its descendants to an offscreen PNG, returned as base64.",
+      "type": "function",
+      "docs_description": "Render a single drawable Layer (and its descendants) to an offscreen square PNG, returned as base64. This is intended for inspection/preview rather than production rendering — it is not affected by the Render Queue.\n\n`maxSize` is the longest edge of the resulting image and is clamped to the range 32–1024 (256 is a sensible default). Pass an empty string for `debugWritePath` to skip the disk write, or an absolute path to also write the PNG there for inspection.\n\nThe returned object contains:\n\n* `ok` (bool) — whether the snapshot succeeded.\n* `width`, `height` (int) — dimensions of the PNG.\n* `pngBase64` (string) — the PNG bytes as base64, empty on failure.\n* `error` (string) — a description if `ok` is false (unknown Layer id, non-drawable Layer, Composition root, empty bounds, etc.).",
+      "examples": [
+        "var rectId = api.primitive('rectangle', 'My Rectangle')\nvar snap = api.snapshotLayer(rectId, 256, '')\nif (snap.ok) {\n\tconsole.log(\n\t\tsnap.width +\n\t\t\t'x' +\n\t\t\tsnap.height +\n\t\t\t' PNG returned (' +\n\t\t\tsnap.pngBase64.length +\n\t\t\t' base64 chars)',\n\t)\n} else {\n\tconsole.log('Snapshot failed: ' + snap.error)\n}"
+      ]
+    },
+    {
       "name": "getRenderQueueItems",
       "arguments": null,
       "return_type": "string[]",
@@ -3435,6 +3622,121 @@
       "examples": []
     },
     {
+      "name": "getGoogleSheetAssetURL",
+      "arguments": [
+        {
+          "name": "assetId",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "return_type": "string",
+      "description": "Returns the URL for the given Google Sheet Asset",
+      "type": "function",
+      "docs_description": "Return the URL for a given Google Sheet Asset.",
+      "examples": [
+        "var assets = api.getAssetWindowLayers(false)\nfor (let assetId of assets) {\n\tlet type = api.getAssetType(assetId)\n\tif (type == 'spreadsheet') {\n\t\tconsole.log(api.getGoogleSheetAssetURL(assetId))\n\t}\n}"
+      ]
+    },
+    {
+      "name": "isGoogleSheetAsset",
+      "arguments": [
+        {
+          "name": "assetId",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "return_type": "boolean",
+      "description": "Returns true if the Asset is a Google Sheet.",
+      "type": "function",
+      "docs_description": "Returns true if the Asset is a Google Sheet.",
+      "examples": []
+    },
+    {
+      "name": "loadCanvaSheet",
+      "arguments": [
+        {
+          "name": "designId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "page",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "return_type": "string",
+      "description": "Loads a Canva Sheet design as a CSV asset and returns the asset ID. `page` is 1-based; defaults to 1 if omitted.",
+      "type": "function",
+      "docs_description": "Load a Canva Sheet. If the `page` argument is left blank (e.g. \"\") or omitted then page 1 will be loaded. This function returns the newly created `assetId`.",
+      "examples": [
+        "var sheetId = '[yourCanvaSheetId]'\nconsole.log(api.loadCanvaSheet(sheetId, '1'))"
+      ]
+    },
+    {
+      "name": "replaceCanvaSheet",
+      "arguments": [
+        {
+          "name": "assetId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "designId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "page",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "description": "Replaces a Canva Sheet asset with a new design id (and optional page; defaults to 1).",
+      "type": "function",
+      "return_type": "void",
+      "docs_description": "Replace an existing Canva Sheet Asset with another. If the `page` argument is left blank (e.g. \"\") or omitted then page 1 will be loaded.",
+      "examples": [
+        "var sheetId = '[yourCanvaSheetId]'\nvar newSheetId = '[yourNewCanvaSheetId]'\nvar assetId = api.loadCanvaSheet(sheetId, '1')\napi.replaceCanvaSheet(assetId, newSheetId, '1')"
+      ]
+    },
+    {
+      "name": "getCanvaSheetAssetURL",
+      "arguments": [
+        {
+          "name": "assetId",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "return_type": "string",
+      "description": "Returns the URL for the given Canva Sheet Asset.",
+      "type": "function",
+      "docs_description": "Return the URL for the given Canva Sheet Asset.",
+      "examples": [
+        "var sheetId = '[yourCanvaSheetId]'\nvar assetId = api.loadCanvaSheet(sheetId, '1')\nvar url = api.getCanvaSheetAssetURL(assetId)\nconsole.log(url)"
+      ]
+    },
+    {
+      "name": "isCanvaSheetAsset",
+      "arguments": [
+        {
+          "name": "assetId",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "return_type": "boolean",
+      "description": "Returns true if the Asset is a Canva Sheet.",
+      "type": "function",
+      "docs_description": "Return true if the Asset is a Canva Sheet.",
+      "examples": [
+        "var assetId = '[yourAssetId]'\nconsole.log(api.isCanvaSheetAsset(assetId))"
+      ]
+    },
+    {
       "name": "isFileAsset",
       "arguments": [
         {
@@ -3462,21 +3764,6 @@
       "description": "Returns the ICC profile name of an image asset. Returns empty string for sRGB or untagged images.",
       "type": "function",
       "docs_description": "Returns the ICC profile name of an image/video asset. Returns an empty string for sRGB or untagged images.",
-      "examples": []
-    },
-    {
-      "name": "isGoogleSheetAsset",
-      "arguments": [
-        {
-          "name": "assetId",
-          "type": "string",
-          "required": true
-        }
-      ],
-      "return_type": "boolean",
-      "description": "Returns true if the Asset is a Google Sheet.",
-      "type": "function",
-      "docs_description": "Returns true if the Asset is a Google Sheet.",
       "examples": []
     },
     {
@@ -3713,23 +4000,6 @@
       ]
     },
     {
-      "name": "getGoogleSheetAssetURL",
-      "arguments": [
-        {
-          "name": "assetId",
-          "type": "string",
-          "required": true
-        }
-      ],
-      "return_type": "string",
-      "description": "Returns the URL for the given Google Sheet Asset",
-      "type": "function",
-      "docs_description": "Return the URL for a given Google Sheet Asset.",
-      "examples": [
-        "var assets = api.getAssetWindowLayers(false)\nfor (let assetId of assets) {\n\tlet type = api.getAssetType(assetId)\n\tif (type == 'spreadsheet') {\n\t\tconsole.log(api.getGoogleSheetAssetURL(assetId))\n\t}\n}"
-      ]
-    },
-    {
       "name": "createAssetGroup",
       "arguments": [
         {
@@ -3772,6 +4042,350 @@
       "docs_description": "Return a list of all Layers in a Scene.",
       "examples": [
         "var layers = api.getAllSceneLayers()\nfor (layer of layers) {\n\tconsole.log(layer)\n}"
+      ]
+    },
+    {
+      "name": "getScenePalette",
+      "arguments": null,
+      "return_type": "string",
+      "description": "Retrieves the ID of the Scene Palette — a colorArray node that holds swatches shared across the scene. Combine with addSceneSwatch / removeSceneSwatch to manage swatches, then api.connect from \"<paletteId>.array.<index>\" into a material's materialColor to drive several shapes off one swatch (changing the swatch updates everything connected to it).",
+      "type": "function",
+      "docs_description": "Return the `layerId` of the Scene Palette — a `colorArray` Layer that holds swatches shared across the Scene. Combine with [addSceneSwatch](#addsceneswatch) and [removeSceneSwatch](#removesceneswatch) to manage the swatches, then [api.connect](#connect) from `<paletteId>.array.<index>` into a Material's `materialColor` to drive several Shapes off one swatch.",
+      "examples": [
+        "var paletteId = api.getScenePalette()\nconsole.log(api.getNiceName(paletteId))"
+      ]
+    },
+    {
+      "name": "addSceneSwatch",
+      "arguments": [
+        {
+          "name": "color",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "return_type": "number",
+      "description": "Adds a colour swatch to the Scene Palette and returns its array index. `color` is any string Cavalry can parse (e.g. \"#ff2266\"). `name` is the swatch label; if omitted, a name is derived from the closest named colour. Connect from \"<paletteId>.array.<index>\" (paletteId from getScenePalette()) into a material's materialColor to share the swatch across shapes.",
+      "type": "function",
+      "docs_description": "Add a colour swatch to the Scene Palette and return its array index. `color` is any string Cavalry can parse (e.g. `\"#ff2266\"`, `\"red\"`). The optional `name` is the swatch label; if omitted, a name is derived from the closest named colour.",
+      "examples": [
+        "var paletteId = api.getScenePalette()\nvar index = api.addSceneSwatch('#ff2266', 'Hot Pink')\n// Drive a Shape's fill from the swatch.\nvar rectId = api.primitive('rectangle', 'My Rectangle')\napi.connect(paletteId, 'array.' + index, rectId, 'materialColor')"
+      ]
+    },
+    {
+      "name": "removeSceneSwatch",
+      "arguments": [
+        {
+          "name": "index",
+          "type": "number",
+          "required": true
+        }
+      ],
+      "return_type": "boolean",
+      "description": "Removes the swatch at the given index from the Scene Palette. Indices match those returned by addSceneSwatch. Returns true on success.",
+      "type": "function",
+      "docs_description": "Remove the swatch at the given index from the Scene Palette. Indices match those returned by [addSceneSwatch](#addsceneswatch). Returns true on success.",
+      "examples": [
+        "var index = api.addSceneSwatch('#ff2266')\napi.removeSceneSwatch(index)"
+      ]
+    },
+    {
+      "name": "listPalettes",
+      "arguments": [
+        {
+          "name": "scope",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "return_type": "unknown",
+      "description": "Lists file-backed palettes. `scope` is \"library\", \"project\", or \"all\" (default \"all\"). Returns [{name, scope, path, swatchCount}, ...]. Excludes the scene palette — use getScenePalette() for that.",
+      "type": "function",
+      "docs_description": "List file-backed Palettes. `scope` is `\"library\"`, `\"project\"`, or `\"all\"` (default). Returns an array of objects with `name`, `scope`, `path` and `swatchCount`. The Scene Palette is excluded — use [getScenePalette](#getscenepalette) for that.",
+      "examples": [
+        "var palettes = api.listPalettes('project')\nfor (var p of palettes) {\n\tconsole.log(p.name + ' (' + p.swatchCount + ' swatches) @ ' + p.path)\n}"
+      ]
+    },
+    {
+      "name": "getPalette",
+      "arguments": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "scope",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "return_type": "unknown",
+      "description": "Returns a palette by name: {name, scope, path, author, website, version, swatches: [{name, hex, uid}]} — or null if not found. `scope` is \"library\" or \"project\"; if omitted, both tiers are searched (library first).",
+      "type": "function",
+      "docs_description": "Return a Palette by name, or `null` if not found. The result has `name`, `scope`, `path`, `author`, `website`, `version` and a `swatches` array of `{name, hex, uid}`. `scope` is `\"library\"` or `\"project\"`; if omitted, both tiers are searched (library first).",
+      "examples": [
+        "var pal = api.getPalette('Sunset')\nif (pal) {\n\tconsole.log(pal.swatches.map((s) => s.hex).join(', '))\n}"
+      ]
+    },
+    {
+      "name": "lookupColor",
+      "arguments": [
+        {
+          "name": "query",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": "unknown",
+          "required": false
+        }
+      ],
+      "return_type": "unknown",
+      "description": "Looks up a colour by name across loaded library and project palettes. Returns [{paletteName, swatchName, hex}, ...] (substring/case-insensitive). options.qualified=true accepts \"Red (Cavalry)\" syntax and returns at most one match.",
+      "type": "function",
+      "docs_description": "Look up a colour by name across the loaded Library and Project Palettes. Returns an array of `{paletteName, swatchName, hex}`. Matching is case-insensitive substring by default. Pass `{qualified: true}` to accept the `\"swatchName (paletteName)\"` syntax — at most one match is returned in that mode.",
+      "examples": [
+        "// Substring search.\nvar matches = api.lookupColor('ocean')\nconsole.log(matches)\n\n// Qualified single-match.\nvar hits = api.lookupColor('Sky (Sunset)', { qualified: true })"
+      ]
+    },
+    {
+      "name": "generateHarmoniousPalette",
+      "arguments": [
+        {
+          "name": "baseColor",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "options",
+          "type": "unknown",
+          "required": false
+        }
+      ],
+      "return_type": "string[]",
+      "description": "Generates a harmonious palette of hex colours from a base colour. type is \"monochromatic\", \"analogous\", \"complementary\", \"splitComplementary\", \"triadic\", \"square\", \"rectangular\", \"circular\", or \"goldenRatio\". options.harmonic=true and options.colorSpace=\"RGB\"|\"LAB\" are honoured. count is clamped to the same per-type maxima used by the Color Window's Generator.",
+      "type": "function",
+      "docs_description": "Generate a harmonious Palette of hex colours from a base colour. `type` is one of `\"monochromatic\"`, `\"analogous\"`, `\"complementary\"`, `\"splitComplementary\"`, `\"triadic\"`, `\"square\"`, `\"rectangular\"`, `\"circular\"`, `\"goldenRatio\"`. `options.harmonic` (bool) and `options.colorSpace` (`\"RGB\"` or `\"LAB\"`) are honoured. `count` is clamped to the same per-type maximums used by the Color Window's Generator (e.g. Triadic caps at 6).",
+      "examples": [
+        "var colors = api.generateHarmoniousPalette('#3366ff', 5, 'complementary')\nconsole.log(colors)"
+      ]
+    },
+    {
+      "name": "createPalette",
+      "arguments": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "scope",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "swatches",
+          "type": "undefined[]",
+          "required": false
+        },
+        {
+          "name": "metadata",
+          "type": "unknown",
+          "required": false
+        }
+      ],
+      "return_type": "string",
+      "description": "Creates a new .pal palette file in the library or project palette folder. swatches is Array<string|Object> — strings are colour values; objects are {color, name?}. metadata is {author?, website?, overwrite?}. Returns the new file path. Refuses to overwrite an existing palette unless metadata.overwrite is true.",
+      "type": "function",
+      "docs_description": "Create a new `.pal` file in the Library or Project Palettes folder. `swatches` is an array where each entry is either a colour string (e.g. `\"#ff7700\"`) or an object `{color, name}`. `metadata` accepts `author`, `website` and `overwrite` — without `overwrite: true` the call throws if a Palette with that name already exists. Returns the newly written file path.",
+      "examples": [
+        "var path = api.createPalette(\n\t'Sunset',\n\t'project',\n\t['#ff7700', { color: '#ff3366', name: 'Coral' }, '#330066'],\n\t{ author: 'Me', website: 'https://example.com' },\n)\nconsole.log('Created at ' + path)"
+      ]
+    },
+    {
+      "name": "addSwatchToPalette",
+      "arguments": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "color",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "swatchName",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "scope",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "return_type": "number",
+      "description": "Adds a swatch to a saved palette and re-saves the .pal file. swatchName auto-derives from the closest named colour if omitted. Refuses non-.pal palettes (.ase/.theme are read-only). Returns the new swatch's uid.",
+      "type": "function",
+      "docs_description": "Add a swatch to a saved Palette and re-save the `.pal` file. `swatchName` auto-derives from the closest named colour if omitted. Refuses non-`.pal` Palettes (`.ase` and `.theme` are read-only). Returns the new swatch's stable `uid`.",
+      "examples": [
+        "var uid = api.addSwatchToPalette('Sunset', '#ff8800', 'Marigold', 'project')\nconsole.log('New swatch uid: ' + uid)"
+      ]
+    },
+    {
+      "name": "removeSwatchFromPalette",
+      "arguments": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "indexOrUid",
+          "type": "unknown",
+          "required": true
+        },
+        {
+          "name": "scope",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "return_type": "boolean",
+      "description": "Removes a swatch from a saved palette and re-saves the .pal file. Pass an integer to remove by index (0-based, in current swatch order); pass {uid: int} to remove by stable uid. Returns true on success.",
+      "type": "function",
+      "docs_description": "Remove a swatch from a saved Palette and re-save the `.pal` file. Pass an integer to remove by index (0-based, in current swatch order); pass `{uid: int}` to remove by stable uid (uids are returned by [getPalette](#getpalette) and [addSwatchToPalette](#addswatchtopalette)). Returns true on success.",
+      "examples": [
+        "// Remove by index.\napi.removeSwatchFromPalette('Sunset', 0, 'project')\n\n// Remove by uid.\nvar pal = api.getPalette('Sunset', 'project')\nvar uid = pal.swatches[0].uid\napi.removeSwatchFromPalette('Sunset', { uid: uid }, 'project')"
+      ]
+    },
+    {
+      "name": "importPalette",
+      "arguments": [
+        {
+          "name": "filePath",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "scope",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "return_type": "string",
+      "description": "Imports a .pal, .ase, or .theme palette file from outside Cavalry into the library or project palettes folder. Returns the destination path. Refuses unsupported extensions and path-traversal attempts.",
+      "type": "function",
+      "docs_description": "Import a `.pal`, `.ase`, or `.theme` Palette file from outside Cavalry into the Library or Project Palettes folder. Returns the destination path. Refuses unsupported extensions and any source path that resolves outside the target folder.",
+      "examples": [
+        "var imported = api.importPalette('/path/to/external.pal', 'project')\nconsole.log('Imported to ' + imported)"
+      ]
+    },
+    {
+      "name": "deletePalette",
+      "arguments": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "scope",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "return_type": "boolean",
+      "description": "Deletes a palette file from the library or project palettes folder. scope must be explicit (\"library\" or \"project\") to prevent accidental cross-tier deletion. Returns true on success.",
+      "type": "function",
+      "docs_description": "Delete a Palette file from the Library or Project Palettes folder. `scope` is mandatory to prevent accidental cross-tier deletion. Returns true on success.",
+      "examples": [
+        "api.deletePalette('Sunset', 'project')"
+      ]
+    },
+    {
+      "name": "createColorArrayFromPalette",
+      "arguments": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "scope",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "return_type": "string",
+      "description": "Creates a colorArray layer populated from a named palette's swatches, mirroring the Color Window's \"Create Array From Palette\" action. Returns the new layer's id. scope is \"library\" or \"project\"; both tiers are searched if omitted.",
+      "type": "function",
+      "docs_description": "Create a `colorArray` Layer populated from a named Palette's swatches, mirroring the Color Window's *Create Array From Palette* action. Returns the new Layer's id. `scope` is `\"library\"` or `\"project\"`; both tiers are searched if omitted.",
+      "examples": [
+        "var arrayId = api.createColorArrayFromPalette('Sunset', 'project')\nconsole.log(api.getArrayCount(arrayId, 'array'))"
+      ]
+    },
+    {
+      "name": "installPlugin",
+      "arguments": [
+        {
+          "name": "sourcePath",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "return_type": "unknown",
+      "description": "Install a plugin folder or .zip into the user's third-party plugins folder and register its definitions and strings into the live session. Returns {ok, installedPath, registeredTypes, wasUpdate, requiresRestart, error}. Schema-changing updates are detected (wasUpdate=true) but only take effect after a Cavalry restart — existing scene instances depend on the previous attribute layout. Source-only changes (.sksl, .js) are picked up the next time an instance is created. Always ask the user before calling this.",
+      "type": "function",
+      "docs_description": "Install a Plugin folder or `.zip` into the user's third-party Plugins folder and register its definitions and strings into the live session. The returned object contains:\n\n* `ok` (bool) — whether the install succeeded.\n* `installedPath` (string) — the destination folder.\n* `registeredTypes` (array of string) — newly registered `nodeType`s.\n* `wasUpdate` (bool) — true if an existing definition was matched and updated.\n* `requiresRestart` (bool) — schema-changing updates only take effect after a Cavalry restart, because existing Scene instances depend on the previous attribute layout. Source-only changes (`.sksl`, `.js`) are picked up the next time an instance is created.\n* `error` (string) — a description if `ok` is false.",
+      "examples": [
+        "var result = api.installPlugin('/path/to/MyPlugin')\nif (result.ok) {\n\tconsole.log(\n\t\t'Installed ' +\n\t\t\tresult.registeredTypes.length +\n\t\t\t' Layer types at ' +\n\t\t\tresult.installedPath,\n\t)\n\tif (result.requiresRestart) {\n\t\tconsole.log('Restart Cavalry for schema changes to take effect.')\n\t}\n} else {\n\tconsole.log('Install failed: ' + result.error)\n}"
+      ]
+    },
+    {
+      "name": "writePluginFile",
+      "arguments": [
+        {
+          "name": "pluginName",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "relPath",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "contents",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "return_type": "boolean",
+      "description": "Writes a text file to <pluginName>/<relPath> in the plugins folder; refuses escaping paths. Used by the MCP before installPlugin; ask the user first.",
+      "type": "function",
+      "docs_description": "Write a single text file under `<thirdPartyPluginsFolder>/<pluginName>/<relPath>`. Refuses paths that escape the Plugin folder, names containing path-traversal characters, or empty inputs. Creates parent directories as needed. Returns true on success. Use this to author Plugin source files (`definitions.json`, `strings.json`, `.sksl`, `.js`, etc.) before calling [installPlugin](#installplugin).",
+      "examples": [
+        "api.writePluginFile('MyPlugin', 'definitions.json', '[]')\napi.writePluginFile('MyPlugin', 'strings.json', '{}')\napi.writePluginFile('MyPlugin', 'Source/script.js', '// plugin code')"
       ]
     },
     {
@@ -3938,6 +4552,28 @@
       "docs_description": "Gets the Project Asset path (if a [Project](../../user-interface/menus/window-menu/assets-window/project-settings.mdx) is set). This path does not include a trailing `/`",
       "examples": [
         "console.log(api.getPalettesPath())"
+      ]
+    },
+    {
+      "name": "getLibraryPalettePath",
+      "arguments": null,
+      "return_type": "string",
+      "description": "Retrieves the path of the user's shared palette library folder. Palettes here are visible to every project (the \"library\" tier in listPalettes/createPalette/etc.).",
+      "type": "function",
+      "docs_description": "Gets the path of the user's shared Palette Library folder. Palettes saved here are visible to every Project (the `\"library\"` tier in [createPalette](#createpalette), [listPalettes](#listpalettes), etc.). This path does not include a trailing `/`.",
+      "examples": [
+        "console.log(api.getLibraryPalettePath())"
+      ]
+    },
+    {
+      "name": "getThirdPartyPluginsFolder",
+      "arguments": null,
+      "return_type": "string",
+      "description": "Retrieves the folder where installPlugin and writePluginFile place third-party plugins. Useful for inspecting or cleaning up plugins from a script.",
+      "type": "function",
+      "docs_description": "Gets the folder where [installPlugin](#installplugin) and [writePluginFile](#writepluginfile) place third-party plugins. Useful for inspecting or cleaning up installed plugins from a script. This path does not include a trailing `/`.",
+      "examples": [
+        "console.log(api.getThirdPartyPluginsFolder())"
       ]
     },
     {
@@ -5129,6 +5765,28 @@
       ]
     },
     {
+      "name": "openWindow",
+      "arguments": [
+        {
+          "name": "windowType",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "minHeight",
+          "type": "number",
+          "required": false
+        }
+      ],
+      "description": "Opens a window of the given type. An optional minimum height can be provided.",
+      "type": "function",
+      "return_type": "void",
+      "docs_description": "Open a window of the given type and set a minimum height.",
+      "examples": [
+        "api.openWindow('meshExplorer', 400)"
+      ]
+    },
+    {
       "name": "WebClient",
       "type": "class",
       "docs_description": "",
@@ -5679,7 +6337,7 @@
     },
     {
       "name": "getPoints",
-      "arguments": [],
+      "arguments": null,
       "return_type": "cavalry.Point",
       "description": "Retrieves an array of point objects from all meshes.",
       "type": "function",
@@ -7072,6 +7730,20 @@
           "return_type": "Path",
           "docs_description": "Returns a Path representing the combined geometry of this mesh and all child meshes.",
           "examples": []
+        },
+        {
+          "name": "getMaterialAtIndex",
+          "arguments": [
+            {
+              "name": "index",
+              "type": "number"
+            }
+          ],
+          "return_type": "Material",
+          "docs_description": "Return the material for the path at the specified index, or undefined if the path inherits its material from the parent mesh.",
+          "examples": [
+            "var mat = mesh.getMaterialAtIndex(0)"
+          ]
         }
       ],
       "docs_description": "The Mesh class is a container which can be used to construct multiple Paths and include [materials](#material-class). If unique Materials for each Path are not required, use [path.append()](#append) to add Paths together.",
@@ -10391,6 +11063,48 @@
       ]
     },
     {
+      "name": "SegmentedControl",
+      "extends": "Widget",
+      "type": "class",
+      "constructors": {
+        "arguments": [
+          {
+            "name": "items",
+            "type": "unknown"
+          }
+        ]
+      },
+      "methods": [
+        {
+          "name": "getSelected",
+          "description": "returns the id (index) of the selected segment, or -1 if none is selected.",
+          "arguments": [],
+          "return_type": "number"
+        },
+        {
+          "name": "setSelected",
+          "description": "select a segment by id (index).",
+          "arguments": [
+            {
+              "name": "id",
+              "type": "number"
+            }
+          ],
+          "return_type": "void"
+        },
+        {
+          "name": "onValueChanged",
+          "description": "assign a function to this variable to be called when the selected segment changes. The callback receives the id (index) of the newly selected segment.",
+          "return_type": "void"
+        }
+      ],
+      "docs_description": "| Field      | Type   | Description                                                                                         |\n| ---------- | ------ | --------------------------------------------------------------------------------------------------- |\n| icon       | string | Path to an 18x18px (+ @2x) icon image.                                                              |\n| activeIcon | string | Optional path to an alternate icon shown only while the segment is selected.                        |\n| label      | string | Text for the segment. If any segment in the array has a label, labels are shown next to every icon. |",
+      "examples": [
+        "// Without labels\nvar alignment = new ui.SegmentedControl([\n\t{ icon: `${api.getAppAssetsPath()}/icons/alignLeft.png` },\n\t{ icon: `${api.getAppAssetsPath()}/icons/alignCentre.png` },\n\t{ icon: `${api.getAppAssetsPath()}/icons/alignRight.png` },\n])\nalignment.onValueChanged = function (id) {\n\tconsole.log('Selected: ' + id)\n}\nalignment.setSelected(0)\nui.add(alignment)\nui.show()",
+        "// With labels\nvar layout = new ui.VLayout()\nvar seg = new ui.SegmentedControl([\n\t{ icon: 'icons:alignLeft.png', label: 'Left' },\n\t{ icon: 'icons:alignCentre.png', label: 'Centre' },\n\t{ icon: 'icons:alignRight.png', label: 'Right' },\n])\nseg.setSelected(0)\nseg.onValueChanged = function (id) {\n\tconsole.log('Selected: ' + id)\n}\nlayout.add(seg)\nui.add(layout)\nui.show()"
+      ]
+    },
+    {
       "name": "Slider",
       "extends": "Widget",
       "type": "class",
@@ -10452,6 +11166,17 @@
         ]
       },
       "methods": [
+        {
+          "name": "add",
+          "description": "Add a widget to the root layout.",
+          "arguments": [
+            {
+              "name": "...widgets",
+              "type": "object[]"
+            }
+          ],
+          "return_type": "void"
+        },
         {
           "name": "setSpaceBetween",
           "description": "Set the padding space between widgets in the layout. The default value is 3 pixels.",

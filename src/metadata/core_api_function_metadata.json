@@ -335,9 +335,7 @@
     },
     {
         "name": "getPoints",
-        "arguments": [
-            null
-        ],
+        "arguments": null,
         "return_type": "Array<Object>",
         "description": "Retrieves an array of point objects from all meshes.",
         "namespace": "@JS_DEFORMER",
@@ -738,30 +736,22 @@
             },
             {
                 "name": "append",
-                "arguments": [
-                    null
-                ],
+                "arguments": [],
                 "description": "Appends another Path object to this path."
             },
             {
                 "name": "intersect",
-                "arguments": [
-                    null
-                ],
+                "arguments": [],
                 "description": "Sets this path to the intersection of it and another path."
             },
             {
                 "name": "unite",
-                "arguments": [
-                    null
-                ],
+                "arguments": [],
                 "description": "Combines this path with another path."
             },
             {
                 "name": "difference",
-                "arguments": [
-                    null
-                ],
+                "arguments": [],
                 "description": "Subtracts another path from this path."
             },
             {
@@ -790,9 +780,7 @@
             },
             {
                 "name": "fromObject",
-                "arguments": [
-                    null
-                ],
+                "arguments": [],
                 "description": "Deserializes and sets the path from an object."
             },
             {
@@ -911,9 +899,7 @@
             },
             {
                 "name": "setPathData",
-                "arguments": [
-                    null
-                ],
+                "arguments": [],
                 "description": "Sets the path based on the provided path data."
             },
             {
@@ -982,17 +968,13 @@
             },
             {
                 "name": "lineIntersections",
-                "arguments": [
-                    null
-                ],
+                "arguments": [],
                 "return_type": "None",
                 "description": "Returns an array of points at which the path and line intersect."
             },
             {
                 "name": "pathIntersections",
-                "arguments": [
-                    null
-                ],
+                "arguments": [],
                 "return_type": "None",
                 "description": "Returns an array of points at which this path and the given path intersect."
             },
@@ -1223,8 +1205,7 @@
                         "name": "index",
                         "type": "int",
                         "required": true
-                    },
-                    null
+                    }
                 ],
                 "description": "Sets the path at the specified index."
             },
@@ -1235,8 +1216,7 @@
                         "name": "index",
                         "type": "int",
                         "required": true
-                    },
-                    null
+                    }
                 ],
                 "description": "Sets the path data at the specified index."
             },
@@ -1255,6 +1235,18 @@
                     }
                 ],
                 "description": "Sets the material for the path at the specified index. Pass null to clear the material and inherit from parent."
+            },
+            {
+                "name": "getMaterialAtIndex",
+                "arguments": [
+                    {
+                        "name": "index",
+                        "type": "int",
+                        "required": true
+                    }
+                ],
+                "return_type": "None",
+                "description": "Returns the material for the path at the specified index, or undefined if the path inherits its material from the parent mesh."
             },
             {
                 "name": "getBoundingBox",
@@ -1452,9 +1444,7 @@
             },
             {
                 "name": "lineIntersection",
-                "arguments": [
-                    null
-                ],
+                "arguments": [],
                 "return_type": "None",
                 "description": "Returns the point at which two lines intersect, or null if there's no intersection."
             }
@@ -1560,9 +1550,7 @@
             },
             {
                 "name": "inverted",
-                "arguments": [
-                    null
-                ],
+                "arguments": [],
                 "return_type": "None",
                 "description": "Returns a new matrix that is the inverse of this matrix."
             },
@@ -2209,9 +2197,7 @@
     },
     {
         "name": "getFontFamilies",
-        "arguments": [
-            null
-        ],
+        "arguments": null,
         "return_type": "Array<string>",
         "description": "Retrieves a list of available font families.",
         "namespace": "@JS_CORE_API",

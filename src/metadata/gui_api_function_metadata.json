@@ -72,6 +72,24 @@
         "type": "function"
     },
     {
+        "name": "scrollToAttribute",
+        "arguments": [
+            {
+                "name": "layerId",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "attrId",
+                "type": "string",
+                "required": true
+            }
+        ],
+        "description": "Loads the given layer in the Attribute Editor and scrolls to the specified attribute row.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
         "name": "getHomeFolder",
         "arguments": null,
         "return_type": "string",
@@ -100,6 +118,68 @@
         "arguments": null,
         "return_type": "string",
         "description": "Returns the path to the user's desktop directory.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "installPlugin",
+        "arguments": [
+            {
+                "name": "sourcePath",
+                "type": "string",
+                "required": true
+            }
+        ],
+        "return_type": "Object",
+        "description": "Install a plugin folder or .zip into the user's third-party plugins folder and register its definitions and strings into the live session. Returns {ok, installedPath, registeredTypes, wasUpdate, requiresRestart, error}. Schema-changing updates are detected (wasUpdate=true) but only take effect after a Cavalry restart \u2014 existing scene instances depend on the previous attribute layout. Source-only changes (.sksl, .js) are picked up the next time an instance is created. Always ask the user before calling this.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "snapshotLayer",
+        "arguments": [
+            {
+                "name": "layerId",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "maxSize",
+                "type": "number",
+                "required": true
+            },
+            {
+                "name": "debugWritePath",
+                "type": "string",
+                "required": true
+            }
+        ],
+        "return_type": "Object",
+        "description": "Render a single drawable layer and its descendants to an offscreen PNG, returned as base64.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "writePluginFile",
+        "arguments": [
+            {
+                "name": "pluginName",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "relPath",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "contents",
+                "type": "string",
+                "required": true
+            }
+        ],
+        "return_type": "bool",
+        "description": "Writes a text file to <pluginName>/<relPath> in the plugins folder; refuses escaping paths. Used by the MCP before installPlugin; ask the user first.",
         "namespace": "@JS_GUI_API",
         "type": "function"
     },
@@ -206,6 +286,29 @@
             }
         ],
         "description": "Replaces a Google Sheet asset with a new one using specified file and sheet IDs.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "replaceCanvaSheet",
+        "arguments": [
+            {
+                "name": "assetId",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "designId",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "page",
+                "type": "string",
+                "required": false
+            }
+        ],
+        "description": "Replaces a Canva Sheet asset with a new design id (and optional page; defaults to 1).",
         "namespace": "@JS_GUI_API",
         "type": "function"
     },
@@ -551,24 +654,6 @@
         "type": "function"
     },
     {
-        "name": "replaceAsset",
-        "arguments": [
-            {
-                "name": "assetId",
-                "type": "string",
-                "required": true
-            },
-            {
-                "name": "newPath",
-                "type": "string",
-                "required": true
-            }
-        ],
-        "description": "Replaces an asset with one located at a new file path.",
-        "namespace": "@JS_GUI_API",
-        "type": "function"
-    },
-    {
         "name": "getGoogleSheetAssetURL",
         "arguments": [
             {
@@ -579,6 +664,20 @@
         ],
         "return_type": "string",
         "description": "Returns the URL for the given Google Sheet Asset",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "getCanvaSheetAssetURL",
+        "arguments": [
+            {
+                "name": "assetId",
+                "type": "string",
+                "required": true
+            }
+        ],
+        "return_type": "string",
+        "description": "Returns the URL for the given Canva Sheet Asset.",
         "namespace": "@JS_GUI_API",
         "type": "function"
     },
@@ -607,6 +706,20 @@
         ],
         "return_type": "bool",
         "description": "Returns true if the Asset is a Google Sheet.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "isCanvaSheetAsset",
+        "arguments": [
+            {
+                "name": "assetId",
+                "type": "string",
+                "required": true
+            }
+        ],
+        "return_type": "bool",
+        "description": "Returns true if the Asset is a Canva Sheet.",
         "namespace": "@JS_GUI_API",
         "type": "function"
     },
@@ -643,6 +756,29 @@
         "arguments": null,
         "return_type": "bool",
         "description": "Saves the current scene.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "getCanvaPreflightResults",
+        "arguments": null,
+        "return_type": "string",
+        "description": "Runs the Canva pre-flight checks and returns the results as a JSON string.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "runCanvaPreflightModal",
+        "arguments": null,
+        "return_type": "bool",
+        "description": "Runs the Canva pre-flight checks and returns true if no blocking issues were found.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "discardCanvaExportAttempt",
+        "arguments": null,
+        "description": "Abandons the export attempt begun by runCanvaPreflightModal when the user backs out before exportArchive runs.",
         "namespace": "@JS_GUI_API",
         "type": "function"
     },
@@ -938,6 +1074,14 @@
         "type": "function"
     },
     {
+        "name": "recoverySessionDirectory",
+        "arguments": null,
+        "return_type": "string",
+        "description": "Returns this session's crash-recovery directory. For testing.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
         "name": "encrypt",
         "arguments": [
             {
@@ -1045,6 +1189,31 @@
         "arguments": null,
         "return_type": "string",
         "description": "Returns the viewport's active tool.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "resetWorkspace",
+        "arguments": null,
+        "description": "Resets the workspace to the default layout.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "openWindow",
+        "arguments": [
+            {
+                "name": "windowType",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "minHeight",
+                "type": "int",
+                "required": false
+            }
+        ],
+        "description": "Opens a window of the given type. An optional minimum height can be provided.",
         "namespace": "@JS_GUI_API",
         "type": "function"
     }

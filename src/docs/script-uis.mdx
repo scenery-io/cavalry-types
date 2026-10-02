@@ -27,10 +27,6 @@ keywords:
     ]
 ---
 
-import ProHeader from '@site/src/components/snippets/ProHeader.mdx'
-
-<ProHeader utmContent={frontMatter.id} />
-
 ## Introduction
 
 Scripts with user interfaces (UIs) can be built to make them easier to use or share with other people. They can be tested from the [JavaScript Editor](../../user-interface/menus/window-menu/javascript-editor.mdx) and then saved to the file system meaning they can be opened as a Window and so docked and saved as part of a [Workspace](../../user-interface/menus/window-menu/general/workspaces.mdx).
@@ -1808,6 +1804,58 @@ ui.add(progress)
 ui.show()
 ```
 
+### SegmentedControl
+
+#### Functions
+
+-   `SegmentedControl(items:[object])` // the constructor requires an array of segment objects, see below.
+-   `getSelected() → int` // returns the id (index) of the selected segment, or -1 if none is selected.
+-   `setSelected(id:int)` // select a segment by id (index).
+
+#### Object Fields
+
+| Field      | Type   | Description                                                                                         |
+| ---------- | ------ | --------------------------------------------------------------------------------------------------- |
+| icon       | string | Path to an 18x18px (+ @2x) icon image.                                                              |
+| activeIcon | string | Optional path to an alternate icon shown only while the segment is selected.                        |
+| label      | string | Text for the segment. If any segment in the array has a label, labels are shown next to every icon. |
+
+#### Callbacks
+
+-   `onValueChanged` // assign a function to this variable to be called when the selected segment changes. The callback receives the id (index) of the newly selected segment.
+
+```js
+// Without labels
+var alignment = new ui.SegmentedControl([
+	{ icon: `${api.getAppAssetsPath()}/icons/alignLeft.png` },
+	{ icon: `${api.getAppAssetsPath()}/icons/alignCentre.png` },
+	{ icon: `${api.getAppAssetsPath()}/icons/alignRight.png` },
+])
+alignment.onValueChanged = function (id) {
+	console.log('Selected: ' + id)
+}
+alignment.setSelected(0)
+ui.add(alignment)
+ui.show()
+```
+
+```js
+// With labels
+var layout = new ui.VLayout()
+var seg = new ui.SegmentedControl([
+	{ icon: 'icons:alignLeft.png', label: 'Left' },
+	{ icon: 'icons:alignCentre.png', label: 'Centre' },
+	{ icon: 'icons:alignRight.png', label: 'Right' },
+])
+seg.setSelected(0)
+seg.onValueChanged = function (id) {
+	console.log('Selected: ' + id)
+}
+layout.add(seg)
+ui.add(layout)
+ui.show()
+```
+
 ### Slider
 
 A Slider which returns values in a range.
@@ -1844,12 +1892,13 @@ Layouts can be used in combination to create more complex UIs.
 Add a layout where its content can reflow dependent on the layout's dimensions.
 
 -   `FlowLayout(horizontalSpacing:int, verticalSpacing:int)`
+-   `add(widget:object)` // Add a widget to the root layout.
 -   `setSpaceBetween(pixel:int)` // Set the padding space between widgets in the layout. The default value is 3 pixels.
 -   `setMargins(left:int, top:int, right:int, bottom:int)` // Set the margins of the layout (how far from the edges the widgets can be). The default value is 3 pixels on all sides.
 -   `itemCount() → int` // Returns the number of items in the layout.
 -   `clear()` // Clear the Layout.
 -   `removeAt(int:index)` // Remove an item at the given index.
--   `getHeightForWidth(width:int)` -> int // returns how high this layout would be at a given width
+-   `getHeightForWidth(width:int) -> int` // returns how high this layout would be at a given width
 
 ```js
 ui.setTitle('Flow Layout')

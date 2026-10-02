@@ -1652,6 +1652,50 @@ The `onContextMenuRequest` callback should return an array of menu item objects:
 		setMaximum(maximum: number): void
 	}
 	/**
+	* | Field      | Type   | Description                                                                                         |
+| ---------- | ------ | --------------------------------------------------------------------------------------------------- |
+| icon       | string | Path to an 18x18px (+ @2x) icon image.                                                              |
+| activeIcon | string | Optional path to an alternate icon shown only while the segment is selected.                        |
+| label      | string | Text for the segment. If any segment in the array has a label, labels are shown next to every icon. |
+	* @example
+	* // Without labels
+	* var alignment = new ui.SegmentedControl([
+	* 	{ icon: `${api.getAppAssetsPath()}/icons/alignLeft.png` },
+	* 	{ icon: `${api.getAppAssetsPath()}/icons/alignCentre.png` },
+	* 	{ icon: `${api.getAppAssetsPath()}/icons/alignRight.png` },
+	* ])
+	* alignment.onValueChanged = function (id) {
+	* 	console.log('Selected: ' + id)
+	* }
+	* alignment.setSelected(0)
+	* ui.add(alignment)
+	* ui.show()
+	* @example
+	* // With labels
+	* var layout = new ui.VLayout()
+	* var seg = new ui.SegmentedControl([
+	* 	{ icon: 'icons:alignLeft.png', label: 'Left' },
+	* 	{ icon: 'icons:alignCentre.png', label: 'Centre' },
+	* 	{ icon: 'icons:alignRight.png', label: 'Right' },
+	* ])
+	* seg.setSelected(0)
+	* seg.onValueChanged = function (id) {
+	* 	console.log('Selected: ' + id)
+	* }
+	* layout.add(seg)
+	* ui.add(layout)
+	* ui.show()
+	*/
+	class SegmentedControl extends Widget {
+		constructor(items: unknown)
+		/** returns the id (index) of the selected segment, or -1 if none is selected. */
+		getSelected(): number
+		/** select a segment by id (index). */
+		setSelected(id: number): void
+		/** assign a function to this variable to be called when the selected segment changes. The callback receives the id (index) of the newly selected segment. */
+		onValueChanged: () => void
+	}
+	/**
 	 * A Slider which returns values in a range.
 	 * @example
 	 * var slider = new ui.Slider()
@@ -1699,6 +1743,8 @@ The `onContextMenuRequest` callback should return an array of menu item objects:
 	 */
 	class FlowLayout {
 		constructor(horizontalSpacing: number, verticalSpacing: number)
+		/** Add a widget to the root layout. */
+		add(...widgets: object[]): void
 		/** Set the padding space between widgets in the layout. The default value is 3 pixels. */
 		setSpaceBetween(pixel: number): void
 		/** Set the margins of the layout (how far from the edges the widgets can be). The default value is 3 pixels on all sides. */

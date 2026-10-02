@@ -669,6 +669,14 @@ Sets the child-mesh at the given index. Used when modifying mesh hierarchies, su
 
 Returns a Path representing the combined geometry of this mesh and all child meshes.
 
+#### getMaterialAtIndex(index:int) → Material {/* #getmaterialatindex */}
+
+Return the material for the path at the specified index, or undefined if the path inherits its material from the parent mesh.
+
+```js
+var mat = mesh.getMaterialAtIndex(0)
+```
+
 ### Material Class
 
 Add material (Fill and Stroke) properties to a [Mesh](#mesh-class).

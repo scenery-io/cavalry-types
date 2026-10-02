@@ -284,6 +284,8 @@ See `Create > Demo Scenes > JavaScript > Spirograph Distribution` or `Create > D
 		setChildMeshAtIndex(index: number, mesh: cavalry.Mesh): void
 		/** Returns a Path representing the combined geometry of this mesh and all child meshes. */
 		getFlattenedPath(): Path
+		/** Return the material for the path at the specified index, or undefined if the path inherits its material from the parent mesh. */
+		getMaterialAtIndex(index: number): Material
 	}
 	/**
 	 * Add material (Fill and Stroke) properties to a [Mesh](#mesh-class).

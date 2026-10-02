@@ -1,5 +1,9 @@
 declare namespace api {
 	/**
+	 * Returns the URI of an asset. For file based assets this is the absolute file path.
+	 */
+	function getAssetURI(assetId: string): string
+	/**
 	 * Retrieves the preference value for a specified key.
 	 */
 	function getPreference(key: string): unknown
@@ -7,6 +11,30 @@ declare namespace api {
 	 * Sets a preference value for a specified key.
 	 */
 	function setPreference(key: string, object: unknown): void
+	/**
+	 * Loads the given layer in the Attribute Editor and scrolls to the specified attribute row.
+	 */
+	function scrollToAttribute(layerId: string, attrId: string): void
+	/**
+	 * Runs the Canva pre-flight checks and returns the results as a JSON string.
+	 */
+	function getCanvaPreflightResults(): string
+	/**
+	 * Runs the Canva pre-flight checks and returns true if no blocking issues were found.
+	 */
+	function runCanvaPreflightModal(): boolean
+	/**
+	 * Abandons the export attempt begun by runCanvaPreflightModal when the user backs out before exportArchive runs.
+	 */
+	function discardCanvaExportAttempt(): void
+	/**
+	 * Returns this session's crash-recovery directory. For testing.
+	 */
+	function recoverySessionDirectory(): string
+	/**
+	 * Resets the workspace to the default layout.
+	 */
+	function resetWorkspace(): void
 	/**
 	 * Move the playhead to a specific frame.
 	 * @example
@@ -158,12 +186,6 @@ Direction returns:
 	* console.log(JSON.stringify(api.getGuideInfo(api.getActiveComp())))
 	*/
 	function getGuideInfo(compId: string): object[]
-	/**
-	 * Get a list of all the Attributes that have been added to the Control Centre.
-	 * @example
-	 * console.log(api.getControlCentreAttributes(api.getActiveComp()))
-	 */
-	function getControlCentreAttributes(): string[]
 	/**
 	 * Converts a given frame number into an equivalent timecode based on a given frame rate. Note that a timecode starts at frame 0 regardless of the Frame Range set in the Composition Settings.
 	 * @example
@@ -1131,6 +1153,21 @@ Valid **Magic Easing** names are:
 		expression?: string,
 	): void
 	/**
+	 * Return the Magic Easing name set on an Attribute's keyframe (and its custom expression, if the easing is "Custom") — or null if the Attribute isn't keyframed or has no keyframe on that frame.
+	 * @example
+	 * var shapeId = api.create('basicShape')
+	 * api.keyframe(shapeId, 0, { 'position.x': 0 })
+	 * api.keyframe(shapeId, 24, { 'position.x': 200 })
+	 * api.magicEasing(shapeId, 'position.x', 0, 'SlowOut')
+	 * var magic = api.getMagicEasing(shapeId, 'position.x', 0)
+	 * console.log(JSON.stringify(magic))
+	 */
+	function getMagicEasing(
+		layerId: string,
+		attrId: string,
+		frame: number,
+	): { easingName: string; expression: string }
+	/**
 	 * Get the keyframe times for an attribute.
 	 */
 	function getKeyframeTimes(layerId: string, attrId: string): void
@@ -1386,6 +1423,28 @@ The preset index can be:
 	 */
 	function removeFromControlCentre(layerId: string, attrId: string): void
 	/**
+	 * Replace the Control Centre layout coded items array. Each item is either `{"kind": "attr", "path": "<nodeId>.<attrId>"}` or `{"kind": "group", "id": ".psed": false, "attrs": ["<nodeId>.<attrId>", ...]}`.
+	 * @example
+	 * var starId = api.primitive('star', 'Star')
+	 * var layout = [
+	 * 	{ kind: 'attr', path: starId + '.position' },
+	 * 	{
+	 * 		kind: 'group',
+	 * 		id: 'g1',
+	 * 		name: 'Points',
+	 * 		attrs: [starId + '.generator.radius'],
+	 * 	},
+	 * ]
+	 * api.controlCentreSetLayout(JSON.stringify(layout))
+	 */
+	function controlCentreSetLayout(layoutJson: string): void
+	/**
+	 * Get a list of all the Attributes that have been added to the Control Centre.
+	 * @example
+	 * console.log(api.getControlCentreAttributes(api.getComps()))
+	 */
+	function getControlCentreAttributes(): string[]
+	/**
 	 * Add a Pre-Comp Override to an Attribute.
 	 * @example
 	 * var layerId = api.primitive('ellipse', 'My Ellipse')
@@ -1438,7 +1497,11 @@ The preset index can be:
 	 * 	'#ffffff',
 	 * ])
 	 */
-	function setGradientFromColors(layerId?: string): void
+	function setGradientFromColors(
+		layerId: string,
+		attrId: string,
+		hexColors: string[],
+	): void
 	/**
 	 * Set the interpolation for every Color Stop on a gradient attribute: Linear = 0, Step = 1, Smooth = 2, Crush = 3, Smooth Blend = 4, Contrast = 5.
 	 * @example
@@ -1451,7 +1514,24 @@ The preset index can be:
 	 * ])
 	 * api.setGradientInterpolation(gradientId, 'generator.gradient', 1)
 	 */
-	function setGradientInterpolation(layerId?: string): void
+	function setGradientInterpolation(
+		layerId: string,
+		attrId: string,
+		interpolation: number,
+	): void
+	/**
+	 * Set a gradient attribute's stops from a saved Palette's swatches. This mirrors the Color Window's *Set Gradient From Palette* action. `name` is the Palette's display name (the same value returned by [listPalettes](#listpalettes)). `scope` can be `"library"` or `"project"`; if omitted, both tiers are searched (library first).
+	 * @example
+	 * api.createPalette('Sunset', 'project', ['#ff7700', '#ff3366', '#330066'])
+	 * var gradientId = api.create('gradientShader', 'Gradient Shader')
+	 * api.setGradientFromPalette(gradientId, 'generator.gradient', 'Sunset')
+	 */
+	function setGradientFromPalette(
+		layerId: string,
+		attrId: string,
+		name: string,
+		scope?: string,
+	): boolean
 	/**
 	 * Returns true if an attribute value matches its default value.
 	 */
@@ -1732,6 +1812,38 @@ The render extension (.svg) will be added to the filename.
 		skipComps?: boolean,
 	): void
 	/**
+	* Render a single drawable Layer (and its descendants) to an offscreen square PNG, returned as base64. This is intended for inspection/preview rather than production rendering — it is not affected by the Render Queue.
+
+`maxSize` is the longest edge of the resulting image and is clamped to the range 32–1024 (256 is a sensible default). Pass an empty string for `debugWritePath` to skip the disk write, or an absolute path to also write the PNG there for inspection.
+
+The returned object contains:
+
+* `ok` (bool) — whether the snapshot succeeded.
+* `width`, `height` (int) — dimensions of the PNG.
+* `pngBase64` (string) — the PNG bytes as base64, empty on failure.
+* `error` (string) — a description if `ok` is false (unknown Layer id, non-drawable Layer, Composition root, empty bounds, etc.).
+	* @example
+	* var rectId = api.primitive('rectangle', 'My Rectangle')
+	* var snap = api.snapshotLayer(rectId, 256, '')
+	* if (snap.ok) {
+	* 	console.log(
+	* 		snap.width +
+	* 			'x' +
+	* 			snap.height +
+	* 			' PNG returned (' +
+	* 			snap.pngBase64.length +
+	* 			' base64 chars)',
+	* 	)
+	* } else {
+	* 	console.log('Snapshot failed: ' + snap.error)
+	* }
+	*/
+	function snapshotLayer(
+		layerId: string,
+		maxSize: number,
+		debugWritePath: string,
+	): unknown
+	/**
 	 * Return a list of the Render Queue Items in the Render Manager.
 	 * @example
 	 * api.addRenderQueueItem(api.getActiveComp())
@@ -1886,6 +1998,58 @@ It's also possible to use `jsonFromAsset` to query a .csv asset. CSV Assets will
 		sheetId?: string,
 	): void
 	/**
+	 * Return the URL for a given Google Sheet Asset.
+	 * @example
+	 * var assets = api.getAssetWindowLayers(false)
+	 * for (let assetId of assets) {
+	 * 	let type = api.getAssetType(assetId)
+	 * 	if (type == 'spreadsheet') {
+	 * 		console.log(api.getGoogleSheetAssetURL(assetId))
+	 * 	}
+	 * }
+	 */
+	function getGoogleSheetAssetURL(assetId: string): string
+	/**
+	 * Returns true if the Asset is a Google Sheet.
+	 */
+	function isGoogleSheetAsset(assetId: string): boolean
+	/**
+	 * Load a Canva Sheet. If the `page` argument is left blank (e.g. "") or omitted then page 1 will be loaded. This function returns the newly created `assetId`.
+	 * @example
+	 * var sheetId = '[yourCanvaSheetId]'
+	 * console.log(api.loadCanvaSheet(sheetId, '1'))
+	 */
+	function loadCanvaSheet(designId: string, page?: string): string
+	/**
+	 * Replace an existing Canva Sheet Asset with another. If the `page` argument is left blank (e.g. "") or omitted then page 1 will be loaded.
+	 * @example
+	 * var sheetId = '[yourCanvaSheetId]'
+	 * var newSheetId = '[yourNewCanvaSheetId]'
+	 * var assetId = api.loadCanvaSheet(sheetId, '1')
+	 * api.replaceCanvaSheet(assetId, newSheetId, '1')
+	 */
+	function replaceCanvaSheet(
+		assetId: string,
+		designId: string,
+		page?: string,
+	): void
+	/**
+	 * Return the URL for the given Canva Sheet Asset.
+	 * @example
+	 * var sheetId = '[yourCanvaSheetId]'
+	 * var assetId = api.loadCanvaSheet(sheetId, '1')
+	 * var url = api.getCanvaSheetAssetURL(assetId)
+	 * console.log(url)
+	 */
+	function getCanvaSheetAssetURL(assetId: string): string
+	/**
+	 * Return true if the Asset is a Canva Sheet.
+	 * @example
+	 * var assetId = '[yourAssetId]'
+	 * console.log(api.isCanvaSheetAsset(assetId))
+	 */
+	function isCanvaSheetAsset(assetId: string): boolean
+	/**
 	 * Returns true if the Asset is a file asset (image, video, audio, Smart Folder etc.). A Google Sheet, Composition or Group will return false.
 	 */
 	function isFileAsset(assetId: string): boolean
@@ -1893,10 +2057,6 @@ It's also possible to use `jsonFromAsset` to query a .csv asset. CSV Assets will
 	 * Returns the ICC profile name of an image/video asset. Returns an empty string for sRGB or untagged images.
 	 */
 	function getProfileName(assetId: string): string
-	/**
-	 * Returns true if the Asset is a Google Sheet.
-	 */
-	function isGoogleSheetAsset(assetId: string): boolean
 	/**
 	 * Returns the name of the font family associated with a Font Asset.
 	 */
@@ -2023,18 +2183,6 @@ It's also possible to use `jsonFromAsset` to query a .csv asset. CSV Assets will
 	 */
 	function getImageSequenceFilePaths(assetId: string): string[]
 	/**
-	 * Return the URL for a given Google Sheet Asset.
-	 * @example
-	 * var assets = api.getAssetWindowLayers(false)
-	 * for (let assetId of assets) {
-	 * 	let type = api.getAssetType(assetId)
-	 * 	if (type == 'spreadsheet') {
-	 * 		console.log(api.getGoogleSheetAssetURL(assetId))
-	 * 	}
-	 * }
-	 */
-	function getGoogleSheetAssetURL(assetId: string): string
-	/**
 	 * Create a Group in the Assets Window, this will return the layerId of the new Group.
 	 * @example
 	 * api.createAssetGroup('My Asset Group')
@@ -2073,6 +2221,174 @@ It's also possible to use `jsonFromAsset` to query a .csv asset. CSV Assets will
 	 * }
 	 */
 	function getAllSceneLayers(): string[]
+	/**
+	 * Return the `layerId` of the Scene Palette — a `colorArray` Layer that holds swatches shared across the Scene. Combine with [addSceneSwatch](#addsceneswatch) and [removeSceneSwatch](#removesceneswatch) to manage the swatches, then [api.connect](#connect) from `<paletteId>.array.<index>` into a Material's `materialColor` to drive several Shapes off one swatch.
+	 * @example
+	 * var paletteId = api.getScenePalette()
+	 * console.log(api.getNiceName(paletteId))
+	 */
+	function getScenePalette(): string
+	/**
+	 * Add a colour swatch to the Scene Palette and return its array index. `color` is any string Cavalry can parse (e.g. `"#ff2266"`, `"red"`). The optional `name` is the swatch label; if omitted, a name is derived from the closest named colour.
+	 * @example
+	 * var paletteId = api.getScenePalette()
+	 * var index = api.addSceneSwatch('#ff2266', 'Hot Pink')
+	 * // Drive a Shape's fill from the swatch.
+	 * var rectId = api.primitive('rectangle', 'My Rectangle')
+	 * api.connect(paletteId, 'array.' + index, rectId, 'materialColor')
+	 */
+	function addSceneSwatch(color: string, name?: string): number
+	/**
+	 * Remove the swatch at the given index from the Scene Palette. Indices match those returned by [addSceneSwatch](#addsceneswatch). Returns true on success.
+	 * @example
+	 * var index = api.addSceneSwatch('#ff2266')
+	 * api.removeSceneSwatch(index)
+	 */
+	function removeSceneSwatch(index: number): boolean
+	/**
+	 * List file-backed Palettes. `scope` is `"library"`, `"project"`, or `"all"` (default). Returns an array of objects with `name`, `scope`, `path` and `swatchCount`. The Scene Palette is excluded — use [getScenePalette](#getscenepalette) for that.
+	 * @example
+	 * var palettes = api.listPalettes('project')
+	 * for (var p of palettes) {
+	 * 	console.log(p.name + ' (' + p.swatchCount + ' swatches) @ ' + p.path)
+	 * }
+	 */
+	function listPalettes(scope?: string): unknown
+	/**
+	 * Return a Palette by name, or `null` if not found. The result has `name`, `scope`, `path`, `author`, `website`, `version` and a `swatches` array of `{name, hex, uid}`. `scope` is `"library"` or `"project"`; if omitted, both tiers are searched (library first).
+	 * @example
+	 * var pal = api.getPalette('Sunset')
+	 * if (pal) {
+	 * 	console.log(pal.swatches.map((s) => s.hex).join(', '))
+	 * }
+	 */
+	function getPalette(name: string, scope?: string): unknown
+	/**
+	 * Look up a colour by name across the loaded Library and Project Palettes. Returns an array of `{paletteName, swatchName, hex}`. Matching is case-insensitive substring by default. Pass `{qualified: true}` to accept the `"swatchName (paletteName)"` syntax — at most one match is returned in that mode.
+	 * @example
+	 * // Substring search.
+	 * var matches = api.lookupColor('ocean')
+	 * console.log(matches)
+	 *
+	 * // Qualified single-match.
+	 * var hits = api.lookupColor('Sky (Sunset)', { qualified: true })
+	 */
+	function lookupColor(query: string, options?: unknown): unknown
+	/**
+	 * Generate a harmonious Palette of hex colours from a base colour. `type` is one of `"monochromatic"`, `"analogous"`, `"complementary"`, `"splitComplementary"`, `"triadic"`, `"square"`, `"rectangular"`, `"circular"`, `"goldenRatio"`. `options.harmonic` (bool) and `options.colorSpace` (`"RGB"` or `"LAB"`) are honoured. `count` is clamped to the same per-type maximums used by the Color Window's Generator (e.g. Triadic caps at 6).
+	 * @example
+	 * var colors = api.generateHarmoniousPalette('#3366ff', 5, 'complementary')
+	 * console.log(colors)
+	 */
+	function generateHarmoniousPalette(
+		baseColor: string,
+		count: number,
+		type: string,
+		options?: unknown,
+	): string[]
+	/**
+	 * Create a new `.pal` file in the Library or Project Palettes folder. `swatches` is an array where each entry is either a colour string (e.g. `"#ff7700"`) or an object `{color, name}`. `metadata` accepts `author`, `website` and `overwrite` — without `overwrite: true` the call throws if a Palette with that name already exists. Returns the newly written file path.
+	 * @example
+	 * var path = api.createPalette(
+	 * 	'Sunset',
+	 * 	'project',
+	 * 	['#ff7700', { color: '#ff3366', name: 'Coral' }, '#330066'],
+	 * 	{ author: 'Me', website: 'https://example.com' },
+	 * )
+	 * console.log('Created at ' + path)
+	 */
+	function createPalette(
+		name: string,
+		scope: string,
+		swatches?: undefined[],
+		metadata?: unknown,
+	): string
+	/**
+	 * Add a swatch to a saved Palette and re-save the `.pal` file. `swatchName` auto-derives from the closest named colour if omitted. Refuses non-`.pal` Palettes (`.ase` and `.theme` are read-only). Returns the new swatch's stable `uid`.
+	 * @example
+	 * var uid = api.addSwatchToPalette('Sunset', '#ff8800', 'Marigold', 'project')
+	 * console.log('New swatch uid: ' + uid)
+	 */
+	function addSwatchToPalette(
+		name: string,
+		color: string,
+		swatchName?: string,
+		scope?: string,
+	): number
+	/**
+	 * Remove a swatch from a saved Palette and re-save the `.pal` file. Pass an integer to remove by index (0-based, in current swatch order); pass `{uid: int}` to remove by stable uid (uids are returned by [getPalette](#getpalette) and [addSwatchToPalette](#addswatchtopalette)). Returns true on success.
+	 * @example
+	 * // Remove by index.
+	 * api.removeSwatchFromPalette('Sunset', 0, 'project')
+	 *
+	 * // Remove by uid.
+	 * var pal = api.getPalette('Sunset', 'project')
+	 * var uid = pal.swatches[0].uid
+	 * api.removeSwatchFromPalette('Sunset', { uid: uid }, 'project')
+	 */
+	function removeSwatchFromPalette(
+		name: string,
+		indexOrUid: unknown,
+		scope?: string,
+	): boolean
+	/**
+	 * Import a `.pal`, `.ase`, or `.theme` Palette file from outside Cavalry into the Library or Project Palettes folder. Returns the destination path. Refuses unsupported extensions and any source path that resolves outside the target folder.
+	 * @example
+	 * var imported = api.importPalette('/path/to/external.pal', 'project')
+	 * console.log('Imported to ' + imported)
+	 */
+	function importPalette(filePath: string, scope: string): string
+	/**
+	 * Delete a Palette file from the Library or Project Palettes folder. `scope` is mandatory to prevent accidental cross-tier deletion. Returns true on success.
+	 * @example
+	 * api.deletePalette('Sunset', 'project')
+	 */
+	function deletePalette(name: string, scope: string): boolean
+	/**
+	 * Create a `colorArray` Layer populated from a named Palette's swatches, mirroring the Color Window's *Create Array From Palette* action. Returns the new Layer's id. `scope` is `"library"` or `"project"`; both tiers are searched if omitted.
+	 * @example
+	 * var arrayId = api.createColorArrayFromPalette('Sunset', 'project')
+	 * console.log(api.getArrayCount(arrayId, 'array'))
+	 */
+	function createColorArrayFromPalette(name: string, scope?: string): string
+	/**
+	* Install a Plugin folder or `.zip` into the user's third-party Plugins folder and register its definitions and strings into the live session. The returned object contains:
+
+* `ok` (bool) — whether the install succeeded.
+* `installedPath` (string) — the destination folder.
+* `registeredTypes` (array of string) — newly registered `nodeType`s.
+* `wasUpdate` (bool) — true if an existing definition was matched and updated.
+* `requiresRestart` (bool) — schema-changing updates only take effect after a Cavalry restart, because existing Scene instances depend on the previous attribute layout. Source-only changes (`.sksl`, `.js`) are picked up the next time an instance is created.
+* `error` (string) — a description if `ok` is false.
+	* @example
+	* var result = api.installPlugin('/path/to/MyPlugin')
+	* if (result.ok) {
+	* 	console.log(
+	* 		'Installed ' +
+	* 			result.registeredTypes.length +
+	* 			' Layer types at ' +
+	* 			result.installedPath,
+	* 	)
+	* 	if (result.requiresRestart) {
+	* 		console.log('Restart Cavalry for schema changes to take effect.')
+	* 	}
+	* } else {
+	* 	console.log('Install failed: ' + result.error)
+	* }
+	*/
+	function installPlugin(sourcePath: string): unknown
+	/**
+	 * Write a single text file under `<thirdPartyPluginsFolder>/<pluginName>/<relPath>`. Refuses paths that escape the Plugin folder, names containing path-traversal characters, or empty inputs. Creates parent directories as needed. Returns true on success. Use this to author Plugin source files (`definitions.json`, `strings.json`, `.sksl`, `.js`, etc.) before calling [installPlugin](#installplugin).
+	 * @example
+	 * api.writePluginFile('MyPlugin', 'definitions.json', '[]')
+	 * api.writePluginFile('MyPlugin', 'strings.json', '{}')
+	 * api.writePluginFile('MyPlugin', 'Source/script.js', '// plugin code')
+	 */
+	function writePluginFile(
+		pluginName: string,
+		relPath: string,
+		contents: string,
+	): boolean
 	/**
 	 * This will load and run a JavaScript file making the functions contained within it available to use in the current script. This is not a module loader. Scripts loaded in this way are not placed into a namespace/ module and are free functions/objects.
 	 * @example
@@ -2209,6 +2525,18 @@ We recommend using reverse domain notation `com.<yourCompany>.<yourScript>` as a
 	 * console.log(api.getPalettesPath())
 	 */
 	function getPalettesPath(): string
+	/**
+	 * Gets the path of the user's shared Palette Library folder. Palettes saved here are visible to every Project (the `"library"` tier in [createPalette](#createpalette), [listPalettes](#listpalettes), etc.). This path does not include a trailing `/`.
+	 * @example
+	 * console.log(api.getLibraryPalettePath())
+	 */
+	function getLibraryPalettePath(): string
+	/**
+	 * Gets the folder where [installPlugin](#installplugin) and [writePluginFile](#writepluginfile) place third-party plugins. Useful for inspecting or cleaning up installed plugins from a script. This path does not include a trailing `/`.
+	 * @example
+	 * console.log(api.getThirdPartyPluginsFolder())
+	 */
+	function getThirdPartyPluginsFolder(): string
 	/**
 	 * Gets the Scene's path (if a [Project](../../user-interface/menus/window-menu/assets-window/project-settings.mdx) is set). This path does not include a trailing `/`
 	 * @example
@@ -2803,6 +3131,12 @@ See the example for how to get a UUID from a Layer.
 	 * console.log(api.getActiveTool())
 	 */
 	function getActiveTool(): string
+	/**
+	 * Open a window of the given type and set a minimum height.
+	 * @example
+	 * api.openWindow('meshExplorer', 400)
+	 */
+	function openWindow(windowType: string, minHeight?: number): void
 	/**
 	 *
 	 */

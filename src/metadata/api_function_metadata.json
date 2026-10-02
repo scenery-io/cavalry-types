@@ -756,6 +756,25 @@
         "type": "function"
     },
     {
+        "name": "loadCanvaSheet",
+        "arguments": [
+            {
+                "name": "designId",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "page",
+                "type": "string",
+                "required": false
+            }
+        ],
+        "return_type": "string",
+        "description": "Loads a Canva Sheet design as a CSV asset and returns the asset ID. `page` is 1-based; defaults to 1 if omitted.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
         "name": "getAssetType",
         "arguments": [
             {
@@ -766,6 +785,38 @@
         ],
         "return_type": "string",
         "description": "Retrieves the type of a specified asset.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "getAssetURI",
+        "arguments": [
+            {
+                "name": "assetId",
+                "type": "string",
+                "required": true
+            }
+        ],
+        "return_type": "string",
+        "description": "Returns the URI of an asset. For file based assets this is the absolute file path.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "replaceAsset",
+        "arguments": [
+            {
+                "name": "assetId",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "newPath",
+                "type": "string",
+                "required": true
+            }
+        ],
+        "description": "Replaces an asset with one located at a new file path.",
         "namespace": "@JS_GUI_API",
         "type": "function"
     },
@@ -831,8 +882,17 @@
             {
                 "name": "layerId",
                 "type": "string",
-                "required": false,
-                "default": "string"
+                "required": true
+            },
+            {
+                "name": "attrId",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "hexColors",
+                "type": "Array<string>",
+                "required": true
             }
         ],
         "description": "Sets the colours on a gradient attribute from an array of hex color strings.",
@@ -845,8 +905,17 @@
             {
                 "name": "layerId",
                 "type": "string",
-                "required": false,
-                "default": "string"
+                "required": true
+            },
+            {
+                "name": "attrId",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "interpolation",
+                "type": "int",
+                "required": true
             }
         ],
         "description": "Sets the interpolation for every stop on a gradient: Linear = 0, Step = 1, Smooth = 2, Crush = 3, Smooth Blend = 4, Contrast = 5.",
@@ -905,6 +974,296 @@
         ],
         "return_type": "string",
         "description": "Retrieves the ID of the parent Composition for a given layer.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "getScenePalette",
+        "arguments": null,
+        "return_type": "string",
+        "description": "Retrieves the ID of the Scene Palette \u2014 a colorArray node that holds swatches shared across the scene. Combine with addSceneSwatch / removeSceneSwatch to manage swatches, then api.connect from \"<paletteId>.array.<index>\" into a material's materialColor to drive several shapes off one swatch (changing the swatch updates everything connected to it).",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "addSceneSwatch",
+        "arguments": [
+            {
+                "name": "color",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "required": false
+            }
+        ],
+        "return_type": "int",
+        "description": "Adds a colour swatch to the Scene Palette and returns its array index. `color` is any string Cavalry can parse (e.g. \"#ff2266\"). `name` is the swatch label; if omitted, a name is derived from the closest named colour. Connect from \"<paletteId>.array.<index>\" (paletteId from getScenePalette()) into a material's materialColor to share the swatch across shapes.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "removeSceneSwatch",
+        "arguments": [
+            {
+                "name": "index",
+                "type": "int",
+                "required": true
+            }
+        ],
+        "return_type": "bool",
+        "description": "Removes the swatch at the given index from the Scene Palette. Indices match those returned by addSceneSwatch. Returns true on success.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "listPalettes",
+        "arguments": [
+            {
+                "name": "scope",
+                "type": "string",
+                "required": false
+            }
+        ],
+        "return_type": "Array<Object>",
+        "description": "Lists file-backed palettes. `scope` is \"library\", \"project\", or \"all\" (default \"all\"). Returns [{name, scope, path, swatchCount}, ...]. Excludes the scene palette \u2014 use getScenePalette() for that.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "getPalette",
+        "arguments": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "scope",
+                "type": "string",
+                "required": false
+            }
+        ],
+        "return_type": "Object",
+        "description": "Returns a palette by name: {name, scope, path, author, website, version, swatches: [{name, hex, uid}]} \u2014 or null if not found. `scope` is \"library\" or \"project\"; if omitted, both tiers are searched (library first).",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "lookupColor",
+        "arguments": [
+            {
+                "name": "query",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "options",
+                "type": "Object",
+                "required": false
+            }
+        ],
+        "return_type": "Array<Object>",
+        "description": "Looks up a colour by name across loaded library and project palettes. Returns [{paletteName, swatchName, hex}, ...] (substring/case-insensitive). options.qualified=true accepts \"Red (Cavalry)\" syntax and returns at most one match.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "generateHarmoniousPalette",
+        "arguments": [
+            {
+                "name": "baseColor",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "count",
+                "type": "int",
+                "required": true
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "options",
+                "type": "Object",
+                "required": false
+            }
+        ],
+        "return_type": "Array<string>",
+        "description": "Generates a harmonious palette of hex colours from a base colour. type is \"monochromatic\", \"analogous\", \"complementary\", \"splitComplementary\", \"triadic\", \"square\", \"rectangular\", \"circular\", or \"goldenRatio\". options.harmonic=true and options.colorSpace=\"RGB\"|\"LAB\" are honoured. count is clamped to the same per-type maxima used by the Color Window's Generator.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "createPalette",
+        "arguments": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "scope",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "swatches",
+                "type": "Array",
+                "required": false
+            },
+            {
+                "name": "metadata",
+                "type": "Object",
+                "required": false
+            }
+        ],
+        "return_type": "string",
+        "description": "Creates a new .pal palette file in the library or project palette folder. swatches is Array<string|Object> \u2014 strings are colour values; objects are {color, name?}. metadata is {author?, website?, overwrite?}. Returns the new file path. Refuses to overwrite an existing palette unless metadata.overwrite is true.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "addSwatchToPalette",
+        "arguments": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "color",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "swatchName",
+                "type": "string",
+                "required": false
+            },
+            {
+                "name": "scope",
+                "type": "string",
+                "required": false
+            }
+        ],
+        "return_type": "int",
+        "description": "Adds a swatch to a saved palette and re-saves the .pal file. swatchName auto-derives from the closest named colour if omitted. Refuses non-.pal palettes (.ase/.theme are read-only). Returns the new swatch's uid.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "removeSwatchFromPalette",
+        "arguments": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "indexOrUid",
+                "type": "int|Object",
+                "required": true
+            },
+            {
+                "name": "scope",
+                "type": "string",
+                "required": false
+            }
+        ],
+        "return_type": "bool",
+        "description": "Removes a swatch from a saved palette and re-saves the .pal file. Pass an integer to remove by index (0-based, in current swatch order); pass {uid: int} to remove by stable uid. Returns true on success.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "importPalette",
+        "arguments": [
+            {
+                "name": "filePath",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "scope",
+                "type": "string",
+                "required": true
+            }
+        ],
+        "return_type": "string",
+        "description": "Imports a .pal, .ase, or .theme palette file from outside Cavalry into the library or project palettes folder. Returns the destination path. Refuses unsupported extensions and path-traversal attempts.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "deletePalette",
+        "arguments": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "scope",
+                "type": "string",
+                "required": true
+            }
+        ],
+        "return_type": "bool",
+        "description": "Deletes a palette file from the library or project palettes folder. scope must be explicit (\"library\" or \"project\") to prevent accidental cross-tier deletion. Returns true on success.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "createColorArrayFromPalette",
+        "arguments": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "scope",
+                "type": "string",
+                "required": false
+            }
+        ],
+        "return_type": "string",
+        "description": "Creates a colorArray layer populated from a named palette's swatches, mirroring the Color Window's \"Create Array From Palette\" action. Returns the new layer's id. scope is \"library\" or \"project\"; both tiers are searched if omitted.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "setGradientFromPalette",
+        "arguments": [
+            {
+                "name": "layerId",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "attrId",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "scope",
+                "type": "string",
+                "required": false
+            }
+        ],
+        "return_type": "bool",
+        "description": "Sets a gradient attribute's stops to the swatches of a named palette (library or project). Mirrors the Color Window's \"Set Gradient From Palette\" action. Returns true on success.",
         "namespace": "@JS_GUI_API",
         "type": "function"
     },
@@ -1438,6 +1797,33 @@
             }
         ],
         "description": "Apply Magic Easing to an Attribute's keyframe and optionally add an expression.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "getMagicEasing",
+        "arguments": [
+            {
+                "name": "layerId",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "attrId",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "frame",
+                "type": "int",
+                "required": true
+            }
+        ],
+        "return_type": {
+            "easingName": "string",
+            "expression": "string"
+        },
+        "description": "Returns the Magic Easing name set on an Attribute's keyframe (and its custom expression, if the easing is \"Custom\") \u2014 or null if the Attribute isn't keyframed or has no keyframe on that frame.",
         "namespace": "@JS_GUI_API",
         "type": "function"
     },
@@ -2215,6 +2601,22 @@
         "arguments": null,
         "return_type": "string",
         "description": "Retrieves the path of the palettes directory in the current project.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "getLibraryPalettePath",
+        "arguments": null,
+        "return_type": "string",
+        "description": "Retrieves the path of the user's shared palette library folder. Palettes here are visible to every project (the \"library\" tier in listPalettes/createPalette/etc.).",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "getThirdPartyPluginsFolder",
+        "arguments": null,
+        "return_type": "string",
+        "description": "Retrieves the folder where installPlugin and writePluginFile place third-party plugins. Useful for inspecting or cleaning up plugins from a script.",
         "namespace": "@JS_GUI_API",
         "type": "function"
     },
@@ -3089,6 +3491,19 @@
             }
         ],
         "description": "Removes a specified attribute of a specified layer from the Control Centre.",
+        "namespace": "@JS_GUI_API",
+        "type": "function"
+    },
+    {
+        "name": "controlCentreSetLayout",
+        "arguments": [
+            {
+                "name": "layoutJson",
+                "type": "string",
+                "required": true
+            }
+        ],
+        "description": "Replaces the scene-wide Control Centre layout with the supplied JSON-encoded items array.",
         "namespace": "@JS_GUI_API",
         "type": "function"
     },
