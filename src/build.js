@@ -110,9 +110,10 @@ for (const ns in ts) {
 	// await writeFile(join(intermediatePath, `${ns}.d.ts`), data, 'utf-8')
 	const path = join(cwd(), 'types', 'namespaces')
 	const file = join(path, `${ns}.d.ts`)
+	const options = await prettier.resolveConfig('.prettierrc.json')
 	const formatted = await prettier.format(data, {
-		filepath: resolve(cwd(), '.prettierrc.json'),
 		parser: 'typescript',
+		...options,
 	})
 	if (!existsSync(path)) {
 		await mkdirp(path)
